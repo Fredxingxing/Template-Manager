@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="swiper-container shake-constant">
     <div class="swiper-wrapper"><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/imageshho1ZeT3cSxcX8eA5XePqm82ffaiXz.jpg&quot;); display: block; z-index: 1;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/images95s9ZmT3cS1k8f7a9xASfbbc210qTw.jpg&quot;); display: none; z-index: 0;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/images7wo8UEoSaFIFTAUu60kXWle3F1Kd2F.jpg&quot;); display: none; z-index: 0;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/imagesCdPRsQqcL5ajVoVcB5j31X5VJRnJcs.jpg&quot;); display: none; z-index: 0;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/imagestVgUshKbtYOWHUVSl1BP59OTs3IgXD.jpg&quot;); display: block; z-index: 0;"></div></div>
   </div>
@@ -269,6 +270,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -284,7 +286,7 @@ export default { //会自动生成new vue({})
     }
   },
   mounted: function () {
-    this.templateview;
+    this.templateview();
   },
   method: {
     templateview: function () {
