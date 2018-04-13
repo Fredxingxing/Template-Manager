@@ -22,33 +22,9 @@
         <div class="templates">
           <div class="templates-herolist">
             <div class="templates-herolist-row templates-bg">
-              <div v-on:click="heroname" class=" btn-herolist  btn-herolist-default">
-                <div  class="templates-herolist-row-heroname">Zeratul</div>
+              <div v-on:click="heroname" v-for="item in heronamelist"class=" btn-herolist  btn-herolist-default">
+                <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
                 <img class="images" src="./assets/loading_zeratul.png" >
-              </div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div v-on:click="heroname" class=" btn-herolist  btn-herolist-default">
-                <div class="templates-herolist-row-heroname">Valla</div>
-                <img class="images" src="./assets/loading_Valla.png" >
-              </div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div v-on:click="heroname" class=" btn-herolist  btn-herolist-default">
-                <div class="templates-herolist-row-heroname">Uther</div>
-                <img class="images" src="./assets/loading_uther.png" >
-              </div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div v-on:click="heroname" class=" btn-herolist  btn-herolist-default">
-                <div class="templates-herolist-row-heroname">Tyrande</div>
-                <img class="images" src="./assets/loading_tyrande.png">
-              </div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div v-on:click="heroname" class=" btn-herolist  btn-herolist-default">
-                <div class="templates-herolist-row-heroname">Tyrael</div>
-                <img class="images" src="./assets/loading_tyreal.png" >
               </div>
             </div>
             <div class="templates-herolist-row templates-bg">
@@ -67,7 +43,7 @@
           <div class="templates-detail">
             <div class="templates-detail-top">
               <div class="templates-detail-top-info templates-bg">
-                <div class="templates-detail-top-info-title">{{heronamedetail}}</div>
+                <div class="templates-detail-top-info-title">Alarak</div>
                 <div class="templates-detail-top-info-desc">- Synergy -</div>
               </div>
               <div class="templates-detail-top-modes templates-bg">
@@ -300,45 +276,33 @@
 </template>
 
 <script>
-  import store from'./store.js'
-  import componentA from'./components/HelloWorld.vue'
-  console.log(store)
 export default {    //= module.export={   }   <router-view/>     <img src="./assets/logo.png">
   //name: 'App'
-  data () {  //=function data(){ return msg:....} 所有的数据从这里展现
+  data() {  //=function data(){ return msg:....} 所有的数据从这里展现
     return {
       title: 'this is a todo list2',
-      items:[],
-      newItem:'',
-      childwords:''
+      items: [],
+      newItem: '',
+      heronamelist: [],
+      Herolist: []
     }
   },
-  components: { componentA},
-  watch:{
-    items:{
-      handler:function(items){
-        store.save(items)
-     },
-      deep:true //深层复制
+  mounted: function () {
+    this.templateview;
+  },
+  method: {
+    templateview: function () {
+      var _this = this;
+      this.$http.get("data/template.json").then(function (res) {
+        _this.heronamelist = res.data.result.Herolist;
+      })
+
+    },
+    methods: {
+      heroname: function () {
+        console.log("1");
+      },
     }
- },
-  methods:{//methods是一个对象
-    toggleFinish:function (item) {
-    item.isFinished=!item.isFinished
-    },
-    addNew:function () {
-      this.items.push({
-        label:this.newItem,
-        isFinished:false
-        })
-      this.newItem='';
-    },
-    listentomyboy:function (msg) {
-       this.childwords=msg;
-    },
-    heroname:function () {
-    console.log("1");
-  }
   }
 }
 </script>

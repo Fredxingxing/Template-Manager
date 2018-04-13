@@ -11,5 +11,6 @@ new Vue({
   el: '#app',
   router,
   components: { App },//注册app成组件，只有注册了才能在app.vue里面使用
-  template: '<App/>'
+  template: '<App/>',
+
 })
