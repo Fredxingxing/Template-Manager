@@ -1,11 +1,11 @@
 {
   "result":{
   "Herolist":
-    [{"id":1,"basic":"Zeratul","heroImage":"../src/assets/loading_zeratul.png","name":"泽拉图","acronym":"zlt","tags":[{"key":"role","value":2},{"key":"universe","value":2},{"key":"subclass","value":3}]},
-    {"id":2,"basic":"Valla","heroImage":"../src/assets/loading_Valla.png","name":"维拉","acronym":"wl","tags":[{"key":"role","value":2},{"key":"universe","value":3},{"key":"subclass","value":5}]},
-    {"id":3,"basic":"Uther","heroImage":"../src/assets/loading_uther.png","name":"乌瑟尔","acronym":"wse","tags":[{"key":"role","value":3},{"key":"universe","value":1},{"key":"subclass","value":8}]},
-    {"id":4,"basic":"Tyrande","heroImage":"../src/assets/loading_tyrand.png","name":"泰兰德","acronym":"tld","tags":[{"key":"role","value":3},{"key":"universe","value":1},{"key":"subclass","value":9}]},
-    {"id":5,"basic":"Tyrael","heroImage":"../src/assets/loading_tyreal.png","name":"泰瑞尔","acronym":"tre","tags":[{"key":"role","value":1},{"key":"universe","value":3},{"key":"subclass","value":2}]},
+    [{"id":1,"basic":"Zeratul","heroImage":"static/image/loading_zeratul.png","name":"泽拉图","acronym":"zlt","tags":[{"key":"role","value":2},{"key":"universe","value":2},{"key":"subclass","value":3}]},
+    {"id":2,"basic":"Valla","heroImage":"static/image/loading_Valla.png","name":"维拉","acronym":"wl","tags":[{"key":"role","value":2},{"key":"universe","value":3},{"key":"subclass","value":5}]},
+    {"id":3,"basic":"Uther","heroImage":"static/image/loading_uther.png","name":"乌瑟尔","acronym":"wse","tags":[{"key":"role","value":3},{"key":"universe","value":1},{"key":"subclass","value":8}]},
+    {"id":4,"basic":"Tyrande","heroImage":"static/image/loading_tyrande.png","name":"泰兰德","acronym":"tld","tags":[{"key":"role","value":3},{"key":"universe","value":1},{"key":"subclass","value":9}]},
+    {"id":5,"basic":"Tyrael","heroImage":"static/image/loading_tyreal.png","name":"泰瑞尔","acronym":"tre","tags":[{"key":"role","value":1},{"key":"universe","value":3},{"key":"subclass","value":2}]},
     {"id":6,"basic":"Tassadar","name":"塔萨达尔","acronym":"tsde","tags":[{"key":"role","value":3},{"key":"universe","value":2},{"key":"subclass","value":9}]},
     {"id":7,"basic":"Stitches","name":"缝合怪","acronym":"fhg","tags":[{"key":"role","value":1},{"key":"universe","value":1},{"key":"subclass","value":1}]},
     {"id":8,"basic":"Sonya","name":"桑娅","acronym":"sy","tags":[{"key":"role","value":1},{"key":"universe","value":3},{"key":"subclass","value":3}]},

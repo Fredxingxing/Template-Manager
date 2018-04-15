@@ -20,24 +20,12 @@
     <div class="modal show" id="modal-logs">
       <div class="modal-body">
         <div class="templates">
-          <div class="templates-herolist">
-            <div class="templates-herolist-row templates-bg">
-              <div v-on:click="heroname" v-for="item in heronamelist" class=" btn-herolist  btn-herolist-default">
+          <div class="templates-herolist" >
+            <div class="templates-herolist-row templates-bg" v-for="item in heronamelist" >
+              <div v-on:click="heroname" class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
-                <img class="images" src="" >
+                <img class="images" v-bind:src="item.heroImage" >
               </div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div class="templates-herolist-row-heroname">Tassadar</div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div class="templates-herolist-row-heroname">Stitches</div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div class="templates-herolist-row-heroname">Sonya</div>
-            </div>
-            <div class="templates-herolist-row templates-bg">
-              <div class="templates-herolist-row-heroname">Raynor</div>
             </div>
           </div>
           <div class="templates-detail">
@@ -291,7 +279,7 @@ export default { //会自动生成new vue({})
     })
 
   },
-  method: {
+  methods: {
     heroname: function () {
       console.log("1");
     },
@@ -299,7 +287,7 @@ export default { //会自动生成new vue({})
       var _this = this;
       this.$axios({
         method:'get',
-        url:'/data/template.json'
+        url:'/static/template.json'
       }).then(function(response){
         console.log(response.data);
         _this.heronamelist = response.data.result.Herolist;
