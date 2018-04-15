@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div >
   <div class="swiper-container shake-constant">
     <div class="swiper-wrapper"><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/imageshho1ZeT3cSxcX8eA5XePqm82ffaiXz.jpg&quot;); display: block; z-index: 1;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/images95s9ZmT3cS1k8f7a9xASfbbc210qTw.jpg&quot;); display: none; z-index: 0;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/images7wo8UEoSaFIFTAUu60kXWle3F1Kd2F.jpg&quot;); display: none; z-index: 0;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/imagesCdPRsQqcL5ajVoVcB5j31X5VJRnJcs.jpg&quot;); display: none; z-index: 0;"></div><div class="swiper-slide" style="background-image: url(&quot;http://113.107.241.242/attachment/material/imagestVgUshKbtYOWHUVSl1BP59OTs3IgXD.jpg&quot;); display: block; z-index: 0;"></div></div>
   </div>
   <div class="container mask">
     <div class="navbar">
       <div class="logo">
-        <img src="./assets/favicon.png" class="logo-image">
+        <img src="" class="logo-image">
       </div>
       <div class="title">
         <span>BpHots - Templates</span>
@@ -278,32 +278,37 @@ export default { //会自动生成new vue({})
   name: 'Templates',
   data() {  //=function data(){ return msg:....} 所有的数据从这里展现
     return {
-      title: 'this is a todo list2',
-      items: [],
       newItem: '',
-      heronamelist: [],
-      Herolist: []
+      heronamelist:[ ]
     }
+  },
+  filters:{
+
   },
   mounted: function () {
-    this.templateview();
+    this.$nextTick(function () {
+      this.templateView()
+    })
+
   },
   method: {
-    templateview: function () {
-      var _this = this;
-      this.$http.get("data/template.json").then(function (res) {
-        _this.heronamelist = res.data.result.Herolist;
-      })
-
+    heroname: function () {
+      console.log("1");
     },
-    methods: {
-      heroname: function () {
-        console.log("1");
-      },
+    templateView: function () {
+      var _this = this;
+      this.$axios({
+        method:'get',
+        url:'/data/template.json'
+      }).then(function(response){
+        console.log(response.data);
+        _this.heronamelist = response.data.result.Herolist;
+      });
     }
-  }
 
-}
+    }
+
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -328,7 +333,7 @@ export default { //会自动生成new vue({})
   body {
     background: #000;
     font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif', 'å¾®è½¯é›…é»‘', 'simhei';
-    font-size: 14px;
+   // font-size: 14px;
     color:#000;
     margin: 0;
     padding: 0;
@@ -522,7 +527,6 @@ export default { //会自动生成new vue({})
     width: 100%;
     height: 100%;
   }
-
   .content {
     text-align: center;
     vertical-align: middle;
@@ -579,9 +583,6 @@ export default { //会自动生成new vue({})
     max-width: 70%;
     font-size: 1rem;
   }
-
-
-
   .btn {
     display: block;
     position: relative;
@@ -591,7 +592,6 @@ export default { //会自动生成new vue({})
     transition: all .2s ease-out;
     overflow: hidden;
   }
-
   .btn-default {
     background-color: rgba(255, 255, 255, .2);
     color: #fff;
@@ -631,7 +631,6 @@ export default { //会自动生成new vue({})
     padding-bottom: 120%;
     opacity: 1;
   }
-
   .btn-circle {
     color: #fff;
     margin-bottom: 2rem;
@@ -715,7 +714,6 @@ export default { //会自动生成new vue({})
     line-height: 2rem;
     margin-right: .5rem;
   }
-
   .author {
     text-align: right;
     margin-right: .5rem;
@@ -864,7 +862,6 @@ export default { //会自动生成new vue({})
     bottom: 0;
     text-align: center;
   }
-
   .shake-explode:hover,
   .shake-explode.shake-constant,
   .shake-explode + .container {
@@ -873,7 +870,6 @@ export default { //会自动生成new vue({})
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
   }
-
   .a-center {
     position: absolute;
     top: 0;
@@ -885,7 +881,6 @@ export default { //会自动生成new vue({})
   .clear {
     clear: both;
   }
-
   @media (min-width: 440px) {
     .page-title {
       font-size: 4rem;
@@ -937,7 +932,6 @@ export default { //会自动生成new vue({})
       max-height: 80%;
     }
   }
-
   @-webkit-keyframes rotate {
     from {
       -webkit-transform: rotate(0);
@@ -948,7 +942,6 @@ export default { //会自动生成new vue({})
       transform: rotate(360deg);
     }
   }
-
   @keyframes rotate {
     from {
       -webkit-transform: rotate(0);
@@ -959,7 +952,6 @@ export default { //会自动生成new vue({})
       transform: rotate(360deg);
     }
   }
-
   @-webkit-keyframes flip {
     from {
       -webkit-transform: rotateY(0);
@@ -970,7 +962,6 @@ export default { //会自动生成new vue({})
       transform: rotateY(720deg);
     }
   }
-
   @keyframes flip {
     from {
       -webkit-transform: rotateY(0);
@@ -981,7 +972,6 @@ export default { //会自动生成new vue({})
       transform: rotateY(720deg);
     }
   }
-
   @-webkit-keyframes slideToLeft {
     from {
       opacity: 0;
@@ -1012,8 +1002,6 @@ export default { //会自动生成new vue({})
       transform: translateX(-10%);
     }
   }
-
-
   @-webkit-keyframes blink {
     from {
       opacity: 0;
@@ -1030,7 +1018,6 @@ export default { //会自动生成new vue({})
       opacity: 1;
     }
   }
-
   @-webkit-keyframes trembling {
     from {
       -webkit-transform: rotate(0);
@@ -1115,7 +1102,6 @@ export default { //会自动生成new vue({})
       transform: rotate(0);
     }
   }
-
   @-webkit-keyframes rainbow {
     from {
       background-color: #f44336;
@@ -1142,7 +1128,6 @@ export default { //会自动生成new vue({})
       background-color: #f44336;
     }
   }
-
   @keyframes rainbow {
     from {
       background-color: #f44336;
@@ -1169,7 +1154,6 @@ export default { //会自动生成new vue({})
       background-color: #f44336;
     }
   }
-
   @-webkit-keyframes shake-explode {
     10% {
       -webkit-transform: translate(3px, 5px) rotate(6deg);

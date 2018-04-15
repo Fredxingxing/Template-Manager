@@ -6,7 +6,8 @@
 
 <script>
 export default {    //= module.export={   }   <router-view/>     <img src="./assets/logo.png">
-  name: 'App'
+  name: 'App',
+
 }
 </script>
 
@@ -17,7 +18,9 @@ export default {    //= module.export={   }   <router-view/>     <img src="./ass
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-
 }
-
+body{
+  padding: 0;
+  margin: 0;
+}
 </style>
