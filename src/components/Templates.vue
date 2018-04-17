@@ -6,7 +6,7 @@
   <div class="container mask">
     <div class="navbar">
       <div class="logo">
-        <img src="" class="logo-image">
+        <img src="../../static/image/favicon.png" class="logo-image">
       </div>
       <div class="title">
         <span>BpHots - Templates</span>
@@ -294,8 +294,7 @@ export default { //会自动生成new vue({})
       });
     }
 
-    }
-
+  }
   }
 </script>
 
