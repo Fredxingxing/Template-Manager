@@ -22,7 +22,7 @@
         <div class="templates">
           <div class="templates-herolist" >
             <div class="templates-herolist-row templates-bg" v-for="item in heronamelist" >
-              <div v-on:click="heroname" class=" btn-herolist  btn-herolist-default">
+              <div v-on:click="heroname(item)" class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
                 <img class="images" v-bind:src="item.heroImage" >
               </div>
@@ -31,8 +31,8 @@
           <div class="templates-detail">
             <div class="templates-detail-top">
               <div class="templates-detail-top-info templates-bg">
-                <div class="templates-detail-top-info-title">Alarak</div>
-                <div class="templates-detail-top-info-desc">- Synergy -</div>
+                <div class="templates-detail-top-info-title">{{HeroName}}</div>
+                <div class="templates-detail-top-info-desc">- 英雄 -</div>
               </div>
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-btns">
@@ -267,9 +267,11 @@ export default { //会自动生成new vue({})
   data() {  //=function data(){ return msg:....} 所有的数据从这里展现
     return {
       newItem: '',
-      heronamelist:[ ]
+      heronamelist:[ ],
+      HeroName:''
     }
   },
+  props:['HeroName','Zeratul'],
   filters:{
 
   },
@@ -280,14 +282,22 @@ export default { //会自动生成new vue({})
 
   },
   methods: {
-    heroname: function () {
-      console.log("1");
+    heroname: function (item) {
+      this.HeroName=item.basic;
     },
     templateView: function () {
       var _this = this;
       this.$axios({
         method:'get',
-        url:'/static/template.json'
+       url:('/static/template.json'),
+       // url:'http://old.bphots.com/templates/templates/offer/list',
+        //请求头信息
+        //headers: {'X-Requested-With': 'XMLHttpRequest'},
+        //设置超时
+       // timeout:5000,
+       // withCredentials:true,   //加了这段就可以跨域了
+        //返回数据类型
+       // responseType:'jsonp'
       }).then(function(response){
         console.log(response.data);
         _this.heronamelist = response.data.result.Herolist;
