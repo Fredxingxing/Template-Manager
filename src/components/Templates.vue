@@ -48,8 +48,8 @@
               </div>
             </div>
             <div class="templates-detail-main templates-bg" >
-              <div class="templates-detail-main-herolist" v-for="item in heronamelist">
-                <div class="templates-detail-main-herolist-row"    v-for="detail in item.details">
+              <div class="templates-detail-main-herolist" >
+                <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
                   <div class="progress progress-lg">
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
                     <a style="position:inherit">+</a>
@@ -105,7 +105,8 @@ export default { //会自动生成new vue({})
       detailss:[],
       relationNum:1,
       index:'',
-      heroId:[]
+      heroId:[],
+      selectDetail:[]
     }
   },
   filters:{
@@ -114,21 +115,28 @@ export default { //会自动生成new vue({})
   mounted: function () {
     this.$nextTick(function () {
       this.templateView();
+
     })
 
+  },
+  watch:{
+    selectDetail:function(selectDetail,electDetail){
+      console.log(selectDetail);
+     this.detail=selectDetail;
+    }
   },
   methods: {
     selectHero: function (item,index) {
 
-      this.HeroName=item.name;
-      this.detail=item.details;
-
-      if(index==(item.id-1))
+     this.HeroName=item.name;
+     this.detail=item.details;
+     this.selectDetail=item.details;
+     console.log(index);
+   // console.log(selectDetail);
+     if(index==(item.id-1))
       {
-        console.log("您选中了"+item.name);
-
-
-      }
+      console.log("您选中了"+item.name);
+    }
 },
   //  selecthero:function(index){
   //console.log(index);
