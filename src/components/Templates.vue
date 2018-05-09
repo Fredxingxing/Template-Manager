@@ -21,8 +21,8 @@
       <div class="modal-body">
         <div class="templates">
           <div class="templates-herolist" >
-            <div class="templates-herolist-row templates-bg" v-for="item in heronamelist" >
-              <div v-on:click="heroname(item)" class=" btn-herolist  btn-herolist-default">
+            <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist" >
+              <div v-on:click="selectHero(item,index)"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
                 <img class="images" v-bind:src="item.heroImage" >
               </div>
@@ -37,200 +37,28 @@
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-btns">
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default">Base</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default btn-default-active">Synergy</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relationNum=1">Base</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relationNum=2">Synergy</div>
                   </div>
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default">Be Restricted</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default">Restraints</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relationNum=3">Be Restricted</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relationNum=4">Restraints</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="templates-detail-main templates-bg">
-              <div class="templates-detail-main-herolist">
-                <div class="templates-detail-main-herolist-row">
+            <div class="templates-detail-main templates-bg" >
+              <div class="templates-detail-main-herolist" v-for="item in heronamelist">
+                <div class="templates-detail-main-herolist-row"    v-for="detail in item.details">
                   <div class="progress progress-lg">
-                    <div class="progress-bar p12" role="progressbar">1</div>
+                    <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
+                    <a style="position:inherit">+</a>
+                    <a>-</a>
                   </div>
                   <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Murky</div>
+                  <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                 </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p13" role="progressbar">2</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Sgt. Hammer</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p14" role="progressbar">3</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Alexstrasza</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p15" role="progressbar">4</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Maiev</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p16" role="progressbar">5</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">D.Va</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p17" role="progressbar">6</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Li-Ming</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p18" role="progressbar">7</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Ragnaros</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p19" role="progressbar">8</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Genji</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p20" role="progressbar">9</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Gall</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p21" role="progressbar">10</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Kharazim</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p1" role="progressbar">-10</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">The Lost Vikings</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p2" role="progressbar">-9</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Nazeebo</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p3" role="progressbar">-8</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Muradin</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p4" role="progressbar">-7</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Malfurion</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p5" role="progressbar">-6</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Kerrigan</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p6" role="progressbar">-5</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Illidan</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p7" role="progressbar">-4</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Gazlowe</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p8" role="progressbar">-3</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Falstad</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p9" role="progressbar">-2</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">E.T.C.</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p10" role="progressbar">-1</div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Kael'thas</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p11" role="progressbar"></div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Gul'dan</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p11" role="progressbar"></div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Auriel</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p11" role="progressbar"></div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Zarya</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p11" role="progressbar"></div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Lúcio</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p11" role="progressbar"></div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Cassia</div>
-                </div>
-                <div class="templates-detail-main-herolist-row">
-                  <div class="progress progress-lg">
-                    <div class="progress-bar p11" role="progressbar"></div>
-                  </div>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">Garrosh</div>
-                </div>
+
               </div>
             </div>
           </div>
@@ -268,23 +96,43 @@ export default { //会自动生成new vue({})
     return {
       newItem: '',
       heronamelist:[ ],
-      HeroName:''
+      HeroName:'',
+      details:[],
+      item:[],
+      detail:[],
+      scroe:'',
+      detailname:'',
+      detailss:[],
+      relationNum:1,
+      index:'',
+      heroId:[]
     }
   },
-  props:['HeroName','Zeratul'],
   filters:{
 
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.templateView()
+      this.templateView();
     })
 
   },
   methods: {
-    heroname: function (item) {
-      this.HeroName=item.basic;
-    },
+    selectHero: function (item,index) {
+
+      this.HeroName=item.name;
+      this.detail=item.details;
+
+      if(index==(item.id-1))
+      {
+        console.log("您选中了"+item.name);
+
+
+      }
+},
+  //  selecthero:function(index){
+  //console.log(index);
+  //  },
     templateView: function () {
       var _this = this;
       this.$axios({
@@ -299,10 +147,10 @@ export default { //会自动生成new vue({})
         //返回数据类型
        // responseType:'jsonp'
       }).then(function(response){
-        console.log(response.data);
         _this.heronamelist = response.data.result.Herolist;
+
       });
-    }
+    },
 
   }
   }
