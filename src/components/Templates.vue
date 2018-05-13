@@ -50,11 +50,11 @@
             <div class="templates-detail-main templates-bg" >
               <div class="templates-detail-main-herolist" >
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
+                  <a class="increasePoint" v-on:click="changePoint(detail,1)">+</a>
                   <div class="progress progress-lg">
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
-                    <a style="position:inherit">+</a>
-                    <a>-</a>
                   </div>
+                  <a  class="decreasePoint" v-on:click="changePoint(detail,-1)">-</a>
                   <div class="templates-detail-main-herolist-row-portrait"></div>
                   <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                 </div>
@@ -100,7 +100,7 @@ export default { //会自动生成new vue({})
       details:[],
       item:[],
       detail:[],
-      scroe:'',
+      score:0,
       detailname:'',
       detailss:[],
       relationNum:1,
@@ -138,9 +138,21 @@ export default { //会自动生成new vue({})
       console.log("您选中了"+item.name);
     }
 },
-  //  selecthero:function(index){
-  //console.log(index);
-  //  },
+  changePoint:function(detail,num){
+     if(num>0){
+       detail.score++;
+       if(detail.score>10) {
+         detail.score=10;
+       }
+     }
+     else{
+       detail.score--;
+       if(detail.score<-10){
+         detail.score=-10;
+       }
+     }
+  },
+
     templateView: function () {
       var _this = this;
       this.$axios({
@@ -547,6 +559,21 @@ export default { //会自动生成new vue({})
     width: 120%;
     padding-bottom: 120%;
     opacity: 1;
+  }
+
+  .increasePoint{
+    box-sizing:border-box;
+    float: right;
+    padding-right: 100px;
+    color: #eee;
+
+  }
+
+  .decreasePoint{
+    box-sizing:border-box;
+    float: left;
+    color: #eee;
+
   }
   .tr {
     display: table-row;
