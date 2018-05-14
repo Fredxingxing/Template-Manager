@@ -37,12 +37,12 @@
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-btns">
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relationNum=1">Base</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relationNum=2">Synergy</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relationNum=1">基础数据</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relationNum=2">协同关系</div>
                   </div>
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relationNum=3">Be Restricted</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relationNum=4">Restraints</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relationNum=3">被克制关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relationNum=4">克制关系</div>
                   </div>
                 </div>
               </div>
@@ -58,9 +58,10 @@
                   <div class="templates-detail-main-herolist-row-portrait"></div>
                   <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                 </div>
-
+                      <button v-on:click="upload(detail)">上传</button>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -152,7 +153,7 @@ export default { //会自动生成new vue({})
        }
      }
   },
-
+  //取数据的方法
     templateView: function () {
       var _this = this;
       this.$axios({
@@ -171,6 +172,18 @@ export default { //会自动生成new vue({})
 
       });
     },
+    //上传的方法
+    upload:function (detail) {
+       this.$axios({
+         methods:'post',
+         url:('http://old.bphots.com/templates/offer'),
+         data:{
+           detail
+         },
+       }).then(function(response){
+         console.log(response);
+       });
+    }
 
   }
   }
