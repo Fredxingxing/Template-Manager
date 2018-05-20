@@ -37,12 +37,12 @@
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-btns">
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.$index,1)" >基础属性</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.$index,2)" >相生关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1)" >基础属性</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
                   </div>
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.$index,3)">被克制关系</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.$index,4)">克制关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
                   </div>
                 </div>
               </div>
@@ -112,7 +112,11 @@ export default { //会自动生成new vue({})
       selectDetail:[],
       relationNum:1,
       jichu:[],
+      xiangsheng:[],
+      kezhi:[],
+      beikezhi:[],
       heroindex:0,
+
 
     }
   },
@@ -137,14 +141,15 @@ export default { //会自动生成new vue({})
 
      this.HeroName=item.name;
      this.detail=item.details;
-     this.selectDetail=item.details;
+     this.selectDetail=item.jichu;
      this.heroId=item.id;
-     this.DetailName=item.details.detailname;
-     this.Score=item.details.score;
+     this.DetailName=item.jichu.detailname;
+     this.Score=item.jichu.score;
     console.log(this.DetailName);
     console.log(this.Score);
       console.log(this.item);
      console.log(index);
+     this.heroindex=index;
    // console.log(selectDetail);
      if(index==(item.id-1))
       {
@@ -169,31 +174,29 @@ export default { //会自动生成new vue({})
     relation:function (index,num) {
       switch (num){
         case 1:
-          console.log("在relation");
-          let heroindex=this.index;
-          console.log(heroindex);
           this.relationNum=1;
-
-          this.detail=this.heronamelist.jichu[heroindex];
-          console.log(this.detail);
-          this.selectDetail=this.heronamelist.jichu[heroindex];
-          console.log(this.selectDetail);
-          this.DetailName=this.heronamelist.jichu[heroindex].detailname;
-          console.log(this.DetailName);
-          this.Score=this.heronamelist.jichu[heroindex].score;
+          console.log(this.heroindex);
+          this.selectDetail=this.heronamelist[this.heroindex].jichu;
+          this.detail=this.heronamelist[this.heroindex].jichu;
 
           break;
         case 2:
           this.relationNum=2;
-
+          console.log(this.heroindex);
+            this.selectDetail=this.heronamelist[this.heroindex].xiangsheng;
+            this.detail=this.heronamelist[this.heroindex].xiangsheng;
           break;
         case 3:
           this.relationNum=3;
-
+          console.log(this.heroindex);
+          this.selectDetail=this.heronamelist[this.heroindex].beikezhi;
+          this.detail=this.heronamelist[this.heroindex].beikezhi;
           break;
         case 4:
           this.relationNum=4;
-
+          console.log(this.heroindex);
+          this.selectDetail=this.heronamelist[this.heroindex].kezhi;
+          this.detail=this.heronamelist[this.heroindex].kezhi;
           break;
       }
     },
