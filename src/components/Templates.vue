@@ -37,12 +37,12 @@
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-btns">
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relationNum=1">基础数据</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relationNum=2">协同关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.$index,1)" >基础属性</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.$index,2)" >相生关系</div>
                   </div>
                   <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relationNum=3">被克制关系</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relationNum=4">克制关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.$index,3)">被克制关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.$index,4)">克制关系</div>
                   </div>
                 </div>
               </div>
@@ -50,11 +50,11 @@
             <div class="templates-detail-main templates-bg" >
               <div class="templates-detail-main-herolist" >
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
-                  <a class="increasePoint" v-on:click="changePoint(detail,1)">+</a>
+                  <a style="color: #eeeeee" v-on:click="changePoint(detail,1)">+</a>
                   <div class="progress progress-lg">
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
                   </div>
-                  <a  class="decreasePoint" v-on:click="changePoint(detail,-1)">-</a>
+                  <a  style="color: #eeeeee"  v-on:click="changePoint(detail,-1)">-</a>
                   <div class="templates-detail-main-herolist-row-portrait"></div>
                   <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                 </div>
@@ -101,13 +101,19 @@ export default { //会自动生成new vue({})
       details:[],
       item:[],
       detail:[],
-      score:0,
-      detailname:'',
+      Score:0,
+      DetailName:[],
+      detailname:[],
+      score:[],
       detailss:[],
       relationNum:1,
       index:'',
       heroId:[],
-      selectDetail:[]
+      selectDetail:[],
+      relationNum:1,
+      jichu:[],
+      heroindex:0,
+
     }
   },
   filters:{
@@ -132,12 +138,19 @@ export default { //会自动生成new vue({})
      this.HeroName=item.name;
      this.detail=item.details;
      this.selectDetail=item.details;
+     this.heroId=item.id;
+     this.DetailName=item.details.detailname;
+     this.Score=item.details.score;
+    console.log(this.DetailName);
+    console.log(this.Score);
+      console.log(this.item);
      console.log(index);
    // console.log(selectDetail);
      if(index==(item.id-1))
       {
       console.log("您选中了"+item.name);
     }
+
 },
   changePoint:function(detail,num){
      if(num>0){
@@ -153,6 +166,30 @@ export default { //会自动生成new vue({})
        }
      }
   },
+    relation:function (index,num) {
+      switch (num){
+        case 1:
+          let heroindex=this.index;
+          this.relationNum=1;
+          this.detail=this.heronamelist.jichu[heroindex];
+          this.selectDetail=this.heronamelist.jichu[heroindex];
+          this.DetailName=this.heronamelist.jichu[heroindex].detailname;
+          this.Score=this.heronamelist.jichu[heroindex].score;
+          break;
+        case 2:
+          this.relationNum=2;
+
+          break;
+        case 3:
+          this.relationNum=3;
+
+          break;
+        case 4:
+          this.relationNum=4;
+
+          break;
+      }
+    },
   //取数据的方法
     templateView: function () {
       var _this = this;
@@ -174,15 +211,27 @@ export default { //会自动生成new vue({})
     },
     //上传的方法
     upload:function (detail) {
-       this.$axios({
-         methods:'post',
-         url:('http://old.bphots.com/templates/offer'),
-         data:{
-           detail
-         },
-       }).then(function(response){
-         console.log(response);
-       });
+     // var uploadData=new Object();
+    //   uploadData.hero_id=this.heroId;
+     //  uploadData.item=this.HeroName;
+     //  uploadData.part="1";
+     //  uploadData.point="1";
+    //   var param=JSON.stringify(uploadData);
+      // var params=uploadData.parseJSON();
+    //   console.log(uploadData);
+    //   comsole.log(param)
+      this.$axios.post('http://old.bphots.com/templates/offer', {
+        hero_id:this.heroId,
+        item:'hero_3',
+        part:'2',
+        point:this.score
+      })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
 
   }
