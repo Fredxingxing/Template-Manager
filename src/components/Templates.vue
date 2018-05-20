@@ -169,12 +169,19 @@ export default { //会自动生成new vue({})
     relation:function (index,num) {
       switch (num){
         case 1:
+          console.log("在relation");
           let heroindex=this.index;
+          console.log(heroindex);
           this.relationNum=1;
+
           this.detail=this.heronamelist.jichu[heroindex];
+          console.log(this.detail);
           this.selectDetail=this.heronamelist.jichu[heroindex];
+          console.log(this.selectDetail);
           this.DetailName=this.heronamelist.jichu[heroindex].detailname;
+          console.log(this.DetailName);
           this.Score=this.heronamelist.jichu[heroindex].score;
+
           break;
         case 2:
           this.relationNum=2;
