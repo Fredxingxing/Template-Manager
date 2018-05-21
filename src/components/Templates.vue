@@ -50,15 +50,14 @@
             <div class="templates-detail-main templates-bg" >
               <div class="templates-detail-main-herolist" >
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
-                  <a style="color: #eeeeee" v-on:click="changePoint(detail,1)">+</a>
+                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;" v-on:click="changePoint(detail,1)">+</a>
+                  <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                   <div class="progress progress-lg">
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
                   </div>
-                  <a  style="color: #eeeeee"  v-on:click="changePoint(detail,-1)">-</a>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
+                  <a style="color: #eeeeee;align-self: center;margin-left: 4px;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
-                      <button v-on:click="upload(detail)">上传</button>
+                <button v-on:click="upload(detail)">上传</button>
               </div>
             </div>
 
@@ -338,15 +337,17 @@ export default { //会自动生成new vue({})
     float: left;
   }
   .templates-detail-main-herolist {
-    width: 36rem;
+    width: 38rem;
     height: 25rem;
     /* background-color: #f44336; */
     margin: 2.5rem auto;
     overflow: scroll;
   }
   .templates-detail-main-herolist-row {
-    width: 36rem;
-    height: 2.5rem;
+    width: 38rem;
+    // height: 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
     /* background-color: #7c108a;  */
   }
   .templates-detail-main-herolist-row-portrait {
@@ -359,12 +360,14 @@ export default { //会自动生成new vue({})
     float: right;
   }
   .templates-detail-main-herolist-row-heroname {
-    margin-top: 0.6rem;
+    // margin-top: 0.6rem;
     /* height: 2.5rem; */
     color: #eee;
-    font-size: 1.3rem;
-    text-align: center;
-    float: right;
+    width: 12rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    // font-size: 1.3rem;
   }
   .templates-detail-main-herolist-row-progress {
     margin-top: 0.5rem;
@@ -1235,7 +1238,7 @@ export default { //会自动生成new vue({})
     transition: width .6s ease;
   }
   .progress-lg {
-    margin-top: 0.5rem;
+    // margin-top: 0.5rem;
     margin-left: 0.5rem;
     height: 22px;
   }
