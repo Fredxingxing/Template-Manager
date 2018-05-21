@@ -359,11 +359,11 @@ export default { //会自动生成new vue({})
     float: right;
   }
   .templates-detail-main-herolist-row-heroname {
-    margin-top: 0.6rem;
+    margin-top: 0.2rem;
     /* height: 2.5rem; */
     color: #eee;
-    font-size: 1.3rem;
-    text-align: center;
+    font-size: 1.2rem;
+    text-align: left;
     float: right;
   }
   .templates-detail-main-herolist-row-progress {
