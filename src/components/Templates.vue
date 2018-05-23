@@ -49,15 +49,21 @@
             </div>
             <div class="templates-detail-main templates-bg" >
               <div class="templates-detail-main-herolist" >
+                <div v-if="beginTochange" style="color: #eeeeee">
+                <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
+                 <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
+                  <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
+                </div>
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
                   <a style="color: #eeeeee;align-self: center;margin-right: 4px;" v-on:click="changePoint(detail,1)">+</a>
+                  <div class="templates-detail-main-herolist-row-portrait"></div>
                   <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                   <div class="progress progress-lg">
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
                   </div>
                   <a style="color: #eeeeee;align-self: center;margin-left: 4px;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
-                <button v-on:click="upload(detail)">上传</button>
+                <button v-on:click="upload(detail)" v-if="!beginTochange">上传</button>
               </div>
             </div>
 
@@ -105,16 +111,16 @@ export default { //会自动生成new vue({})
       detailname:[],
       score:[],
       detailss:[],
-      relationNum:1,
+      relationNum:0,
       index:'',
       heroId:[],
       selectDetail:[],
-      relationNum:1,
       jichu:[],
       xiangsheng:[],
       kezhi:[],
       beikezhi:[],
       heroindex:0,
+      beginTochange:true
 
 
     }
@@ -133,11 +139,12 @@ export default { //会自动生成new vue({})
     selectDetail:function(selectDetail,electDetail){
       console.log(selectDetail);
      this.detail=selectDetail;
+     this.beginTochange=false;
     }
   },
   methods: {
     selectHero: function (item,index) {
-
+      this.relationNum=1;
      this.HeroName=item.name;
      this.detail=item.details;
      this.selectDetail=item.jichu;
