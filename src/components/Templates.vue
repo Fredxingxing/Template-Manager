@@ -56,7 +56,7 @@
                 </div>
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
                   <a style="color: #eeeeee;align-self: center;margin-right: 4px;" v-on:click="changePoint(detail,1)">+</a>
-                  <div class="templates-detail-main-herolist-row-portrait"></div>
+                     <div class="templates-detail-main-herolist-row-portrait"></div>
                   <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                   <div class="progress progress-lg">
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
@@ -120,8 +120,8 @@ export default { //会自动生成new vue({})
       kezhi:[],
       beikezhi:[],
       heroindex:0,
-      beginTochange:true
-
+      beginTochange:true,
+      protrait:[],
 
     }
   },
@@ -140,6 +140,9 @@ export default { //会自动生成new vue({})
       console.log(selectDetail);
      this.detail=selectDetail;
      this.beginTochange=false;
+    //  if(this.relationNum==1){
+    //  this.protrait=null;
+    // }
     }
   },
   methods: {
@@ -222,34 +225,146 @@ export default { //会自动生成new vue({})
        // responseType:'jsonp'
       }).then(function(response){
         _this.heronamelist = response.data.result.Herolist;
-
+        _this.portrait=response.data.result.Herolist;
       });
     },
     //上传的方法
     upload:function (detail) {
-     // var uploadData=new Object();
-    //   uploadData.hero_id=this.heroId;
-     //  uploadData.item=this.HeroName;
-     //  uploadData.part="1";
-     //  uploadData.point="1";
-    //   var param=JSON.stringify(uploadData);
-      // var params=uploadData.parseJSON();
-    //   console.log(uploadData);
-    //   comsole.log(param)
+   var base=new Map();
+      base.set("地图强势:末日塔","map_mrt");
+      base.set("地图强势:炼狱圣坛","map_lyst");
+      base.set("地图强势:永恒战场","map_yhzc");
+      base.set("地图强势:末日塔","map_mrt");
+      base.set("地图强势:蛛后墓","map_zhm");
+      base.set("地图强势:天空殿","map_tkd");
+      base.set("地图强势:巨龙镇","map_jlz");
+      base.set("地图强势:黑心湾","map_hxw");
+      base.set("地图强势:鬼灵矿","map_glk");
+      base.set("地图强势:诅咒谷","map_zzg");
+      base.set("地图强势:恐魔园","map_kmy");
+      base.set("地图强势:布莱克西斯禁区","map_blkxsjq");
+      base.set("地图强势:弹头枢纽站","map_dtsnz");
+      base.set("地图强势:沃斯卡娅工业区","map_wskyzzc");
+      base.set("版本强势","base_strong");
+      base.set("先选方一楼选择","base_firstpick");
+      base.set("使用容错率","base_stability");
+      base.set("清线效率","base_creep");
+      base.set("上单能力","base_creep_solo");
+      base.set("全球流能力","base_creep_global");
+      base.set("清双线能力","base_creep_double");
+      var hero=new Map();
+      hero.set("泽拉图","hero_1");
+      hero.set("维拉","hero_2");
+      hero.set("乌瑟尔","hero_3");
+      hero.set("泰兰德","hero_4");
+      hero.set("泰瑞尔","hero_5");
+      hero.set("塔萨达尔","hero_6");
+      hero.set("缝合怪","hero_7");
+      hero.set("桑娅","hero_8");
+      hero.set("重锤军士","hero_9");
+      hero.set("雷诺","hero_10");
+      hero.set("诺娃","hero_11");
+      hero.set("纳兹波","hero_12");
+      hero.set("穆拉丁","hero_13");
+      hero.set("玛法里奥","hero_14");
+      hero.set("凯瑞甘","hero_15");
+      hero.set("伊利丹","hero_16");
+      hero.set("加兹鲁维","hero_17");
+      hero.set("弗斯塔德","hero_18");
+      hero.set("精英牛头人酋长","hero_19");
+      hero.set("迪亚波罗","hero_20");
+      hero.set("阿尔萨斯","hero_21");
+      hero.set("阿巴瑟","hero_22");
+      hero.set("泰凯斯","hero_23");
+      hero.set("丽丽","hero_24");
+      hero.set("光明之翼","hero_25");
+      hero.set("奔波儿霸","hero_26");
+      hero.set("扎加拉","hero_27");
+      hero.set("雷加尔","hero_28");
+      hero.set("陈","hero_29");
+      hero.set("阿兹莫丹","hero_30");
+      hero.set("阿努巴拉克","hero_31");
+      hero.set("吉安娜","hero_32");
+      hero.set("萨尔","hero_33");
+      hero.set("失落的维京人","hero_34");
+      hero.set("希尔瓦娜斯","hero_35");
+      hero.set("凯尔萨斯","hero_36");
+      hero.set("乔汉娜","hero_37");
+      hero.set("屠夫","hero_38");
+      hero.set("李奥瑞克","hero_39");
+      hero.set("卡拉辛姆","hero_40");
+      hero.set("雷克萨","hero_41");
+      hero.set("莫拉莉斯中尉","hero_42");
+      hero.set("阿塔尼斯","hero_43");
+      hero.set("古","hero_44");
+      hero.set("加尔","hero_45");
+      hero.set("露娜拉","hero_46");
+      hero.set("格雷迈恩","hero_47");
+      hero.set("李敏","hero_48");
+      hero.set("祖尔","hero_49");
+      hero.set("德哈卡","hero_50");
+      hero.set("猎空","hero_51");
+      hero.set("克罗米","hero_52");
+      hero.set("麦迪文","hero_53");
+      hero.set("古尔丹","hero_54");
+      hero.set("奥莉尔","hero_55");
+      hero.set("阿拉纳克","hero_56");
+      hero.set("查莉娅","hero_57");
+      hero.set("萨穆罗","hero_58");
+      hero.set("瓦里安","hero_59");
+      hero.set("拉格纳罗斯","hero_60");
+      hero.set("祖尔金","hero_61");
+      hero.set("瓦莉拉","hero_62");
+      hero.set("卢西奥","hero_63");
+      hero.set("普罗比斯","hero_64");
+      hero.set("卡西娅","hero_65");
+      hero.set("源氏","hero_66");
+      hero.set("D.Va","hero_67");
+      hero.set("马萨伊尔","hero_68");
+      hero.set("斯托科夫","hero_69");
+      hero.set("加尔鲁什","hero_70");
+      hero.set("克尔苏加德","hero_71");
+      hero.set("安娜","hero_72");
+      hero.set("狂鼠","hero_73");
+      hero.set("阿莱克丝塔萨","hero_74");
+      hero.set("半藏","hero_75");
+      hero.set("布雷泽","hero_76");
+      hero.set("玛维","hero_77");
+      hero.set("菲尼克斯","hero_78");
+      hero.set("迪卡德","hero_79");
+if(this.relationNum=1){
+      for(var baseindex in detail){
       this.$axios.post('http://old.bphots.com/templates/offer', {
         hero_id:this.heroId,
-        item:'hero_3',
-        part:'2',
-        point:this.score
+        item:base.get(detail[baseindex].detailname),
+        part:this.relationNum,
+        point:parseInt(detail[baseindex].score)
       })
         .then(function (response) {
           console.log(response);
         })
         .catch(function (error) {
-          console.log(error);
+          console.log(error);a
         });
     }
-
+}
+else if(1<this.relationNum<5){//2.3.4相生 被克制 克制
+  for(var heroindex in detail){
+    this.$axios.post('http://old.bphots.com/templates/offer', {
+      hero_id:this.heroId,
+      item:hero.get(detail[heroindex].detailname),
+      part:this.relationNum,
+      point:parseInt(detail[heroindex].score)
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);a
+      });
+  }
+}
+    }
   }
   }
 </script>
@@ -362,9 +477,10 @@ export default { //会自动生成new vue({})
     margin-top: 0.25rem;
     height: 2rem;
     width: 2rem;
-    background: url(/images/portrait/ana.png);
+   // background: url(/static/image/portrait/ana.png);
     background-size: 100%;
     float: right;
+    /* 32*32图片*/
   }
   .templates-detail-main-herolist-row-heroname {
     // margin-top: 0.6rem;
