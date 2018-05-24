@@ -332,38 +332,41 @@ export default { //会自动生成new vue({})
       hero.set("玛维","hero_77");
       hero.set("菲尼克斯","hero_78");
       hero.set("迪卡德","hero_79");
-if(this.relationNum=1){
-      for(var baseindex in detail){
-      this.$axios.post('http://old.bphots.com/templates/offer', {
-        hero_id:this.heroId,
-        item:base.get(detail[baseindex].detailname),
-        part:this.relationNum,
-        point:parseInt(detail[baseindex].score)
-      })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);a
-        });
-    }
-}
-else if(1<this.relationNum<5){//2.3.4相生 被克制 克制
-  for(var heroindex in detail){
-    this.$axios.post('http://old.bphots.com/templates/offer', {
-      hero_id:this.heroId,
-      item:hero.get(detail[heroindex].detailname),
-      part:this.relationNum,
-      point:parseInt(detail[heroindex].score)
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);a
-      });
-  }
-}
+      if (this.relationNum === 1) {
+        for (let baseindex of detail) {
+          // console.log(baseindex)
+          this.$axios.post('http://old.bphots.com/templates/offer', {
+            hero_id:this.heroId,
+            item:base.get(baseindex.detailname),
+            part:this.relationNum,
+            point:parseInt(baseindex.score)
+          })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
+      else {//2.3.4相生 被克制 克制
+        for (let heroindex of detail) {
+          // console.log(heroindex.detailname);
+          // console.log(hero.get(heroindex.detailname));
+          this.$axios.post('http://old.bphots.com/templates/offer', {
+            hero_id:this.heroId,
+            item:hero.get(heroindex.detailname),
+            part:this.relationNum,
+            point:parseInt(heroindex.score)
+          })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
     }
   }
   }
