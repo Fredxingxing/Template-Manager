@@ -333,7 +333,6 @@ export default { //会自动生成new vue({})
       hero.set("菲尼克斯","hero_78");
       hero.set("迪卡德","hero_79");
 
-
       if (this.relationNum === 1) {
         for (let baseindex of detail) {
           // console.log(baseindex)
@@ -369,7 +368,6 @@ export default { //会自动生成new vue({})
             });
         }
       }
-
     }
   }
   }
