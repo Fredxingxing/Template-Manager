@@ -177,8 +177,10 @@ export default { //会自动生成new vue({})
        detail.score--;
        if(detail.score<-10){
          detail.score=-10;
+
        }
      }
+
   },
     relation:function (index,num) {
       switch (num){
@@ -278,7 +280,7 @@ export default { //会自动生成new vue({})
       hero.set("泰凯斯","hero_23");
       hero.set("丽丽","hero_24");
       hero.set("光明之翼","hero_25");
-      hero.set("奔波儿霸","hero_26");
+      hero.set("奔波尔霸","hero_26");
       hero.set("扎加拉","hero_27");
       hero.set("雷加尔","hero_28");
       hero.set("陈","hero_29");
@@ -352,8 +354,8 @@ export default { //会自动生成new vue({})
       }
       else {//2.3.4相生 被克制 克制
         for (let heroindex of detail) {
-          // console.log(heroindex.detailname);
-          // console.log(hero.get(heroindex.detailname));
+           console.log(heroindex.detailname);
+           console.log(hero.get(heroindex.detailname));
           this.$axios.post('http://old.bphots.com/templates/offer', {
             hero_id:this.heroId,
             item:hero.get(heroindex.detailname),
