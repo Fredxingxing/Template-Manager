@@ -6,6 +6,7 @@
 </template>
 
 <script>
+
 export default {    //= module.export={   }   <router-view/>     <img src="./assets/logo.png">
   name: 'App',
 

@@ -55,15 +55,15 @@
                   <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
                 </div>
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
-                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;" v-on:click="changePoint(detail,1)">+</a>
+                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: -20px;" v-on:click="changePoint(detail,1)">+</a>
                      <div class="templates-detail-main-herolist-row-portrait"></div>
                   <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
                   <div class="progress progress-lg">
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
                   </div>
-                  <a style="color: #eeeeee;align-self: center;margin-left: 4px;"  v-on:click="changePoint(detail,-1)">-</a>
+                  <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
-                <button v-on:click="upload(detail)" v-if="!beginTochange">上传</button>
+                <el-button type="info" plain v-on:click="upload(detail)" v-if="!beginTochange">上传</el-button >
               </div>
             </div>
 
@@ -153,7 +153,7 @@ export default { //会自动生成new vue({})
      this.selectDetail=item.jichu;
      this.heroId=item.id;
      this.DetailName=item.jichu.detailname;
-     this.Score=item.jichu.score;
+
     console.log(this.DetailName);
     console.log(this.Score);
       console.log(this.item);
@@ -188,26 +188,27 @@ export default { //会自动生成new vue({})
           this.relationNum=1;
           console.log(this.heroindex);
           this.selectDetail=this.heronamelist[this.heroindex].jichu;
-          this.detail=this.heronamelist[this.heroindex].jichu;
+          //this.detail=this.heronamelist[this.heroindex].jichu;
+          this.Score=item.jichu.score;
 
           break;
         case 2:
           this.relationNum=2;
           console.log(this.heroindex);
             this.selectDetail=this.heronamelist[this.heroindex].xiangsheng;
-            this.detail=this.heronamelist[this.heroindex].xiangsheng;
+           // this.detail=this.heronamelist[this.heroindex].xiangsheng;
           break;
         case 3:
           this.relationNum=3;
           console.log(this.heroindex);
           this.selectDetail=this.heronamelist[this.heroindex].beikezhi;
-          this.detail=this.heronamelist[this.heroindex].beikezhi;
+         // this.detail=this.heronamelist[this.heroindex].beikezhi;
           break;
         case 4:
           this.relationNum=4;
           console.log(this.heroindex);
           this.selectDetail=this.heronamelist[this.heroindex].kezhi;
-          this.detail=this.heronamelist[this.heroindex].kezhi;
+         // this.detail=this.heronamelist[this.heroindex].kezhi;
           break;
       }
     },
