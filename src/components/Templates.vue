@@ -22,9 +22,9 @@
         <div class="templates">
           <div class="templates-herolist" >
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist" >
-              <div v-on:click="selectHero(item,index)"  class=" btn-herolist  btn-herolist-default">
+              <div v-on:click="selectHero(item,index);show=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
-                <img class="images" v-bind:src="item.heroImage" >
+                <img class="images"  v-bind:src="item.heroImage" >
               </div>
             </div>
           </div>
@@ -36,33 +36,44 @@
               </div>
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-btns">
-                  <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1)" >基础属性</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default " v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
-                  </div>
-                  <div class="templates-detail-top-modes-row">
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
+                  <div class="templates-detail-top-modes-row" v-if="show==true">
+                    <div class="templates-detail-top-modes-btn btn btn-default" style="position: relative;left:-120px;top:51.2px;" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >基础属性</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default " style="left:120px;top:51.2px;" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default"  style="position:absolute;top:245px;"   v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default"  style="top:4.3px;" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
+                    <div class="templates-detail-top-modes-btn btn btn-default" style="top:4.3px;"  v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="templates-detail-main templates-bg" >
+            <div class="templates-detail-main templates-bg">
               <div class="templates-detail-main-herolist" >
                 <div v-if="beginTochange" style="color: #eeeeee">
                 <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
                  <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
                   <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
                 </div>
-                <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail">
+                <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail" v-if="tag==true">
                   <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: -20px;" v-on:click="changePoint(detail,1)">+</a>
                      <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname">{{detail.detailname}}</div>
-                  <div class="progress progress-lg">
+                  <div class="templates-detail-main-herolist-row-heroname" >{{detail.detailname}}</div>
+                  <div class="progress progress-lg" >
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
                   </div>
                   <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
+
+                <div class="templates-detail-main-herolist-row-relation" v-for="beikezhi in BeRestrained" >
+                    <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
+                    <div class="progress-bar p12" role="progressbar" style="position: relative;left: 150px;">{{beikezhi.score}}</div>
+                </div>
+                <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="kezhi in restraint" >
+                  <div class="progress-bar p12" role="progressbar" style="position: relative;left: 510px;top: -2926px;">{{kezhi.score}}</div>
+                </div>
+                  <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="xiangsheng in enhanced" >
+                    <div class="progress-bar p12" role="progressbar" style="position: relative;left: 630px;top: -5852px;">{{xiangsheng.score}}</div>
+                  </div>
+
                 <el-button type="info" plain v-on:click="upload(detail)" v-if="!beginTochange">上传</el-button >
               </div>
             </div>
@@ -99,6 +110,11 @@
 export default { //会自动生成new vue({})
   name: 'Templates',
   data() {  //=function data(){ return msg:....} 所有的数据从这里展现
+ var scale=[]
+    for(var i=-10;i<=10;i++){
+      scale.push(i)
+    }
+
     return {
       newItem: '',
       heronamelist:[ ],
@@ -116,13 +132,14 @@ export default { //会自动生成new vue({})
       heroId:[],
       selectDetail:[],
       jichu:[],
-      xiangsheng:[],
-      kezhi:[],
-      beikezhi:[],
+      enhanced:[],
+      restraint:[],
+      BeRestrained:[],
       heroindex:0,
       beginTochange:true,
       protrait:[],
-
+      tag:1,
+      show:false
     }
   },
   filters:{
@@ -136,6 +153,7 @@ export default { //会自动生成new vue({})
 
   },
   watch:{
+
     selectDetail:function(selectDetail,electDetail){
       console.log(selectDetail);
      this.detail=selectDetail;
@@ -159,6 +177,9 @@ export default { //会自动生成new vue({})
       console.log(this.item);
      console.log(index);
      this.heroindex=index;
+      this.enhanced=this.heronamelist[this.heroindex].xiangsheng;
+      this.BeRestrained=this.heronamelist[this.heroindex].beikezhi;
+      this.restraint=this.heronamelist[this.heroindex].kezhi;
    // console.log(selectDetail);
      if(index==(item.id-1))
       {
@@ -189,26 +210,26 @@ export default { //会自动生成new vue({})
           console.log(this.heroindex);
           this.selectDetail=this.heronamelist[this.heroindex].jichu;
           //this.detail=this.heronamelist[this.heroindex].jichu;
-          this.Score=item.jichu.score;
+        //  this.Score=item.jichu.score;
 
           break;
         case 2:
           this.relationNum=2;
           console.log(this.heroindex);
             this.selectDetail=this.heronamelist[this.heroindex].xiangsheng;
-           // this.detail=this.heronamelist[this.heroindex].xiangsheng;
+          // this.xiangsheng=this.heronamelist[this.heroindex].xiangsheng;
           break;
         case 3:
           this.relationNum=3;
           console.log(this.heroindex);
           this.selectDetail=this.heronamelist[this.heroindex].beikezhi;
-         // this.detail=this.heronamelist[this.heroindex].beikezhi;
+        // this.beikezhi=this.heronamelist[this.heroindex].beikezhi;
           break;
         case 4:
           this.relationNum=4;
           console.log(this.heroindex);
           this.selectDetail=this.heronamelist[this.heroindex].kezhi;
-         // this.detail=this.heronamelist[this.heroindex].kezhi;
+      //    this.kezhi=this.heronamelist[this.heroindex].kezhi;
           break;
       }
     },
@@ -457,17 +478,17 @@ export default { //会自动生成new vue({})
   }
   .templates-detail-top {
     width: 45rem;
-    height: 10rem;
+    height: 8rem;
     float: left;
   }
   .templates-detail-main {
     width: 45rem;
-    height: 30rem;
+    height: 32rem;
     float: left;
   }
   .templates-detail-main-herolist {
-    width: 38rem;
-    height: 25rem;
+    //width: 38rem;
+    height: 27rem;
     /* background-color: #f44336; */
     margin: 2.5rem auto;
     overflow: scroll;
@@ -475,6 +496,14 @@ export default { //会自动生成new vue({})
   .templates-detail-main-herolist-row {
     width: 38rem;
     // height: 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+
+    /* background-color: #7c108a;  */
+  }
+  .templates-detail-main-herolist-row-relation {
+    width: 41.5rem;
+  // height: 2.5rem;
     margin-bottom: 1rem;
     display: flex;
     /* background-color: #7c108a;  */
@@ -490,14 +519,29 @@ export default { //会自动生成new vue({})
     /* 32*32图片*/
   }
   .templates-detail-main-herolist-row-heroname {
-    // margin-top: 0.6rem;
+     // margin-top: 0.6rem;
+       /* height: 2.5rem; */
+       color: #eee;
+       width: 12rem;
+       overflow: hidden;
+       text-overflow:ellipsis;
+       white-space: nowrap;
+       position:relative;
+
+     // font-size: 1.3rem;
+     }
+  .templates-detail-main-herolist-row-heroname-relation{
+  // margin-top: 0.6rem;
     /* height: 2.5rem; */
     color: #eee;
-    width: 12rem;
+    width: 15rem;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
-    // font-size: 1.3rem;
+    position:relative;
+    left:-33px;
+    font-size: 1rem;
+  // font-size: 1.3rem;
   }
   .templates-detail-main-herolist-row-progress {
     margin-top: 0.5rem;
@@ -508,15 +552,15 @@ export default { //会自动生成new vue({})
     float: right;
   }
   .templates-detail-top-info {
-    width: 28rem;
-    height: 10rem;
+    width: 15rem;
+    height: 8rem;
     /* background-color: #ffeb3b; */
     float: left;
   }
   .templates-detail-top-info-title {
-    margin: 2.5rem auto 0;
+    margin: 1.5rem auto 0;
     color: #eee;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     text-align: center;
   }
   .templates-detail-top-info-desc {
@@ -526,8 +570,8 @@ export default { //会自动生成new vue({})
     text-align: center;
   }
   .templates-detail-top-modes {
-    width: 17rem;
-    height: 10rem;
+    width: 30rem;
+    height: 8rem;
     /* background-color: #2196f3; */
     float: left;
   }
@@ -1366,7 +1410,9 @@ export default { //会自动生成new vue({})
     -webkit-transition: width .6s ease;
     -o-transition: width .6s ease;
     transition: width .6s ease;
+    align-self: auto;
   }
+
   .progress-lg {
     // margin-top: 0.5rem;
     margin-left: 0.5rem;
@@ -1431,7 +1477,7 @@ export default { //会自动生成new vue({})
   .p12 {
     float: left;
     width: 9.09%;
-    background-color: #C90078;
+    background-color:rgba(255, 255, 255, .1);
   }
   .p13 {
     float: left;
