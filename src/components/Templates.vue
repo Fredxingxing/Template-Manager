@@ -63,18 +63,28 @@
                   <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
 
-                <div class="templates-detail-main-herolist-row-relation" v-for="beikezhi in BeRestrained" >
+                <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" >
                     <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
-                    <div class="progress-bar p12" role="progressbar" style="position: relative;left: 150px;">{{beikezhi.score}}</div>
+                  <div class="row-number">
+                    <div class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 150px; "v-on:click.stop="showScroller(BKZnum)">{{beikezhi.score[BKZnum]}}</div>
+                  <div class="number-scroller"  v-if="onShowHeroId===heroId && onShowScoreTab===BKZnum ">
+                    <div class="options-radio" v-for="num of scale" @click.stop>
+                      <input type="radio" :value="num"
+                             v-model="beikezhi.score[BKZnum]" />
+                      <label style="color:#eeee">{{num}}</label>
+                    </div>
+                    </div>
+                  </div>
                 </div>
+                <!--
                 <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="kezhi in restraint" >
                   <div class="progress-bar p12" role="progressbar" style="position: relative;left: 510px;top: -2926px;">{{kezhi.score}}</div>
                 </div>
                   <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="xiangsheng in enhanced" >
                     <div class="progress-bar p12" role="progressbar" style="position: relative;left: 630px;top: -5852px;">{{xiangsheng.score}}</div>
                   </div>
-
-                <el-button type="info" plain v-on:click="upload(detail)" v-if="!beginTochange">上传</el-button >
+                  -->
+                <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">上传</el-button >
               </div>
             </div>
 
@@ -105,7 +115,6 @@
   </div>
   </div>
 </template>
-
 <script>
 export default { //会自动生成new vue({})
   name: 'Templates',
@@ -114,7 +123,6 @@ export default { //会自动生成new vue({})
     for(var i=-10;i<=10;i++){
       scale.push(i)
     }
-
     return {
       newItem: '',
       heronamelist:[ ],
@@ -139,7 +147,10 @@ export default { //会自动生成new vue({})
       beginTochange:true,
       protrait:[],
       tag:1,
-      show:false
+      show:false,
+      scale:scale,
+      onShowHeroId:null,
+      onShowScoreTab:null
     }
   },
   filters:{
@@ -148,19 +159,15 @@ export default { //会自动生成new vue({})
   mounted: function () {
     this.$nextTick(function () {
       this.templateView();
-
     })
-
   },
   watch:{
-
     selectDetail:function(selectDetail,electDetail){
       console.log(selectDetail);
      this.detail=selectDetail;
      this.beginTochange=false;
     //  if(this.relationNum==1){
     //  this.protrait=null;
-    // }
     }
   },
   methods: {
@@ -187,7 +194,7 @@ export default { //会自动生成new vue({})
     }
 
 },
-  changePoint:function(detail,num){
+    changePoint:function(detail,num){
      if(num>0){
        detail.score++;
        if(detail.score>10) {
@@ -233,7 +240,7 @@ export default { //会自动生成new vue({})
           break;
       }
     },
-  //取数据的方法
+    //取数据的方法
     templateView: function () {
       var _this = this;
       this.$axios({
@@ -392,11 +399,15 @@ export default { //会自动生成new vue({})
             });
         }
       }
+    },
+    showScroller:function (BKZnum) {
+    //  this.currentTab = BKZnum;
+      this.onShowHeroId = this.heroId;
+      this.onShowScoreTab = BKZnum;
     }
   }
   }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .finished{
@@ -560,7 +571,7 @@ export default { //会自动生成new vue({})
   .templates-detail-top-info-title {
     margin: 1.5rem auto 0;
     color: #eee;
-    font-size: 2.2rem;
+    font-size: 2rem;
     text-align: center;
   }
   .templates-detail-top-info-desc {
@@ -633,6 +644,7 @@ export default { //会自动生成new vue({})
     top: -52px;
 
   }
+
   .table {
     display: table;
   }
@@ -809,7 +821,6 @@ export default { //会自动生成new vue({})
     padding-bottom: 120%;
     opacity: 1;
   }
-
   .increasePoint{
     box-sizing:border-box;
     float: right;
@@ -817,7 +828,6 @@ export default { //会自动生成new vue({})
     color: #eee;
 
   }
-
   .decreasePoint{
     box-sizing:border-box;
     float: left;
@@ -1541,5 +1551,21 @@ export default { //会自动生成new vue({})
     border: solid 1px rgba(255,255,255,.1);
     box-sizing: border-box;
   }
-
+  .number-handler {
+    text-align: center;
+    width: 5rem;
+    border: 1px solid transparent;
+  }
+  .table-row {
+    display: flex;
+  }
+  .number-digit, .options-radio {
+    cursor: pointer;
+    text-align: center;
+    width: 5rem;
+    border: 1px solid transparent;
+    /*left:150px;*/
+  /*position: relative;*/
+    /*top: -460px;*/
+  }
 </style>
