@@ -66,11 +66,11 @@
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" >
                     <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
                   <div class="row-number">
-                    <div class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 150px; "v-on:click.stop="showScroller(BKZnum)">{{beikezhi.score[BKZnum]}}</div>
+                    <span class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 150px; "v-on:click.stop="showScroller(BKZnum)">{{beikezhi.score}}</span>
                   <div class="number-scroller"  v-if="onShowHeroId===heroId && onShowScoreTab===BKZnum ">
                     <div class="options-radio" v-for="num of scale" @click.stop>
                       <input type="radio" :value="num"
-                             v-model="beikezhi.score[BKZnum]" />
+                             v-model="beikezhi.score" />
                       <label style="color:#eeee">{{num}}</label>
                     </div>
                     </div>
