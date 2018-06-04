@@ -19,12 +19,12 @@
     </div>
     <div class="modal show" id="modal-logs">
       <div class="modal-body">
-        <div class="templates">
+        <div class="templates" v-on:click="reset()">
           <div class="templates-herolist" >
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist" >
               <div v-on:click="selectHero(item,index);show=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
-                <img class="images"  v-bind:src="item.heroImage" >
+                <!--<img class="images"  v-bind:src="item.heroImage" >-->
               </div>
             </div>
           </div>
@@ -54,36 +54,54 @@
                   <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
                 </div>
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail" v-if="tag==true">
-                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: -20px;" v-on:click="changePoint(detail,1)">+</a>
+                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: -20px;cursor: pointer;" v-on:click="changePoint(detail,1)">+</a>
                      <div class="templates-detail-main-herolist-row-portrait"></div>
                   <div class="templates-detail-main-herolist-row-heroname" >{{detail.detailname}}</div>
                   <div class="progress progress-lg" >
                     <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
                   </div>
-                  <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;"  v-on:click="changePoint(detail,-1)">-</a>
+                  <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
 
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" >
                     <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
                   <div class="row-number">
-                    <span class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 150px; "v-on:click.stop="showScroller(BKZnum)">{{beikezhi.score}}</span>
-                  <div class="number-scroller"  v-if="onShowHeroId===heroId && onShowScoreTab===BKZnum ">
-                    <div class="options-radio" v-for="num of scale" @click.stop>
-                      <input type="radio" :value="num"
+                    <span class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 140px; "v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
+                  <div class="number-scroller"  v-if=" relationNum===3 &&onShowScoreTab===BKZnum ">
+                    <div class="options-radio" v-for="num of scale" @click.stop="reset()">
+                      <input class="inputnum" id="3" type="radio" :value="num"
                              v-model="beikezhi.score" />
-                      <label style="color:#eeee">{{num}}</label>
+                      <label  style="color:#dddd">{{num}}</label>
                     </div>
                     </div>
                   </div>
                 </div>
-                <!--
-                <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="kezhi in restraint" >
-                  <div class="progress-bar p12" role="progressbar" style="position: relative;left: 510px;top: -2926px;">{{kezhi.score}}</div>
-                </div>
-                  <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="xiangsheng in enhanced" >
-                    <div class="progress-bar p12" role="progressbar" style="position: relative;left: 630px;top: -5852px;">{{xiangsheng.score}}</div>
+
+                <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" >
+                  <div class="row-number">
+                  <span class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 500px;top: -3080px;"v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+                    <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum ">
+                      <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()">
+                        <input class="inputnum" id="4" type="radio" :value="num"
+                               v-model="kezhi.score" />
+                        <label  style="color:#dddd">{{num}}</label>
+                      </div>
+                    </div>
                   </div>
-                  -->
+                </div>
+                  <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" >
+                    <div class="row-number">
+                    <div class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 620px;top: -6160px;" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</div>
+                      <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum ">
+                        <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()">
+                          <input class="inputnum" id="2" type="radio" :value="num"
+                                 v-model="xiangsheng.score" />
+                          <label  style="color:#dddd">{{num}}</label>
+                        </div>
+                      </div>
+                  </div>
+                  </div>
+
                 <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">上传</el-button >
               </div>
             </div>
@@ -120,7 +138,7 @@ export default { //会自动生成new vue({})
   name: 'Templates',
   data() {  //=function data(){ return msg:....} 所有的数据从这里展现
  var scale=[]
-    for(var i=-10;i<=10;i++){
+    for(var i=10;i>=-10;i--){
       scale.push(i)
     }
     return {
@@ -400,10 +418,18 @@ export default { //会自动生成new vue({})
         }
       }
     },
-    showScroller:function (BKZnum) {
+    showScroller:function (num,Relnum) {
     //  this.currentTab = BKZnum;
       this.onShowHeroId = this.heroId;
-      this.onShowScoreTab = BKZnum;
+      this.onShowScoreTab = num;
+      this.relationNum=Relnum;
+      console.log(this.relationNum);
+      console.log(this.onShowHeroId);
+    },
+    reset:function () {
+
+      this.onShowHeroId = null;
+      this.onShowScoreTab = null;
     }
   }
   }
@@ -1411,7 +1437,7 @@ export default { //会自动生成new vue({})
   .progress-bar {
     width: 0;
     height: 100%;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 22px;
     color: #fff;
     text-align: center;
@@ -1559,13 +1585,55 @@ export default { //会自动生成new vue({})
   .table-row {
     display: flex;
   }
-  .number-digit, .options-radio {
+  .number-digit{
     cursor: pointer;
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
-    /*left:150px;*/
-  /*position: relative;*/
-    /*top: -460px;*/
+.number-scroller{
+  display: flex;
+  text-align: center;
+  width: 5rem;
+  border: 1px solid transparent;
+}
+
+
+  }
+  .options-radio {
+    margin-top: 0px;
+    cursor: pointer;
+    text-align: center;
+    width: 5rem;
+    border: 1px solid transparent;
+    left:140px;
+  position: relative;
+    top: -460px;
+    display: flow-root;
+  }
+  .options-radio-restraint{
+    margin-top: 0px;
+    cursor: pointer;
+    text-align: center;
+    width: 5rem;
+    border: 1px solid transparent;
+    left:500px;
+    position: relative;
+    top: -3540px;
+    display: flow-root;
+  }
+  .options-radio-enhanced{
+    margin-top: 0px;
+    cursor: pointer;
+    text-align: center;
+    width: 5rem;
+    border: 1px solid transparent;
+    left:620px;
+    position: relative;
+    top: -6620px;
+    display: flow-root;
+  }
+  .inputnum{
+    width: 40%;
+    cursor: pointer;
   }
 </style>
