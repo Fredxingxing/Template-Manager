@@ -49,30 +49,30 @@
             <div class="templates-detail-main templates-bg">
               <div class="templates-detail-main-herolist" >
                 <div v-if="beginTochange" style="color: #eeeeee">
-                <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
-                 <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
-                  <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
+                 <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
+                  <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
+                   <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
                 </div>
                 <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail" v-if="tag==true">
                   <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: -20px;cursor: pointer;" v-on:click="changePoint(detail,1)">+</a>
                      <div class="templates-detail-main-herolist-row-portrait"></div>
-                  <div class="templates-detail-main-herolist-row-heroname" >{{detail.detailname}}</div>
-                  <div class="progress progress-lg" >
-                    <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
-                  </div>
-                  <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
+                      <div class="templates-detail-main-herolist-row-heroname" >{{detail.detailname}}</div>
+                       <div class="progress progress-lg" >
+                        <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
+                    </div>
+                   <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
 
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" >
-                    <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
-                  <div class="row-number">
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
+                   <div class="row-number">
                     <span class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 140px; "v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
-                  <div class="number-scroller"  v-if=" relationNum===3 &&onShowScoreTab===BKZnum ">
-                    <div class="options-radio" v-for="num of scale" @click.stop="reset()">
-                      <input class="inputnum" id="3" type="radio" :value="num"
-                             v-model="beikezhi.score" />
-                      <label  style="color:#dddd">{{num}}</label>
-                    </div>
+                     <div class="number-scroller"  v-if=" relationNum===3 &&onShowScoreTab===BKZnum ">
+                      <div class="options-radio" v-for="num of scale" @click.stop="reset()">
+                       <input class="inputnum" id="3" type="radio" :value="num"
+                               v-model="beikezhi.score" />
+                        <label  style="color:#dddd">{{num}}</label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -91,7 +91,7 @@
                 </div>
                   <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" >
                     <div class="row-number">
-                    <div class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 620px;top: -6160px;" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</div>
+                     <span class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 620px;top: -6160px;" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum ">
                         <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()">
                           <input class="inputnum" id="2" type="radio" :value="num"
@@ -105,7 +105,6 @@
                 <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">上传</el-button >
               </div>
             </div>
-
           </div>
         </div>
       </div>
