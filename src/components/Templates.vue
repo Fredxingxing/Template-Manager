@@ -70,7 +70,7 @@
                      <div class="number-scroller"  v-if=" relationNum===3 &&onShowScoreTab===BKZnum ">
                       <div class="options-radio" v-for="num of scale" @click.stop="reset()">
                        <input class="inputnum" id="3" type="radio" :value="num"
-                               v-model="beikezhi.score" />
+                               v-model="beikezhi.score" @click="uploadrelation(beikezhi.score)" />
                         <label  style="color:#dddd">{{num}}</label>
                       </div>
                     </div>
@@ -79,11 +79,11 @@
 
                 <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" >
                   <div class="row-number">
-                  <span class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 500px;top: -3080px;"v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+                   <span class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 500px;top: -3080px;"v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
                     <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum ">
                       <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()">
                         <input class="inputnum" id="4" type="radio" :value="num"
-                               v-model="kezhi.score" />
+                               v-model="kezhi.score" @click="uploadrelation(kezhi.score)"/>
                         <label  style="color:#dddd">{{num}}</label>
                       </div>
                     </div>
@@ -95,14 +95,13 @@
                       <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum ">
                         <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()">
                           <input class="inputnum" id="2" type="radio" :value="num"
-                                 v-model="xiangsheng.score" />
+                                 v-model="xiangsheng.score" @click="uploadrelation(xiangsheng.score)" />
                           <label  style="color:#dddd">{{num}}</label>
                         </div>
                       </div>
                   </div>
                   </div>
-
-                <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">上传</el-button >
+                <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
               </div>
             </div>
           </div>
@@ -183,9 +182,12 @@ export default { //会自动生成new vue({})
       console.log(selectDetail);
      this.detail=selectDetail;
      this.beginTochange=false;
-    //  if(this.relationNum==1){
-    //  this.protrait=null;
-    }
+    },
+      // detail:function(newDetail,oldDetail){
+      // console.log("newDetail"+newDetail.score);
+      //   this.Score=parseInt(newDetail.score);
+      // }
+
   },
   methods: {
     selectHero: function (item,index) {
@@ -263,14 +265,6 @@ export default { //会自动生成new vue({})
       this.$axios({
         method:'get',
        url:('/static/template.json'),
-       // url:'http://old.bphots.com/templates/templates/offer/list',
-        //请求头信息
-        //headers: {'X-Requested-With': 'XMLHttpRequest'},
-        //设置超时
-       // timeout:5000,
-       // withCredentials:true,   //加了这段就可以跨域了
-        //返回数据类型
-       // responseType:'jsonp'
       }).then(function(response){
         _this.heronamelist = response.data.result.Herolist;
         _this.portrait=response.data.result.Herolist;
@@ -380,7 +374,6 @@ export default { //会自动生成new vue({})
       hero.set("玛维","hero_77");
       hero.set("菲尼克斯","hero_78");
       hero.set("迪卡德","hero_79");
-
       if (this.relationNum === 1) {
         for (let baseindex of detail) {
           // console.log(baseindex)
@@ -391,47 +384,72 @@ export default { //会自动生成new vue({})
             point:parseInt(baseindex.score)
           })
             .then(function (response) {
-              console.log(response);
+              console.log(response.data.result);
             })
             .catch(function (error) {
               console.log(error);
             });
         }
       }
-      else {//2.3.4相生 被克制 克制
-        for (let heroindex of detail) {
-           console.log(heroindex.detailname);
-           console.log(hero.get(heroindex.detailname));
-          this.$axios.post('http://old.bphots.com/templates/offer', {
-            hero_id:this.heroId,
-            item:hero.get(heroindex.detailname),
-            part:this.relationNum,
-            point:parseInt(heroindex.score)
-          })
-            .then(function (response) {
-              console.log(response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
-      }
+      // else {//2.3.4相生 被克制 克制
+      //        var heroitem="hero";
+      //         heroitem=heroitem+this.onShowScoreTab.toString();
+      //         console.log(heroitem);
+      //     this.$axios.post('http://old.bphots.com/templates/offer', {
+      //       hero_id:this.heroId,
+      //       item:heroitem,
+      //       part:this.relationNum,
+      //       point:this.Score,
+      //     })
+      //       .then(function (response) {
+      //         console.log(response);
+      //       })
+      //       .catch(function (error) {
+      //         console.log(error);
+      //       });
+
+      // }
     },
     showScroller:function (num,Relnum) {
     //  this.currentTab = BKZnum;
       this.onShowHeroId = this.heroId;
       this.onShowScoreTab = num;
       this.relationNum=Relnum;
+      //this.Score=this.detail[num].score;
       console.log(this.relationNum);
       console.log(this.onShowHeroId);
+      console.log(this.onShowScoreTab);
+   //   console.log(this.detail[num].score);
     },
     reset:function () {
-
+   //    this.Score=this.detail[num].score;
       this.onShowHeroId = null;
       this.onShowScoreTab = null;
+
+    },
+    uploadrelation:function (score) {
+
+        var heroitem="hero";
+        heroitem=heroitem+"_"+(++this.onShowScoreTab);
+        console.log(heroitem);
+        this.$axios.post('http://old.bphots.com/templates/offer', {
+          hero_id:this.heroId,
+          item:heroitem,
+          part:this.relationNum,
+          point:parseInt(score),
+        })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
     }
-  }
-  }
+
+  },
+}
+
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
