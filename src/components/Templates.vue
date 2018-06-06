@@ -20,23 +20,24 @@
     <div class="modal show" id="modal-logs">
       <div class="modal-body">
         <div class="templates" v-on:click="reset()">
-          <div class="templates-herolist" >
+          <el-alert title="未登录" center type="info" description="请在官网登录战网" v-if="templatesPermited==0" show-icon></el-alert>
+          <div class="templates-herolist" v-if="showherolist==1">
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist" >
-              <div v-on:click="selectHero(item,index);show=true;"  class=" btn-herolist  btn-herolist-default">
+              <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
-                <!--<img class="images"  v-bind:src="item.heroImage" >-->
+                <img class="images"  v-bind:src="item.heroImage" >
               </div>
             </div>
           </div>
           <div class="templates-detail">
-            <div class="templates-detail-top">
+            <div class="templates-detail-top" v-if="showherolist==1">
               <div class="templates-detail-top-info templates-bg">
                 <div class="templates-detail-top-info-title">{{HeroName}}</div>
                 <div class="templates-detail-top-info-desc">- 英雄 -</div>
               </div>
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-btns">
-                  <div class="templates-detail-top-modes-row" v-if="show==true">
+                  <div class="templates-detail-top-modes-row" v-if="showrelation==true">
                     <div class="templates-detail-top-modes-btn btn btn-default" style="position: relative;left:-120px;top:51.2px;" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >基础属性</div>
                     <div class="templates-detail-top-modes-btn btn btn-default " style="left:120px;top:51.2px;" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
                     <div class="templates-detail-top-modes-btn btn btn-default"  style="position:absolute;top:245px;"   v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
@@ -70,7 +71,7 @@
                      <div class="number-scroller"  v-if=" relationNum===3 &&onShowScoreTab===BKZnum ">
                       <div class="options-radio" v-for="num of scale" @click.stop="reset()">
                        <input class="inputnum" id="3" type="radio" :value="num"
-                               v-model="beikezhi.score" @click="uploadrelation(beikezhi.score)" />
+                               v-model="beikezhi.score" @click="uploadrelation(beikezhi.score);open1()" />
                         <label  style="color:#dddd">{{num}}</label>
                       </div>
                     </div>
@@ -83,7 +84,7 @@
                     <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum ">
                       <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()">
                         <input class="inputnum" id="4" type="radio" :value="num"
-                               v-model="kezhi.score" @click="uploadrelation(kezhi.score)"/>
+                               v-model="kezhi.score" @click="uploadrelation(kezhi.score);open1()"/>
                         <label  style="color:#dddd">{{num}}</label>
                       </div>
                     </div>
@@ -95,7 +96,7 @@
                       <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum ">
                         <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()">
                           <input class="inputnum" id="2" type="radio" :value="num"
-                                 v-model="xiangsheng.score" @click="uploadrelation(xiangsheng.score)" />
+                                 v-model="xiangsheng.score" @click="uploadrelation(xiangsheng.score);open1()" />
                           <label  style="color:#dddd">{{num}}</label>
                         </div>
                       </div>
@@ -163,10 +164,13 @@ export default { //会自动生成new vue({})
       beginTochange:true,
       protrait:[],
       tag:1,
-      show:false,
+      showrelation:false,
       scale:scale,
       onShowHeroId:null,
-      onShowScoreTab:null
+      onShowScoreTab:null,
+      showherolist:1,
+      templatesPermited:1,//{$templatesPermited}=1,0    window.templatePermited
+      messagebox:true
     }
   },
   filters:{
@@ -175,19 +179,25 @@ export default { //会自动生成new vue({})
   mounted: function () {
     this.$nextTick(function () {
       this.templateView();
+      if(this.templatesPermited===0) {
+        this.showherolist = 0;
+        this.beginTochange = true;
+      }
     })
   },
   watch:{
+    //选择英雄
     selectDetail:function(selectDetail,electDetail){
       console.log(selectDetail);
      this.detail=selectDetail;
      this.beginTochange=false;
     },
-      // detail:function(newDetail,oldDetail){
-      // console.log("newDetail"+newDetail.score);
-      //   this.Score=parseInt(newDetail.score);
-      // }
-
+    // templatesPermited:function (newPermited,oldPermited) {
+    //   if(this.templatesPermited===0){
+    //     this.showherolist=0;
+    //     this.beginTochange=true;
+    //   }
+    // }
   },
   methods: {
     selectHero: function (item,index) {
@@ -206,12 +216,10 @@ export default { //会自动生成new vue({})
       this.enhanced=this.heronamelist[this.heroindex].xiangsheng;
       this.BeRestrained=this.heronamelist[this.heroindex].beikezhi;
       this.restraint=this.heronamelist[this.heroindex].kezhi;
-   // console.log(selectDetail);
      if(index==(item.id-1))
       {
-      console.log("您选中了"+item.name);
-    }
-
+        console.log("您选中了"+item.name);
+      }
 },
     changePoint:function(detail,num){
      if(num>0){
@@ -428,10 +436,10 @@ export default { //会自动生成new vue({})
 
     },
     uploadrelation:function (score) {
-
         var heroitem="hero";
         heroitem=heroitem+"_"+(++this.onShowScoreTab);
         console.log(heroitem);
+        var _this=this;
         this.$axios.post('http://old.bphots.com/templates/offer', {
           hero_id:this.heroId,
           item:heroitem,
@@ -439,15 +447,31 @@ export default { //会自动生成new vue({})
           point:parseInt(score),
         })
           .then(function (response) {
-            console.log(response);
+            if(response.data.result=="Success"){
+              _this.messagebox=true;
+            }
           })
           .catch(function (error) {
-            console.log(error);
+            _this.messagebox=false;
           });
-
-    }
-
+    },
+    open1(){
+      if(this.messagebox){
+        this.$notify.info({
+          title: '成功',
+          message: '提交成功',
+          type: 'success'
+        });
+      }
+    else{
+        this.$notify.error({
+          title: '错误',
+          message: '提交失败，请确定登录信息'
+        });
+      }
   },
+
+  }
 }
 
 </script>
