@@ -36,15 +36,13 @@
                 <div class="templates-detail-top-info-desc">- 英雄 -</div>
               </div>
               <div class="templates-detail-top-modes templates-bg">
-                <div class="templates-detail-top-modes-btns">
-                  <div class="templates-detail-top-modes-row" v-if="showrelation==true">
-                    <div class="templates-detail-top-modes-btn btn btn-default" style="position: relative;left:-120px;top:51.2px;" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >基础属性</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default " style="left:120px;top:51.2px;" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default"  style="position:relative;top:51px;left:-120px;"   v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default"  style="top:4.3px;" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default" style="top:4.3px;"  v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
-                    <div class="templates-detail-top-modes-btn btn btn-default" style="top:-72px;left:230px;"  v-on:click="masterView()">审核进度查询审核处理</div>
-                  </div>
+                <div class="templates-detail-top-modes-row" v-if="showrelation==true">
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >基础属性</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default " v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-on:click="masterView()">审核进度查询审核处理</div>
                 </div>
               </div>
             </div>
@@ -59,7 +57,7 @@
                       <!--<label style="color: #eeee;margin: 0.75rem;">请选择您战网所在服务器</label>-->
                       <!--<div id="Area"class="templates-detail-top-modes-btn btn btn-default" style="margin:0.75rem;"v-for="area of ServerArea">{{area}}</div>-->
                       <!--</div>-->
-                <div class="templates-detail-main-herolist-row"   v-for="detail in selectDetail"  v-model="selectDetail" v-if="tag==true">
+                <div class="templates-detail-main-herolist-row" v-for="detail in selectDetail" v-model="selectDetail" v-if="tag==true">
                   <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: -20px;cursor: pointer;" v-on:click="changePoint(detail,1)">+</a>
                      <div class="templates-detail-main-herolist-row-portrait"></div>
                       <div class="templates-detail-main-herolist-row-heroname" >{{detail.detailname}}</div>
@@ -1845,11 +1843,15 @@ export default { //会自动生成new vue({})
     margin-top: 2rem;
   }
   .templates-detail-top-modes-row {
-    margin: 0 auto;
-    width: 15rem;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    height: 100%;
+    /* margin: 0 auto; */
+    /* width: 15rem; */
   }
   .templates-detail-top-modes-btn {
-    float: left;
+    /* float: left; */
     margin: 0.25rem;
     max-width: 7rem;
     padding: 0.5rem 0.25rem;
