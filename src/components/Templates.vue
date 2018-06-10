@@ -22,7 +22,7 @@
         <div class="templates" v-on:click="reset()">
           <el-alert title="未登录" center type="info" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited==0" show-icon></el-alert>
           <div class="templates-herolist" v-if="showherolist==1">
-            <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist" >
+            <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist">
               <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
                 <img class="images"  v-bind:src="item.heroImage" >
@@ -47,7 +47,7 @@
               </div>
             </div>
             <div class="templates-detail-main templates-bg">
-              <div class="templates-detail-main-herolist" >
+              <div class="templates-detail-main-herolist" style="position: relative;" :class="{tagFalse: tag === false}">
                 <div v-if="beginTochange" style="color: #eeeeee">
                  <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
                   <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
@@ -66,44 +66,45 @@
                     </div>
                    <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
-                <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" >
-                  <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
-                   <div class="row-number">
-                    <span class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 140px; "v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
-                     <div class="number-scroller"  v-if=" relationNum===3 &&onShowScoreTab===BKZnum ">
-                      <div class="options-radio" v-for="num of scale" @click.stop="reset()">
-                       <input class="inputnum" id="3" type="radio" :value="num"
-                               v-model="beikezhi.score" @click="uploadrelation(num);open1()" />
-                        <label  style="color:#dddd">{{num}}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" >
-                  <div class="row-number">
-                   <span class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 500px;top: -3080px;"v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
-                    <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum ">
-                      <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()">
-                        <input class="inputnum" id="4" type="radio" :value="num"
-                               v-model="kezhi.score" @click="uploadrelation(num);open1()"/>
-                        <label  style="color:#dddd">{{num}}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" >
+                <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 16rem;margin-right: -10px;float: left;display: inline-flex;">
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 7.5rem;left: 0;text-align: center;">{{beikezhi.detailname}}</div>
                     <div class="row-number">
-                     <span class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 620px;top: -6160px;" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
-                      <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum ">
-                        <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()">
-                          <input class="inputnum" id="2" type="radio" :value="num"
-                                 v-model="xiangsheng.score" @click="uploadrelation(num);open1()" />
+                      <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
+                      <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
+                        <div class="options-radio" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                          <input class="inputnum" id="3" type="radio" :value="num" v-model="beikezhi.score" @click="uploadrelation(num);open1()" />
+                          <label  style="color:#dddd">{{num}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display: inline-block;width: 7rem;margin: 0 5px 0 -5px;">
+                  <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" style="width: 7rem;display: inline-flex;">
+                    <div class="row-number">
+                    <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+                      <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum" style="position: absolute;background: #000;z-index: 10;">
+                        <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                          <input class="inputnum" id="4" type="radio" :value="num" v-model="kezhi.score" @click="uploadrelation(num);open1()"/>
                           <label  style="color:#dddd">{{num}}</label>
                         </div>
                       </div>
+                    </div>
                   </div>
+                </div>
+                <div style="display: inline-block;width: 7rem;">
+                  <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" style="width: 7rem;display: inline-flex;">
+                    <div class="row-number">
+                      <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
+                      <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum" style="position: absolute;background: #000;z-index: 10;">
+                        <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                          <input class="inputnum" id="2" type="radio" :value="num" v-model="xiangsheng.score" @click="uploadrelation(num);open1()" />
+                          <label  style="color:#dddd">{{num}}</label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                 <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
+                </div>
+                <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
               </div>
             </div>
           </div>
@@ -820,7 +821,7 @@ export default { //会自动生成new vue({})
     //width: 38rem;
     height: 27rem;
     /* background-color: #f44336; */
-    margin: 2.5rem auto;
+    margin: 2rem auto;
     overflow: scroll;
   }
   .templates-detail-main-herolist-row {
@@ -1900,9 +1901,9 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
-    left:140px;
-  position: relative;
-    top: -460px;
+    /* left:140px; */
+    position: relative;
+    /* top: -460px; */
     display: flow-root;
   }
   .options-radio-restraint{
@@ -1911,9 +1912,9 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
-    left:500px;
+    /* left:500px; */
     position: relative;
-    top: -3540px;
+    /* top: -3540px; */
     display: flow-root;
   }
   .options-radio-enhanced{
@@ -1922,9 +1923,9 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
-    left:620px;
+    /* left:620px; */
     position: relative;
-    top: -6620px;
+    /* top: -6620px; */
     display: flow-root;
   }
   .inputnum{
@@ -1958,4 +1959,9 @@ export default { //会自动生成new vue({})
   /*.button{*/
 
   /*}*/
+  .tagFalse {
+    float: right;
+    width: 30rem;
+    text-align: left;
+  }
 </style>
