@@ -42,7 +42,7 @@
                   <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
                   <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
                   <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-on:click="masterView()">审核进度查询审核处理</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-on:click="masterView(1)">审核进度查询审核处理</div>
                 </div>
               </div>
             </div>
@@ -117,12 +117,17 @@
           <el-table-column prop="item" label="提交英雄(基础)" width="180"></el-table-column>
           <el-table-column prop="point" label="分数"  width="180"></el-table-column>
           <el-table-column prop="progress" label="审批进度" width="180"></el-table-column>
-          <el-table-column prop="action" label="管理员审批" width="180" ></el-table-column>
+          <el-table-column prop="action" label="管理员审批" width="180" >
+              <template slot-scope="scope">
+                <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">移除</el-button>
+                <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">移除</el-button>
+              </template>
+          </el-table-column>
         </el-table>
-        <div style="margin-top: 20px">
-          <el-button type="info" round v-if="page==1"  v-on:click="MasterClose(page--)">上一页</el-button>
-          <el-button type="info" round v-on:click="MasterClose(page++)">下一页</el-button>
-          <el-button  type="info" round style="position: relative;float: right;margin-right: 3rem;" v-on:click="MasterClose(page)" ></el-button>
+        <div style="margin-top: 15px">
+          <el-button type="info" round v-if="page>=2"  v-on:click="MasterClose(-1)">上一页</el-button>
+          <el-button type="info" round v-if="!nopage" v-on:click="MasterClose(+1)">下一页</el-button>
+          <el-button  type="info" round style="position: relative;float: right;margin-right: 3rem;" v-on:click="mastershow=false" >退出审核</el-button>
         </div>
       </div>
     </div>
@@ -193,7 +198,8 @@ export default { //会自动生成new vue({})
       onShowScoreTabHero:null,
       mastershow:false,
       masterData: [],
-      page:1
+      page:1,
+      nopage:false
     }
   },
   filters:{
@@ -205,9 +211,9 @@ export default { //会自动生成new vue({})
       if(this.templatesPermited===0) {
         this.beginTochange = true;
       }
-      if(this.mastershow) {
-        this.masterView();
-      }
+      // if(this.mastershow) {
+      //   this.masterView();
+      // }
       this.queryView();
     })
   },
@@ -304,16 +310,20 @@ export default { //会自动生成new vue({})
         _this.portrait=response.data.result.Herolist;
       });
     },
-    masterView:function(){
+    masterView:function(page){
       this.mastershow=true;
       var _this=this;
       console.log("审核页面：");
       this.$axios.post('http://old.bphots.com/templates/offer/list', {
-        page:1,
+        page:page,
         action:"new",
       })
         .then(function (response) {
           _this.masterData=response.data.data;
+          // if(_this.masterData.data==null){
+          //   this.page=this.page-2;
+          //   this.nopage=true;
+          // }
           //  for(let showData of response.data.data)
           //  {
           //    console.log(showData.time);
@@ -484,8 +494,12 @@ export default { //会自动生成new vue({})
           });
       }
     },
-    MasterClose:function () {
-      this.mastershow=false;
+    MasterClose:function (page) {
+      this.page=this.page+page;
+      if(this.page<1){
+        this.page=1;
+      }
+      this.masterView(this.page);
     },
     timestamptotime:function(time){
       var date = new Date(time * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -949,7 +963,6 @@ export default { //会自动生成new vue({})
     top: -52px;
 
   }
-
   .table {
     display: table;
   }
@@ -1727,7 +1740,6 @@ export default { //会自动生成new vue({})
     transition: width .6s ease;
     align-self: auto;
   }
-
   .progress-lg {
     // margin-top: 0.5rem;
     margin-left: 0.5rem;
@@ -1926,10 +1938,10 @@ export default { //会自动生成new vue({})
   }
   .masterlist{
     /*display: flex;*/
-    margin-top: 15rem;
+    margin-top: 10rem;
     margin-left: 15rem;
     width: 84rem;
-    height: 38rem;
+    height: 43rem;
     background-color: white;
   }
   /*.el-icon-close{*/
@@ -1943,7 +1955,7 @@ export default { //会自动生成new vue({})
     /*height: 10%;*/
    /*font-size: xx-large;*/
   /*}*/
-  .button{
+  /*.button{*/
 
-  }
+  /*}*/
 </style>
