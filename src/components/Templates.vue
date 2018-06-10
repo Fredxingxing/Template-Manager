@@ -732,7 +732,7 @@ export default { //会自动生成new vue({})
 <style scoped>
   .finished{
     text-decoration: underline;
-  // text-decoration: chartreuse;
+    text-decoration: chartreuse;
   }
   * {
     -webkit-font-smoothing: antialiased;
@@ -750,7 +750,7 @@ export default { //会自动生成new vue({})
   body {
     background: #000;
     font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif', 'å¾®è½¯é›…é»‘', 'simhei';
-   // font-size: 14px;
+    font-size: 14px;
     color:#000;
     margin: 0;
     padding: 0;
@@ -818,7 +818,7 @@ export default { //会自动生成new vue({})
     float: left;
   }
   .templates-detail-main-herolist {
-    //width: 38rem;
+    width: 38rem;
     height: 27rem;
     /* background-color: #f44336; */
     margin: 2rem auto;
@@ -826,7 +826,7 @@ export default { //会自动生成new vue({})
   }
   .templates-detail-main-herolist-row {
     width: 38rem;
-    // height: 2.5rem;
+     height: 2.5rem;
     margin-bottom: 1rem;
     display: flex;
 
@@ -834,7 +834,7 @@ export default { //会自动生成new vue({})
   }
   .templates-detail-main-herolist-row-relation {
     width: 41.5rem;
-  // height: 2.5rem;
+    height: 2.5rem;
     margin-bottom: 1rem;
     display: flex;
     /* background-color: #7c108a;  */
@@ -844,25 +844,25 @@ export default { //会自动生成new vue({})
     margin-top: 0.25rem;
     height: 2rem;
     width: 2rem;
-   // background: url(/static/image/portrait/ana.png);
+    background: url(/static/image/portrait/ana.png);
     background-size: 100%;
     float: right;
     /* 32*32图片*/
   }
   .templates-detail-main-herolist-row-heroname {
-     // margin-top: 0.6rem;
-       /* height: 2.5rem; */
-       color: #eee;
-       width: 12rem;
-       overflow: hidden;
-       text-overflow:ellipsis;
-       white-space: nowrap;
-       position:relative;
+    margin-top: 0.6rem;
+      /* height: 2.5rem; */
+    color: #eee;
+    width: 12rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    position:relative;
 
-     // font-size: 1.3rem;
-     }
+    font-size: 1.3rem;
+  }
   .templates-detail-main-herolist-row-heroname-relation{
-  // margin-top: 0.6rem;
+    margin-top: 0.6rem;
     /* height: 2.5rem; */
     color: #eee;
     width: 15rem;
@@ -872,7 +872,7 @@ export default { //会自动生成new vue({})
     position:relative;
     left:-33px;
     font-size: 1rem;
-  // font-size: 1.3rem;
+    font-size: 1.3rem;
   }
   .templates-detail-main-herolist-row-progress {
     margin-top: 0.5rem;
@@ -1742,7 +1742,7 @@ export default { //会自动生成new vue({})
     align-self: auto;
   }
   .progress-lg {
-    // margin-top: 0.5rem;
+     margin-top: 0.5rem;
     margin-left: 0.5rem;
     height: 22px;
   }
