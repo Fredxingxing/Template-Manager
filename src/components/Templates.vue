@@ -22,7 +22,7 @@
         <div class="templates" v-on:click="reset()">
           <el-alert title="未登录" center type="info" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited==0" show-icon></el-alert>
           <div class="templates-herolist" v-if="showherolist==1">
-            <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist" >
+            <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist">
               <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
                 <img class="images"  v-bind:src="item.heroImage" >
@@ -47,8 +47,8 @@
               </div>
             </div>
             <div class="templates-detail-main templates-bg">
-              <div class="templates-detail-main-herolist" >
-                <div v-if="beginTochange" style="color: #eeeeee">
+                <div class="templates-detail-main-herolist"  v-if="beginTochange" style="position: relative;" :class="{tagFalse: tag === false}">
+                  <div v-if="beginTochange" style="color: #eeeeee">
                  <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
                   <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
                    <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
@@ -66,45 +66,46 @@
                     </div>
                    <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
-                <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" >
-                  <div class="templates-detail-main-herolist-row-heroname-relation" style="position: relative;left: 80px;">{{beikezhi.detailname}}</div>
-                   <div class="row-number">
-                    <span class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 140px; "v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
-                     <div class="number-scroller"  v-if=" relationNum===3 &&onShowScoreTab===BKZnum ">
-                      <div class="options-radio" v-for="num of scale" @click.stop="reset()">
-                       <input class="inputnum" id="3" type="radio" :value="num"
-                               v-model="beikezhi.score" @click="uploadrelation(num);open1()" />
-                        <label  style="color:#dddd">{{num}}</label>
+                <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 16rem;margin-right: -10px;float: left;display: inline-flex;">
+                <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 7.5rem;left: 0;text-align: center;">{{beikezhi.detailname}}</div>
+                <div class="row-number">
+                <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
+                  <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
+                    <div class="options-radio" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                      <input class="inputnum" id="3" type="radio" :value="num" v-model="beikezhi.score" @click="uploadrelation(num);open1()" />
+                      <label  style="color:#dddd">{{num}}</label>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" >
-                  <div class="row-number">
-                   <span class="progress-bar p12 number-handler number-digit" role="progressbar" style="position: relative;left: 500px;top: -3080px;"v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
-                    <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum ">
-                      <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()">
-                        <input class="inputnum" id="4" type="radio" :value="num"
-                               v-model="kezhi.score" @click="uploadrelation(num);open1()"/>
-                        <label  style="color:#dddd">{{num}}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div v-if="tag==false"class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" >
+                <div style="display: inline-block;width: 7rem;margin: 0 5px 0 -5px;">
+                  <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" style="width: 7rem;display: inline-flex;">
                     <div class="row-number">
-                     <span class="progress-bar p12 number-handler number-digit " role="progressbar" style="position: relative;left: 620px;top: -6160px;" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
-                      <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum ">
-                        <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()">
-                          <input class="inputnum" id="2" type="radio" :value="num"
-                                 v-model="xiangsheng.score" @click="uploadrelation(num);open1()" />
+                      <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+                      <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum" style="position: absolute;background: #000;z-index: 10;">
+                        <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                          <input class="inputnum" id="4" type="radio" :value="num" v-model="kezhi.score" @click="uploadrelation(num);open1()"/>
                           <label  style="color:#dddd">{{num}}</label>
                         </div>
                       </div>
+                    </div>
                   </div>
+                </div>
+                  <div style="display: inline-block;width: 7rem;">
+                    <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" style="width: 7rem;display: inline-flex;">
+                  <div class="row-number">
+                    <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
+                    <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum" style="position: absolute;background: #000;z-index: 10;">
+                      <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                        <input class="inputnum" id="2" type="radio" :value="num" v-model="xiangsheng.score" @click="uploadrelation(num);open1()" />
+                    <label  style="color:#dddd">{{num}}</label>
+                        </div>
+                      </div>
+                    </div>
+                   </div>
                   </div>
-                 <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
-              </div>
+                  <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
+                </div>
             </div>
           </div>
         </div>
@@ -119,8 +120,9 @@
           <el-table-column prop="progress" label="审批进度" width="180"></el-table-column>
           <el-table-column prop="action" label="管理员审批" width="180" >
               <template slot-scope="scope">
-                <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">移除</el-button>
-                <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">移除</el-button>
+                <el-button  @click.native.prevent="deleteRow(scope.$index, masterData)" type="text" size="small">撤回</el-button>
+                <el-button @click.native.prevent="AgreeRow(scope.$index, masterData)" type="text" size="small">同意</el-button>
+                <el-button @click.native.prevent="RefuseRow(scope.$index, masterData)" type="text" size="small">拒绝</el-button>
               </template>
           </el-table-column>
         </el-table>
@@ -180,10 +182,10 @@ export default { //会自动生成new vue({})
       heroId:[],
       selectDetail:[],
       jichu:[],
+      base:[],
       enhanced:[],
       restraint:[],
       BeRestrained:[],
-      heroindex:0,
       beginTochange:true,
       protrait:[],
       tag:1,
@@ -192,14 +194,16 @@ export default { //会自动生成new vue({})
       onShowHeroId:null,
       onShowScoreTab:null,
       showherolist:1,
-      templatesPermited:1,//{$templatesPermited}=1,0    window.templatePermited
+      templatesPermited:1,//{$templatesPermited}=1,0    window.templatePermited  0普通 1 管理 Null未登录
       messagebox:true,
       message:"",
       onShowScoreTabHero:null,
       mastershow:false,
       masterData: [],
       page:1,
-      nopage:false
+      nopage:false,
+      querylist:[],
+      queryData:[]
     }
   },
   filters:{
@@ -211,10 +215,16 @@ export default { //会自动生成new vue({})
       if(this.templatesPermited===0) {
         this.beginTochange = true;
       }
-      // if(this.mastershow) {
-      //   this.masterView();
-      // }
-      this.queryView();
+      var resArr=new Array();
+      for(var id=1;id<=79;id++){
+        var heroitem = "hero";
+        heroitem = heroitem + "_" + id;
+        resArr.push(this.itemToheroname(heroitem));
+      }
+      this.querylist=resArr;
+      console.log(this.querylist);
+      this.queryView(this.heroId);
+     // console.log(this.queryData);
     })
   },
   watch:{
@@ -234,24 +244,32 @@ export default { //会自动生成new vue({})
   methods: {
     selectHero: function (item,index) {
       this.relationNum=1;
-     this.HeroName=item.name;
-     this.detail=item.details;
-     this.selectDetail=item.jichu;
-     this.heroId=item.id;
-     this.DetailName=item.jichu.detailname;
+      this.HeroName=item.name;
+      this.beginTochange=false;
+      this.heroId=item.id;
+      this.queryView(this.heroId);
 
-    console.log(this.DetailName);
-    console.log(this.Score);
-      console.log(this.item);
-     console.log(index);
-     this.heroindex=index;
-      this.enhanced=this.heronamelist[this.heroindex].xiangsheng;
-      this.BeRestrained=this.heronamelist[this.heroindex].beikezhi;
-      this.restraint=this.heronamelist[this.heroindex].kezhi;
+    // this.detail=item.details;
+    // this.selectDetail=item.jichu;
+      this.heroId=item.id;
+    // this.DetailName=item.jichu.detailname;
+      console.log("base:")
+      this.base=this.queryData.base;
+      console.log(this.base);
+      this.enhanced=this.queryData.synergy;
+      console.log("synergy:")
+      console.log(this.enhanced);
+      this.BeRestrained=this.queryData.beRestricted;
+      console.log("beRestricted:")
+      console.log(this.BeRestrained);
+      this.restraint=this.queryData.restraint;
+      console.log("restraint:")
+      console.log(this.restraint);
      if(index==(item.id-1))
       {
         console.log("您选中了"+item.name);
       }
+     // this.adviceView();
 },
     changePoint:function(detail,num){
      if(num>0){
@@ -273,41 +291,42 @@ export default { //会自动生成new vue({})
       switch (num){
         case 1:
           this.relationNum=1;
-          console.log(this.heroindex);
-          this.selectDetail=this.heronamelist[this.heroindex].jichu;
+          console.log(this.heroId);
+          this.selectDetail=this.base;
           //this.detail=this.heronamelist[this.heroindex].jichu;
         //  this.Score=item.jichu.score;
 
           break;
         case 2:
           this.relationNum=2;
-          console.log(this.heroindex);
-            this.selectDetail=this.heronamelist[this.heroindex].xiangsheng;
+          console.log(this.heroId);
+            this.selectDetail=this.enhanced;
           // this.xiangsheng=this.heronamelist[this.heroindex].xiangsheng;
           break;
         case 3:
           this.relationNum=3;
-          console.log(this.heroindex);
-          this.selectDetail=this.heronamelist[this.heroindex].beikezhi;
+          console.log(this.heroId);
+          this.selectDetail=this.BeRestrained;
         // this.beikezhi=this.heronamelist[this.heroindex].beikezhi;
           break;
         case 4:
           this.relationNum=4;
-          console.log(this.heroindex);
-          this.selectDetail=this.heronamelist[this.heroindex].kezhi;
+          console.log(this.heroId);
+          this.selectDetail=this.restraint;
       //    this.kezhi=this.heronamelist[this.heroindex].kezhi;
           break;
       }
     },
-    //取数据的方法
+    //取query的方法
     templateView: function () {
       var _this = this;
+      //if(langague=="zh-CN")
       this.$axios({
         method:'get',
-       url:('/static/template.json'),
+       url:('https://www.bphots.com/bp_helper/get/herolist?lang=zh-CN'),
       }).then(function(response){
-        _this.heronamelist = response.data.result.Herolist;
-        _this.portrait=response.data.result.Herolist;
+        _this.heronamelist = response.data;
+        console.log(_this.heronamelist);
       });
     },
     masterView:function(page){
@@ -320,6 +339,8 @@ export default { //会自动生成new vue({})
       })
         .then(function (response) {
           _this.masterData=response.data.data;
+          console.log("masterData");
+          console.log(_this.masterData);
           // if(_this.masterData.data==null){
           //   this.page=this.page-2;
           //   this.nopage=true;
@@ -366,14 +387,33 @@ export default { //会自动生成new vue({})
           console.log(error);
         });
     },
-    queryView:function(){
-      var _this=this;
+    queryView:function(id){
       console.log("query：");
+      var _this=this;
       this.$axios.post('http://old.bphots.com/templates/query', {
-        hero_id:1,
+        hero_id:++id,
       })
         .then(function (response) {
-        //  _this.masterlist=response.data;
+          console.log(response);
+           _this.queryData=response.data.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    },
+    adviceView:function(){
+      var _this=this;
+      var heroitem = "hero";
+      heroitem = heroitem + "_" + (++this.onShowScoreTab);
+      this.onShowScoreTabHero=this.itemToheroname(heroitem);
+      console.log("advice：");
+      this.$axios.post('http://old.bphots.com/templates/advice', {
+        part:2,
+        item:heroitem,
+        hero_id:this.heroId ,
+      })
+        .then(function (response) {
           console.log(response);
         })
         .catch(function (error) {
@@ -458,10 +498,47 @@ export default { //会自动生成new vue({})
     },
     uploadrelation:function (score) {
       console.log(score);
+      //管理员提交用set
       if (this.templatesPermited == 1) { //通过才能提交
         var heroitem = "hero";
         heroitem = heroitem + "_" + (++this.onShowScoreTab);
-        this.onShowScoreTabHero=this.heroidToheroname(heroitem);
+        this.onShowScoreTabHero=this.itemToheroname(heroitem);
+        var _this = this;
+
+        console.log(_this.HeroName);
+        console.log(_this.onShowScoreTabHero);
+        console.log(score);
+        switch (_this.relationNum){
+          case 2:
+            _this.message=_this.HeroName+"与"+_this.onShowScoreTabHero+"相生配合"+score+"分";
+            break;
+          case 3:
+            _this.message=_this.HeroName+"被"+_this.onShowScoreTabHero+"克制"+score+"分";
+            break;
+          case 4:
+            _this.message=_this.HeroName+"克制"+_this.onShowScoreTabHero+score+"分";
+            break;
+        }
+        this.$axios.post('http://old.bphots.com/templates/set', {
+          hero_id: this.heroId,
+          item: heroitem,
+          part: this.relationNum,
+          point: parseInt(score),
+        })
+          .then(function (response) {
+            if (response.data.result == "Success") {
+              _this.messagebox = true;
+            }
+          })
+          .catch(function (error) {
+            _this.messagebox = false;
+          });
+      }
+     // 普通用户提交用offer
+      if(this.templatesPermited==0){
+        var heroitem = "hero";
+        heroitem = heroitem + "_" + (++this.onShowScoreTab);
+        this.onShowScoreTabHero=this.itemToheroname(heroitem);
         var _this = this;
         var relationname="基础";
         console.log(_this.HeroName);
@@ -619,6 +696,31 @@ export default { //会自动生成new vue({})
       base.set("base_creep_double","清双线能力");
       return base.get(item);
     },
+    querybaseTobasename:function (item) {
+      var base=new Map();
+      base.set("map_mrt","地图强势:末日塔");
+      base.set("map_lyst","地图强势:炼狱圣坛");
+      base.set("map_yhzc","地图强势:永恒战场");
+      base.set("map_mrt","地图强势:末日塔");
+      base.set("map_zhm","地图强势:蛛后墓");
+      base.set("map_tkd","地图强势:天空殿");
+      base.set("map_jlz","地图强势:巨龙镇");
+      base.set("map_hxw","地图强势:黑心湾");
+      base.set("map_glk","地图强势:鬼灵矿");
+      base.set("map_zzg","地图强势:诅咒谷");
+      base.set("map_kmy","地图强势:恐魔园");
+      base.set("map_blkxsjq","地图强势:布莱克西斯禁区");
+      base.set("map_dtsnz","地图强势:弹头枢纽站");
+      base.set("map_wskyzzc","地图强势:沃斯卡娅工业区");
+      base.set("base_strong","版本强势");
+      base.set("firstpick","先选方一楼选择");
+      base.set("stability","使用容错率");
+      base.set("creep","清线效率");
+      base.set("creep_solo","上单能力");
+      base.set("base_global","全球流能力");
+      base.set("base_double","清双线能力");
+      return base.get(item);
+    },
     heroToheroname:function (heroid1) {
       var hero1=new Map();
       hero1.set("1","泽拉图");
@@ -702,8 +804,8 @@ export default { //会自动生成new vue({})
       hero1.set("79","迪卡德");
       return hero1.get(heroid1.toString());
     },
-    //element自带方法消息提示框
-    open1(){
+    //element方法消息提示框
+    open1() {
       console.log(this.message);
       if(this.messagebox){
         this.$notify.info({
@@ -719,6 +821,62 @@ export default { //会自动生成new vue({})
         });
       }
   },
+    deleteRow(index,rows){
+      rows.splice(index,1);
+      // console.log(index);
+      // console.log(rows);
+      // console.log(this.masterData[index].id);
+      var _this=this;
+      this.$axios.post('http://old.bphots.com/templates/set', {
+       offer_id: this.masterData[index].id,
+      })
+        .then(function (response) {
+          if (response.data.result == "Success") {
+            _this.masterView(_this.page);
+          }
+        })
+        .catch(function (error) {
+          _this.messagebox = false;
+        });
+    },
+    RefuseRow(index,rows){
+      rows.splice(index,1);
+      // console.log(index);
+      // console.log(rows);
+      // console.log(this.masterData[index].id);
+      var _this=this;
+      this.$axios.post('http://old.bphots.com/templates/set', {
+        offer_id: this.masterData[index].id,
+        execute:0,
+      })
+        .then(function (response) {
+          if (response.data.result == "Success") {
+            _this.masterView(_this.page);
+          }
+        })
+        .catch(function (error) {
+          _this.messagebox = false;
+        });
+    },
+    AgreeRow(index,rows){
+      rows.splice(index,1);
+      // console.log(index);
+      // console.log(rows);
+      // console.log(this.masterData[index].id);
+      var _this=this;
+      this.$axios.post('http://old.bphots.com/templates/set', {
+        offer_id: this.masterData[index].id,
+        execute:1,
+      })
+        .then(function (response) {
+          if (response.data.result == "Success") {
+            _this.masterView(_this.page);
+          }
+        })
+        .catch(function (error) {
+          _this.messagebox = false;
+        });
+    },
     // formatter(row, column) {
     //   return row.address;
     // },
@@ -731,7 +889,7 @@ export default { //会自动生成new vue({})
 <style scoped>
   .finished{
     text-decoration: underline;
-  // text-decoration: chartreuse;
+    text-decoration: chartreuse;
   }
   * {
     -webkit-font-smoothing: antialiased;
@@ -749,7 +907,7 @@ export default { //会自动生成new vue({})
   body {
     background: #000;
     font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif', 'å¾®è½¯é›…é»‘', 'simhei';
-   // font-size: 14px;
+    font-size: 14px;
     color:#000;
     margin: 0;
     padding: 0;
@@ -817,15 +975,15 @@ export default { //会自动生成new vue({})
     float: left;
   }
   .templates-detail-main-herolist {
-    //width: 38rem;
+    width: 38rem;
     height: 27rem;
     /* background-color: #f44336; */
-    margin: 2.5rem auto;
+    margin: 2rem auto;
     overflow: scroll;
   }
   .templates-detail-main-herolist-row {
     width: 38rem;
-    // height: 2.5rem;
+    height: 2.5rem;
     margin-bottom: 1rem;
     display: flex;
 
@@ -833,7 +991,7 @@ export default { //会自动生成new vue({})
   }
   .templates-detail-main-herolist-row-relation {
     width: 41.5rem;
-  // height: 2.5rem;
+    height: 2.5rem;
     margin-bottom: 1rem;
     display: flex;
     /* background-color: #7c108a;  */
@@ -843,25 +1001,25 @@ export default { //会自动生成new vue({})
     margin-top: 0.25rem;
     height: 2rem;
     width: 2rem;
-   // background: url(/static/image/portrait/ana.png);
+    background: url(/static/image/portrait/ana.png);
     background-size: 100%;
     float: right;
     /* 32*32图片*/
   }
   .templates-detail-main-herolist-row-heroname {
-     // margin-top: 0.6rem;
-       /* height: 2.5rem; */
-       color: #eee;
-       width: 12rem;
-       overflow: hidden;
-       text-overflow:ellipsis;
-       white-space: nowrap;
-       position:relative;
+    margin-top: 0.6rem;
+    /* height: 2.5rem; */
+    color: #eee;
+    width: 12rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    position:relative;
 
-     // font-size: 1.3rem;
-     }
+    font-size: 1.3rem;
+  }
   .templates-detail-main-herolist-row-heroname-relation{
-  // margin-top: 0.6rem;
+    margin-top: 0.6rem;
     /* height: 2.5rem; */
     color: #eee;
     width: 15rem;
@@ -871,7 +1029,7 @@ export default { //会自动生成new vue({})
     position:relative;
     left:-33px;
     font-size: 1rem;
-  // font-size: 1.3rem;
+    font-size: 1.3rem;
   }
   .templates-detail-main-herolist-row-progress {
     margin-top: 0.5rem;
@@ -1741,7 +1899,7 @@ export default { //会自动生成new vue({})
     align-self: auto;
   }
   .progress-lg {
-    // margin-top: 0.5rem;
+     margin-top: 0.5rem;
     margin-left: 0.5rem;
     height: 22px;
   }
@@ -1900,9 +2058,9 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
-    left:140px;
-  position: relative;
-    top: -460px;
+    /*left:140px;*/
+    position: relative;
+    /*top: -460px;*/
     display: flow-root;
   }
   .options-radio-restraint{
@@ -1911,9 +2069,9 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
-    left:500px;
+    /*left:500px;*/
     position: relative;
-    top: -3540px;
+    /*top: -3540px;*/
     display: flow-root;
   }
   .options-radio-enhanced{
@@ -1922,9 +2080,9 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
-    left:620px;
+    /*left:620px;*/
     position: relative;
-    top: -6620px;
+    /*top: -6620px;*/
     display: flow-root;
   }
   .inputnum{
@@ -1958,4 +2116,9 @@ export default { //会自动生成new vue({})
   /*.button{*/
 
   /*}*/
+  .tagFalse{
+    float:right;
+    width:30rem;
+    text-align: left;
+  }
 </style>
