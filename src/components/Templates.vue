@@ -47,8 +47,13 @@
               </div>
             </div>
             <div class="templates-detail-main templates-bg">
+<<<<<<< HEAD
                 <div class="templates-detail-main-herolist"  v-if="beginTochange" style="position: relative;" :class="{tagFalse: tag === false}">
                   <div v-if="beginTochange" style="color: #eeeeee">
+=======
+              <div class="templates-detail-main-herolist" style="position: relative;" :class="{tagFalse: tag === false}">
+                <div v-if="beginTochange" style="color: #eeeeee">
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
                  <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
                   <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
                    <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
@@ -67,6 +72,7 @@
                    <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 16rem;margin-right: -10px;float: left;display: inline-flex;">
+<<<<<<< HEAD
                 <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 7.5rem;left: 0;text-align: center;">{{beikezhi.detailname}}</div>
                 <div class="row-number">
                 <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
@@ -74,6 +80,15 @@
                     <div class="options-radio" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
                       <input class="inputnum" id="3" type="radio" :value="num" v-model="beikezhi.score" @click="uploadrelation(num);open1()" />
                       <label  style="color:#dddd">{{num}}</label>
+=======
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 7.5rem;left: 0;text-align: center;">{{beikezhi.detailname}}</div>
+                    <div class="row-number">
+                      <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
+                      <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
+                        <div class="options-radio" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                          <input class="inputnum" id="3" type="radio" :value="num" v-model="beikezhi.score" @click="uploadrelation(num);open1()" />
+                          <label  style="color:#dddd">{{num}}</label>
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
                       </div>
                     </div>
                   </div>
@@ -81,7 +96,11 @@
                 <div style="display: inline-block;width: 7rem;margin: 0 5px 0 -5px;">
                   <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" style="width: 7rem;display: inline-flex;">
                     <div class="row-number">
+<<<<<<< HEAD
                       <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+=======
+                    <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
                       <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum" style="position: absolute;background: #000;z-index: 10;">
                         <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
                           <input class="inputnum" id="4" type="radio" :value="num" v-model="kezhi.score" @click="uploadrelation(num);open1()"/>
@@ -91,6 +110,7 @@
                     </div>
                   </div>
                 </div>
+<<<<<<< HEAD
                   <div style="display: inline-block;width: 7rem;">
                     <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" style="width: 7rem;display: inline-flex;">
                   <div class="row-number">
@@ -106,6 +126,23 @@
                   </div>
                   <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
                 </div>
+=======
+                <div style="display: inline-block;width: 7rem;">
+                  <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" style="width: 7rem;display: inline-flex;">
+                    <div class="row-number">
+                      <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
+                      <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum" style="position: absolute;background: #000;z-index: 10;">
+                        <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
+                          <input class="inputnum" id="2" type="radio" :value="num" v-model="xiangsheng.score" @click="uploadrelation(num);open1()" />
+                          <label  style="color:#dddd">{{num}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
+              </div>
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
             </div>
           </div>
         </div>
@@ -983,7 +1020,11 @@ export default { //会自动生成new vue({})
   }
   .templates-detail-main-herolist-row {
     width: 38rem;
+<<<<<<< HEAD
     height: 2.5rem;
+=======
+     height: 2.5rem;
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
     margin-bottom: 1rem;
     display: flex;
 
@@ -1008,7 +1049,11 @@ export default { //会自动生成new vue({})
   }
   .templates-detail-main-herolist-row-heroname {
     margin-top: 0.6rem;
+<<<<<<< HEAD
     /* height: 2.5rem; */
+=======
+      /* height: 2.5rem; */
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
     color: #eee;
     width: 12rem;
     overflow: hidden;
@@ -2058,9 +2103,15 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
+<<<<<<< HEAD
     /*left:140px;*/
     position: relative;
     /*top: -460px;*/
+=======
+    /* left:140px; */
+    position: relative;
+    /* top: -460px; */
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
     display: flow-root;
   }
   .options-radio-restraint{
@@ -2069,9 +2120,15 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
+<<<<<<< HEAD
     /*left:500px;*/
     position: relative;
     /*top: -3540px;*/
+=======
+    /* left:500px; */
+    position: relative;
+    /* top: -3540px; */
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
     display: flow-root;
   }
   .options-radio-enhanced{
@@ -2080,9 +2137,15 @@ export default { //会自动生成new vue({})
     text-align: center;
     width: 5rem;
     border: 1px solid transparent;
+<<<<<<< HEAD
     /*left:620px;*/
     position: relative;
     /*top: -6620px;*/
+=======
+    /* left:620px; */
+    position: relative;
+    /* top: -6620px; */
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
     display: flow-root;
   }
   .inputnum{
@@ -2116,9 +2179,15 @@ export default { //会自动生成new vue({})
   /*.button{*/
 
   /*}*/
+<<<<<<< HEAD
   .tagFalse{
     float:right;
     width:30rem;
+=======
+  .tagFalse {
+    float: right;
+    width: 30rem;
+>>>>>>> 792ba831b921ae90e6055a5c8587c392fad33fe2
     text-align: left;
   }
 </style>
