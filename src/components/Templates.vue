@@ -25,7 +25,7 @@
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist">
               <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
-                <img class="images"  v-bind:src="item.heroImage" >
+                <img class="images"  v-bind:src="item.pictures" >
               </div>
             </div>
           </div>
@@ -38,10 +38,10 @@
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-row" v-if="showrelation==true">
                   <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >基础属性</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default " v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >被克制关系</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
                   <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">克制关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">相生关系</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default " v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
                   <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-on:click="masterView(1)">审核进度查询审核处理</div>
                 </div>
               </div>
@@ -67,6 +67,7 @@
                    <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 16rem;margin-right: -10px;float: left;display: inline-flex;">
+                  <img class="portrait"  v-bind:src="beikezhi.pictures" style="width: 32px;height: 32px;">
                   <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 7.5rem;left: 0;text-align: center;">{{beikezhi.name}}</div>
                     <div class="row-number">
                       <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
@@ -205,6 +206,7 @@ export default { //会自动生成new vue({})
       querylist:[],
       queryData:[],
      // baselist[{}]
+
     }
   },
   filters:{
@@ -226,6 +228,7 @@ export default { //会自动生成new vue({})
       // console.log(this.querylist);
       this.queryView(1);
      // console.log(this.queryData);
+
     })
   },
   watch:{
@@ -247,6 +250,7 @@ export default { //会自动生成new vue({})
       this.relationNum=1;
       this.HeroName=item.name;
       this.beginTochange=false;
+      this.tag=true;
       this.heroId=item.id;
       this.queryView(this.heroId);
       this.heroId=item.id;
@@ -263,17 +267,17 @@ export default { //会自动生成new vue({})
        basearr[b].name=this.querybaseTobasename(basearr[b].name);
       }
       this.base=basearr;
-      // console.log(this.base);
+      console.log(this.base);
        this.selectDetail=this.base;
       this.enhanced=this.objectToArr(this.queryData.synergy);
-      // console.log("synergy:")
-      // console.log(this.enhanced);
+      console.log("synergy:")
+      console.log(this.enhanced);
       this.BeRestrained=this.objectToArr(this.queryData.beRestricted);
-      // console.log("beRestricted:")
-      // console.log(this.BeRestrained);
+      console.log("beRestricted:")
+      console.log(this.BeRestrained);
       this.restraint=this.objectToArr(this.queryData.restraint);
-      // console.log("restraint:")
-      // console.log(this.restraint);
+      console.log("restraint:")
+      console.log(this.restraint);
      if(index==(item.id-1))
       {
         console.log("您选中了"+item.name);
@@ -300,7 +304,7 @@ export default { //会自动生成new vue({})
       switch (num){
         case 1:
           this.relationNum=1;
-          console.log(this.heroId);
+          //console.log(this.heroId);
           this.selectDetail=this.base;
           //this.detail=this.heronamelist[this.heroindex].jichu;
         //  this.Score=item.jichu.score;
@@ -308,19 +312,19 @@ export default { //会自动生成new vue({})
           break;
         case 2:
           this.relationNum=2;
-          console.log(this.heroId);
+        //  console.log(this.heroId);
             this.selectDetail=this.enhanced;
           // this.xiangsheng=this.heronamelist[this.heroindex].xiangsheng;
           break;
         case 3:
           this.relationNum=3;
-          console.log(this.heroId);
+       //   console.log(this.heroId);
           this.selectDetail=this.BeRestrained;
         // this.beikezhi=this.heronamelist[this.heroindex].beikezhi;
           break;
         case 4:
           this.relationNum=4;
-          console.log(this.heroId);
+        //  console.log(this.heroId);
           this.selectDetail=this.restraint;
       //    this.kezhi=this.heronamelist[this.heroindex].kezhi;
           break;
@@ -334,6 +338,9 @@ export default { //会自动生成new vue({})
         method:'get',
        url:('https://www.bphots.com/bp_helper/get/herolist?lang=zh-CN'),
       }).then(function(response){
+        for(var a=0;a<response.data.length;a++){
+           response.data[a].pictures="https://www.bphots.com/images/btn/"+response.data[a].basic.toLowerCase()+".png";
+        }
         _this.heronamelist = response.data;
         console.log(_this.heronamelist);
       });
@@ -403,8 +410,8 @@ export default { //会自动生成new vue({})
         hero_id:++id,
       })
         .then(function (response) {
-          console.log(response);
            _this.queryData=response.data.data;
+          console.log(_this.queryData);
         })
         .catch(function (error) {
           console.log(error);
@@ -821,10 +828,97 @@ export default { //会自动生成new vue({})
       hero1.set("80","伊瑞尔");
       return hero1.get(heroid1.toString());
     },
+    //英雄名转英
+    heronameToen:function (heroname) {
+      var hero1=new Map();
+      hero1.set("泽拉图","zeratul");
+      hero1.set("维拉","valla");
+      hero1.set("乌瑟尔","uther");
+      hero1.set("泰兰德","tyrande");
+      hero1.set("泰瑞尔","tyreal");
+      hero1.set("塔萨达尔","tassadar");
+      hero1.set("缝合怪","stitches");
+      hero1.set("桑娅","sonya");
+      hero1.set("重锤军士","sgthammer");
+      hero1.set("雷诺","raynor");
+      hero1.set("诺娃","nova");
+      hero1.set("纳兹波","nazeebo");
+      hero1.set("穆拉丁","muradin");
+      hero1.set("玛法里奥","malfurion");
+      hero1.set("凯瑞甘","kerrigan");
+      hero1.set("伊利丹","illidan");
+      hero1.set("加兹鲁维","gazlowe");
+      hero1.set("弗斯塔德","falstad");
+      hero1.set("精英牛头人酋长","etc");
+      hero1.set("迪亚波罗","diablo");
+      hero1.set("阿尔萨斯","arthas");
+      hero1.set("阿巴瑟","abathur");
+      hero1.set("泰凯斯","tychus");
+      hero1.set("丽丽","lili");
+      hero1.set("光明之翼","brightwing");
+      hero1.set("奔波尔霸","murky");
+      hero1.set("扎加拉","zagara");
+      hero1.set("雷加尔","rehgar");
+      hero1.set("陈","chen");
+      hero1.set("阿兹莫丹","azmodan");
+      hero1.set("阿努巴拉克","anubarak");
+      hero1.set("吉安娜","jaina");
+      hero1.set("萨尔","thrall");
+      hero1.set("失落的维京人","lostvikings");
+      hero1.set("希尔瓦娜斯","sylvanas");
+      hero1.set("凯尔萨斯","kaelthas");
+      hero1.set("乔汉娜","johanna");
+      hero1.set("屠夫","butcher");
+      hero1.set("李奥瑞克","leoric");
+      hero1.set("卡拉辛姆","kharazim");
+      hero1.set("雷克萨","rexxar");
+      hero1.set("莫拉莉斯中尉","ltmorales");
+      hero1.set("阿塔尼斯","artanis");
+      hero1.set("古","cho");
+      hero1.set("加尔","gall");
+      hero1.set("露娜拉","lunara");
+      hero1.set("格雷迈恩","greymane");
+      hero1.set("李敏","liming");
+      hero1.set("祖尔","xul");
+      hero1.set("德哈卡","dehaka");
+      hero1.set("猎空","tracer");
+      hero1.set("克罗米","chromie");
+      hero1.set("麦迪文","medivh");
+      hero1.set("古尔丹","guldan");
+      hero1.set("奥莉尔","auriel");
+      hero1.set("阿拉纳克","alarak");
+      hero1.set("查莉娅","zarya");
+      hero1.set("萨穆罗","samuro");
+      hero1.set("瓦里安","varian");
+      hero1.set("拉格纳罗斯","ragnaros");
+      hero1.set("祖尔金","zuljin");
+      hero1.set("瓦莉拉","valeera");
+      hero1.set("卢西奥","lucio");
+      hero1.set("普罗比斯","probius");
+      hero1.set("卡西娅","cassia");
+      hero1.set("源氏","genji");
+      hero1.set("D.Va","dva");
+      hero1.set("马萨伊尔","malthael");
+      hero1.set("斯托科夫","stukov");
+      hero1.set("加尔鲁什","garrosh");
+      hero1.set("克尔苏加德","kelthuzad");
+      hero1.set("安娜","ana");
+      hero1.set("狂鼠","junkrat");
+      hero1.set("阿莱克丝塔萨","alexstrasa");
+      hero1.set("半藏","hanzo");
+      hero1.set("布雷泽","blaze");
+      hero1.set("玛维","maiev");
+      hero1.set("菲尼克斯","fenix");
+      hero1.set("迪卡德","deckard");
+      hero1.set("伊瑞尔","yrel");
+      return hero1.get(heroname);
+    },
     objectToArr:function(obj){
       let arr = Object.keys(obj).map((item, index) => ({name: item, score:obj[item]}));//json对象转数组
       for(var c=0;c<arr.length;c++){
         arr[c].name=this.heroToheroname(arr[c].name);
+        arr[c].engname=this.heronameToen(arr[c].name)
+        arr[c].pictures="https://www.bphots.com/images/portrait/"+arr[c].engname+".png";
       }
       return arr;
     },
@@ -2126,6 +2220,9 @@ export default { //会自动生成new vue({})
     width: 84rem;
     height: 43rem;
     background-color: white;
+  }
+  .portrait{
+
   }
   /*.el-icon-close{*/
     /*!*position: fixed;*!*/
