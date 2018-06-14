@@ -66,9 +66,9 @@
                     </div>
                    <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
                 </div>
-                <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 16rem;margin-right: -10px;float: left;display: inline-flex;">
+                <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 23rem;margin-right: -10px;float: left;display: inline-flex;">
                   <img class="portrait"  v-bind:src="beikezhi.pictures" style="width: 32px;height: 32px;">
-                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 7.5rem;left: 0;text-align: center;">{{beikezhi.name}}</div>
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;">{{beikezhi.name}}</div>
                     <div class="row-number">
                       <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
@@ -2213,7 +2213,7 @@ export default { //会自动生成new vue({})
   /*}*/
   .tagFalse {
     float: right;
-    width: 30rem;
+    width: 37rem;
     text-align: left;
   }
 </style>
