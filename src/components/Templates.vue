@@ -25,7 +25,7 @@
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist">
               <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
-                <img class="images"  v-bind:src="item.pictures" >
+                <!--<img class="images"  v-bind:src="item.pictures" >-->
               </div>
             </div>
           </div>
@@ -196,7 +196,7 @@ export default { //会自动生成new vue({})
       onShowScoreTab:null,
       showherolist:1,
       templatesPermited:1,//{$templatesPermited}=1,0    window.templatePermited  0普通 1 管理 Null未登录
-      messagebox:true,
+      messagebox:null,
       message:"",
       onShowScoreTabHero:null,
       mastershow:false,
@@ -226,7 +226,7 @@ export default { //会自动生成new vue({})
       // }
       // this.querylist=resArr;
       // console.log(this.querylist);
-      this.queryView(1);
+    //  this.queryView(1);
      // console.log(this.queryData);
 
     })
@@ -247,37 +247,14 @@ export default { //会自动生成new vue({})
   },
   methods: {
     selectHero: function (item,index) {
+      this.heroId=item.id;
+      this.queryView(this.heroId);
       this.relationNum=1;
       this.HeroName=item.name;
       this.beginTochange=false;
       this.tag=true;
       this.heroId=item.id;
-      this.queryView(this.heroId);
-      this.heroId=item.id;
       //base属性的转换
-      console.log("base:")
-      this.base=this.queryData.base;
-      let basearr = Object.keys(this.base).map((item, index) => ({name: item, score:this.base[item]}));//json对象转数组
-      let basemap = Object.keys(this.base.map).map((item, index) => ({name: item, score:this.base.map[item]}));
-      basearr.splice(7,1);
-      for(var a=0;a<basemap.length;a++){
-        basearr.push(basemap[a]);
-      }
-      for(var b=0;b<basearr.length;b++){
-       basearr[b].name=this.querybaseTobasename(basearr[b].name);
-      }
-      this.base=basearr;
-      console.log(this.base);
-       this.selectDetail=this.base;
-      this.enhanced=this.objectToArr(this.queryData.synergy);
-      console.log("synergy:")
-      console.log(this.enhanced);
-      this.BeRestrained=this.objectToArr(this.queryData.beRestricted);
-      console.log("beRestricted:")
-      console.log(this.BeRestrained);
-      this.restraint=this.objectToArr(this.queryData.restraint);
-      console.log("restraint:")
-      console.log(this.restraint);
      if(index==(item.id-1))
       {
         console.log("您选中了"+item.name);
@@ -407,11 +384,34 @@ export default { //会自动生成new vue({})
       console.log("query：");
       var _this=this;
       this.$axios.post('http://old.bphots.com/templates/query', {
-        hero_id:++id,
+        hero_id:id,
       })
         .then(function (response) {
            _this.queryData=response.data.data;
           console.log(_this.queryData);
+          console.log("base:")
+          _this.base=_this.queryData.base;
+          let basearr = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item]}));//json对象转数组
+          let basemap = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item]}));
+          basearr.splice(7,1);
+          for(var a=0;a<basemap.length;a++){
+            basearr.push(basemap[a]);
+          }
+          for(var b=0;b<basearr.length;b++){
+            basearr[b].name=_this.querybaseTobasename(basearr[b].name);
+          }
+          _this.base=basearr;
+          console.log(_this.base);
+          _this.selectDetail=_this.base;
+          _this.enhanced=_this.objectToArr(_this.queryData.synergy);
+          console.log("synergy:")
+          console.log(_this.enhanced);
+          _this.BeRestrained=_this.objectToArr(_this.queryData.beRestricted);
+          console.log("beRestricted:")
+          console.log(_this.BeRestrained);
+          _this.restraint=_this.objectToArr(_this.queryData.restraint);
+          console.log("restraint:")
+          console.log(_this.restraint);
         })
         .catch(function (error) {
           console.log(error);
@@ -517,24 +517,20 @@ export default { //会自动生成new vue({})
       //管理员提交用set
       if (this.templatesPermited == 1) { //通过才能提交
         var heroitem = "hero";
-        heroitem = heroitem + "_" + (++this.onShowScoreTab);
+        var idname=this.enhanced[this.onShowScoreTab].name;
+        var heroid=null;
+        for(var a=0;a<this.heronamelist.length;a++){
+          if(idname==this.heronamelist[a].name){
+           heroid=this.heronamelist[a].id;
+          }
+        }
+        heroitem = heroitem + "_" + (heroid);
         this.onShowScoreTabHero=this.itemToheroname(heroitem);
         var _this = this;
 
         console.log(_this.HeroName);
         console.log(_this.onShowScoreTabHero);
         console.log(score);
-        switch (_this.relationNum){
-          case 2:
-            _this.message=_this.HeroName+"与"+_this.onShowScoreTabHero+"相生配合"+score+"分";
-            break;
-          case 3:
-            _this.message=_this.HeroName+"被"+_this.onShowScoreTabHero+"克制"+score+"分";
-            break;
-          case 4:
-            _this.message=_this.HeroName+"克制"+_this.onShowScoreTabHero+score+"分";
-            break;
-        }
         this.$axios.post('http://old.bphots.com/templates/set', {
           hero_id: this.heroId,
           item: heroitem,
@@ -543,11 +539,22 @@ export default { //会自动生成new vue({})
         })
           .then(function (response) {
             if (response.data.result == "Success") {
-              _this.messagebox = true;
+              _this.messagebox = 1;
+              switch (this.relationNum){
+                case 2:
+                  this.message=this.HeroName+"与"+this.onShowScoreTabHero+"相生配合"+score+"分";
+                  break;
+                case 3:
+                  this.message=_this.HeroName+"被"+this.onShowScoreTabHero+"克制"+score+"分";
+                  break;
+                case 4:
+                  this.message=_this.HeroName+"克制"+this.onShowScoreTabHero+score+"分";
+                  break;
+              }
             }
           })
           .catch(function (error) {
-            _this.messagebox = false;
+            _this.messagebox = 0;
           });
       }
      // 普通用户提交用offer
@@ -828,6 +835,89 @@ export default { //会自动生成new vue({})
       hero1.set("80","伊瑞尔");
       return hero1.get(heroid1.toString());
     },
+    //英雄名转id
+    heronameTohero:function (heroname1) {
+      hero1.set("泽拉图","1");
+      hero1.set("维拉","2");
+      hero1.set("乌瑟尔","3");
+      hero1.set("泰兰德","4");
+      hero1.set("泰瑞尔","5");
+      hero1.set("塔萨达尔","6");
+      hero1.set("缝合怪","7");
+      hero1.set("桑娅","8");
+      hero1.set("重锤军士","9");
+      hero1.set("雷诺","10");
+      hero1.set("诺娃","11");
+      hero1.set("纳兹波","12");
+      hero1.set("穆拉丁","13");
+      hero1.set("玛法里奥","14");
+      hero1.set("凯瑞甘","15");
+      hero1.set("伊利丹","16");
+      hero1.set("加兹鲁维","17");
+      hero1.set("弗斯塔德","18");
+      hero1.set("精英牛头人酋长","19");
+      hero1.set("迪亚波罗","20");
+      hero1.set("阿尔萨斯","21");
+      hero1.set("阿巴瑟","22");
+      hero1.set("泰凯斯","23");
+      hero1.set("丽丽","24");
+      hero1.set("光明之翼","25");
+      hero1.set("奔波尔霸","26",);
+      hero1.set("27","扎加拉");
+      hero1.set("28","雷加尔");
+      hero1.set("29","陈");
+      hero1.set("30","阿兹莫丹");
+      hero1.set("31","阿努巴拉克",);
+      hero1.set("32","吉安娜");
+      hero1.set("33","萨尔");
+      hero1.set("34","失落的维京人");
+      hero1.set("35","希尔瓦娜斯");
+      hero1.set("36","凯尔萨斯");
+      hero1.set("37","乔汉娜");
+      hero1.set("38","屠夫");
+      hero1.set("39","李奥瑞克");
+      hero1.set("40","卡拉辛姆");
+      hero1.set("41","雷克萨");
+      hero1.set("42","莫拉莉斯中尉");
+      hero1.set("43","阿塔尼斯");
+      hero1.set("44","古");
+      hero1.set("45","加尔");
+      hero1.set("46","露娜拉");
+      hero1.set("47","格雷迈恩");
+      hero1.set("48","李敏");
+      hero1.set("49","祖尔");
+      hero1.set("50","德哈卡");
+      hero1.set("51","猎空");
+      hero1.set("52","克罗米");
+      hero1.set("53","麦迪文");
+      hero1.set("54","古尔丹");
+      hero1.set("55","奥莉尔");
+      hero1.set("56","阿拉纳克");
+      hero1.set("57","查莉娅");
+      hero1.set("58","萨穆罗");
+      hero1.set("59","瓦里安");
+      hero1.set("60","拉格纳罗斯");
+      hero1.set("61","祖尔金");
+      hero1.set("62","瓦莉拉");
+      hero1.set("63","卢西奥");
+      hero1.set("64","普罗比斯");
+      hero1.set("65","卡西娅");
+      hero1.set("66","源氏");
+      hero1.set("67","D.Va");
+      hero1.set("68","马萨伊尔");
+      hero1.set("69","斯托科夫");
+      hero1.set("70","加尔鲁什");
+      hero1.set("71","克尔苏加德");
+      hero1.set("72","安娜");
+      hero1.set("73","狂鼠");
+      hero1.set("74","阿莱克丝塔萨");
+      hero1.set("75","半藏");
+      hero1.set("76","布雷泽");
+      hero1.set("77","玛维");
+      hero1.set("78","菲尼克斯");
+      hero1.set("79","迪卡德");
+      hero1.set("80","伊瑞尔");
+    },
     //英雄名转英
     heronameToen:function (heroname) {
       var hero1=new Map();
@@ -923,16 +1013,16 @@ export default { //会自动生成new vue({})
       return arr;
     },
     //element方法消息提示框
-    open1() {
+    open1(){
       console.log(this.message);
-      if(this.messagebox){
+      if(this.messagebox==1){
         this.$notify.info({
           title: '提交成功',
           message: this.message,
           type: 'success'
         });
       }
-    else{
+    if(this.messagebox==0){
         this.$notify.error({
           title: '提交失败',
           message: '请确认登录信息'
