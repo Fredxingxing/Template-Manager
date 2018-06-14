@@ -20,12 +20,12 @@
     <div class="modal show" id="modal-logs">
       <div class="modal-body"v-if="mastershow==false">
         <div class="templates" v-on:click="reset()">
-          <el-alert title="未登录" center type="info" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited==0" show-icon></el-alert>
+          <el-alert title="未登录" center type="info" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited==null" show-icon></el-alert>
           <div class="templates-herolist" v-if="showherolist==1">
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist">
               <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
                 <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
-                <!--<img class="images"  v-bind:src="item.pictures" >-->
+                <img class="images"  v-bind:src="item.pictures" >
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
                   <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
                   <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
                   <div class="templates-detail-top-modes-btn btn btn-default " v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-on:click="masterView(1)">审核进度查询审核处理</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-if="templatesPermited!=null" v-on:click="masterView(1)">审核进度查询审核处理</div>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@
                     </div>
                   </div>
                 </div>
-                <el-button type="info"  plain v-on:click="upload(detail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
+                <el-button type="info"  plain v-on:click="upload(selectDetail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
               </div>
             </div>
           </div>
@@ -121,9 +121,9 @@
           <el-table-column prop="progress" label="审批进度" width="180"></el-table-column>
           <el-table-column prop="action" label="管理员审批" width="180" >
               <template slot-scope="scope">
-                <el-button  @click.native.prevent="deleteRow(scope.$index, masterData)" type="text" size="small">撤回</el-button>
-                <el-button @click.native.prevent="AgreeRow(scope.$index, masterData)" type="text" size="small">同意</el-button>
-                <el-button @click.native.prevent="RefuseRow(scope.$index, masterData)" type="text" size="small">拒绝</el-button>
+                <el-button  v-if="templatesPermited==0" @click.native.prevent="deleteRow(scope.$index, masterData)" type="text" size="medium">撤回</el-button>
+                <el-button v-if="templatesPermited==1" @click.native.prevent="AgreeRow(scope.$index, masterData)" type="text" size="medium">同意</el-button>
+                <el-button v-if="templatesPermited==1" @click.native.prevent="RefuseRow(scope.$index, masterData)" type="text" size="medium">拒绝</el-button>
               </template>
           </el-table-column>
         </el-table>
@@ -215,7 +215,7 @@ export default { //会自动生成new vue({})
   mounted: function () {
     this.$nextTick(function () {
       this.templateView();
-      if(this.templatesPermited===0) {
+      if(this.templatesPermited===null) {
         this.beginTochange = true;
       }
       var resArr=new Array();
@@ -438,62 +438,58 @@ export default { //会自动生成new vue({})
     },
     //上传的方法
     upload:function (detail) {
-      var base=new Map();
-      base.set("地图强势:末日塔","map_mrt");
-      base.set("地图强势:炼狱圣坛","map_lyst");
-      base.set("地图强势:永恒战场","map_yhzc");
-      base.set("地图强势:末日塔","map_mrt");
-      base.set("地图强势:蛛后墓","map_zhm");
-      base.set("地图强势:天空殿","map_tkd");
-      base.set("地图强势:巨龙镇","map_jlz");
-      base.set("地图强势:黑心湾","map_hxw");
-      base.set("地图强势:鬼灵矿","map_glk");
-      base.set("地图强势:诅咒谷","map_zzg");
-      base.set("地图强势:恐魔园","map_kmy");
-      base.set("地图强势:布莱克西斯禁区","map_blkxsjq");
-      base.set("地图强势:弹头枢纽站","map_dtsnz");
-      base.set("地图强势:沃斯卡娅工业区","map_wskyzzc");
-      base.set("版本强势","base_strong");
-      base.set("先选方一楼选择","base_firstpick");
-      base.set("使用容错率","base_stability");
-      base.set("清线效率","base_creep");
-      base.set("上单能力","base_creep_solo");
-      base.set("全球流能力","base_creep_global");
-      base.set("清双线能力","base_creep_double");
-      if (this.relationNum === 1) {
-        for (let baseindex of detail) {
-          // console.log(baseindex)
-          this.$axios.post('http://old.bphots.com/templates/offer', {
-            hero_id:this.heroId,
-            item:base.get(baseindex.detailname),
-            part:this.relationNum,
-            point:parseInt(baseindex.score)
-          })
-            .then(function (response) {
-              console.log(response.data.result);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
+      var url=null;
+        if(this.templatesPermited==0){
+        url='http://old.bphots.com/templates/offer';
       }
-      // else {//2.3.4相生 被克制 克制
-      //        var heroitem="hero";
-      //         heroitem=heroitem+this.onShowScoreTab.toString();
-      //         console.log(heroitem);
-      //     this.$axios.post('http://old.bphots.com/templates/offer', {
-      //       hero_id:this.heroId,
-      //       item:heroitem,
-      //       part:this.relationNum,
-      //       point:this.Score,
-      //     })
-      //       .then(function (response) {
-      //         console.log(response);
-      //       })
-      //       .catch(function (error) {
-      //         console.log(error);
-      //       });
-      // }
+      if(this.templatesPermited==1){
+        url='http://old.bphots.com/templates/set';
+      }
+        var base = new Map();
+        base.set("末日塔", "map_mrt");
+        base.set("炼狱圣坛", "map_lyst");
+        base.set("永恒战场", "map_yhzc");
+        base.set("末日塔", "map_mrt");
+        base.set("蛛后墓", "map_zhm");
+        base.set("天空殿", "map_tkd");
+        base.set("巨龙镇", "map_jlz");
+        base.set("黑心湾", "map_hxw");
+        base.set("鬼灵矿", "map_glk");
+        base.set("诅咒谷", "map_zzg");
+        base.set("恐魔园", "map_kmy");
+        base.set("花村", "map_hc");
+        base.set("奥特兰克战道", "map_atlzd");
+        base.set("布莱克西斯禁区", "map_blkxsjq");
+        base.set("弹头枢纽站", "map_dtsnz");
+        base.set("沃斯卡娅工业区", "map_wskyzzc");
+        base.set("版本强势", "base_strong");
+        base.set("先选方一楼选择", "base_firstpick");
+        base.set("使用容错率", "base_stability");
+        base.set("清线效率", "base_creep");
+        base.set("上单能力", "base_creep_solo");
+        base.set("全球流能力", "base_creep_global");
+        base.set("清双线能力", "base_creep_double");
+        console.log(this.relationNum);
+        console.log(detail);
+        if (this.relationNum === 1) {
+          for (let basedetail of detail) {
+            // console.log(baseindex)
+            this.$axios.post(url, {
+              hero_id: this.heroId,
+              item: base.get(basedetail.name),
+              part: this.relationNum,
+              point: basedetail.score
+            })
+              .then(function (response) {
+                console.log(response.data.result);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
+        }
+
+
     },
     showScroller:function (num,Relnum) {
     //  this.currentTab = BKZnum;
@@ -515,7 +511,13 @@ export default { //会自动生成new vue({})
     uploadrelation:function (score) {
       console.log(score);
       //管理员提交用set
-      if (this.templatesPermited == 1) { //通过才能提交
+      var url1=null;
+      if(this.templatesPermited==0){
+        url1='http://old.bphots.com/templates/offer';
+      }
+      if(this.templatesPermited==1){
+        url1='http://old.bphots.com/templates/set';
+      }
         var heroitem = "hero";
         var idname=this.enhanced[this.onShowScoreTab].name;
         var heroid=null;
@@ -531,7 +533,7 @@ export default { //会自动生成new vue({})
         console.log(_this.HeroName);
         console.log(_this.onShowScoreTabHero);
         console.log(score);
-        this.$axios.post('http://old.bphots.com/templates/set', {
+        this.$axios.post(url1, {
           hero_id: this.heroId,
           item: heroitem,
           part: this.relationNum,
@@ -556,43 +558,7 @@ export default { //会自动生成new vue({})
           .catch(function (error) {
             _this.messagebox = 0;
           });
-      }
-     // 普通用户提交用offer
-      if(this.templatesPermited==0){
-        var heroitem = "hero";
-        heroitem = heroitem + "_" + (++this.onShowScoreTab);
-        this.onShowScoreTabHero=this.itemToheroname(heroitem);
-        var _this = this;
-        var relationname="基础";
-        console.log(_this.HeroName);
-        console.log(_this.onShowScoreTabHero);
-        console.log(score);
-        switch (_this.relationNum){
-          case 2:
-            _this.message=_this.HeroName+"与"+_this.onShowScoreTabHero+"相生配合"+score+"分";
-            break;
-          case 3:
-            _this.message=_this.HeroName+"被"+_this.onShowScoreTabHero+"克制"+score+"分";
-            break;
-          case 4:
-            _this.message=_this.HeroName+"克制"+_this.onShowScoreTabHero+score+"分";
-            break;
-        }
-        this.$axios.post('http://old.bphots.com/templates/offer', {
-          hero_id: this.heroId,
-          item: heroitem,
-          part: this.relationNum,
-          point: parseInt(score),
-        })
-          .then(function (response) {
-            if (response.data.result == "Success") {
-              _this.messagebox = true;
-            }
-          })
-          .catch(function (error) {
-            _this.messagebox = false;
-          });
-      }
+
     },
     MasterClose:function (page) {
       this.page=this.page+page;
@@ -834,89 +800,6 @@ export default { //会自动生成new vue({})
       hero1.set("79","迪卡德");
       hero1.set("80","伊瑞尔");
       return hero1.get(heroid1.toString());
-    },
-    //英雄名转id
-    heronameTohero:function (heroname1) {
-      hero1.set("泽拉图","1");
-      hero1.set("维拉","2");
-      hero1.set("乌瑟尔","3");
-      hero1.set("泰兰德","4");
-      hero1.set("泰瑞尔","5");
-      hero1.set("塔萨达尔","6");
-      hero1.set("缝合怪","7");
-      hero1.set("桑娅","8");
-      hero1.set("重锤军士","9");
-      hero1.set("雷诺","10");
-      hero1.set("诺娃","11");
-      hero1.set("纳兹波","12");
-      hero1.set("穆拉丁","13");
-      hero1.set("玛法里奥","14");
-      hero1.set("凯瑞甘","15");
-      hero1.set("伊利丹","16");
-      hero1.set("加兹鲁维","17");
-      hero1.set("弗斯塔德","18");
-      hero1.set("精英牛头人酋长","19");
-      hero1.set("迪亚波罗","20");
-      hero1.set("阿尔萨斯","21");
-      hero1.set("阿巴瑟","22");
-      hero1.set("泰凯斯","23");
-      hero1.set("丽丽","24");
-      hero1.set("光明之翼","25");
-      hero1.set("奔波尔霸","26",);
-      hero1.set("27","扎加拉");
-      hero1.set("28","雷加尔");
-      hero1.set("29","陈");
-      hero1.set("30","阿兹莫丹");
-      hero1.set("31","阿努巴拉克",);
-      hero1.set("32","吉安娜");
-      hero1.set("33","萨尔");
-      hero1.set("34","失落的维京人");
-      hero1.set("35","希尔瓦娜斯");
-      hero1.set("36","凯尔萨斯");
-      hero1.set("37","乔汉娜");
-      hero1.set("38","屠夫");
-      hero1.set("39","李奥瑞克");
-      hero1.set("40","卡拉辛姆");
-      hero1.set("41","雷克萨");
-      hero1.set("42","莫拉莉斯中尉");
-      hero1.set("43","阿塔尼斯");
-      hero1.set("44","古");
-      hero1.set("45","加尔");
-      hero1.set("46","露娜拉");
-      hero1.set("47","格雷迈恩");
-      hero1.set("48","李敏");
-      hero1.set("49","祖尔");
-      hero1.set("50","德哈卡");
-      hero1.set("51","猎空");
-      hero1.set("52","克罗米");
-      hero1.set("53","麦迪文");
-      hero1.set("54","古尔丹");
-      hero1.set("55","奥莉尔");
-      hero1.set("56","阿拉纳克");
-      hero1.set("57","查莉娅");
-      hero1.set("58","萨穆罗");
-      hero1.set("59","瓦里安");
-      hero1.set("60","拉格纳罗斯");
-      hero1.set("61","祖尔金");
-      hero1.set("62","瓦莉拉");
-      hero1.set("63","卢西奥");
-      hero1.set("64","普罗比斯");
-      hero1.set("65","卡西娅");
-      hero1.set("66","源氏");
-      hero1.set("67","D.Va");
-      hero1.set("68","马萨伊尔");
-      hero1.set("69","斯托科夫");
-      hero1.set("70","加尔鲁什");
-      hero1.set("71","克尔苏加德");
-      hero1.set("72","安娜");
-      hero1.set("73","狂鼠");
-      hero1.set("74","阿莱克丝塔萨");
-      hero1.set("75","半藏");
-      hero1.set("76","布雷泽");
-      hero1.set("77","玛维");
-      hero1.set("78","菲尼克斯");
-      hero1.set("79","迪卡德");
-      hero1.set("80","伊瑞尔");
     },
     //英雄名转英
     heronameToen:function (heroname) {
