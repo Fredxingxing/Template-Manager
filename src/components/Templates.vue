@@ -57,23 +57,23 @@
                       <!--<label style="color: #eeee;margin: 0.75rem;">请选择您战网所在服务器</label>-->
                       <!--<div id="Area"class="templates-detail-top-modes-btn btn btn-default" style="margin:0.75rem;"v-for="area of ServerArea">{{area}}</div>-->
                       <!--</div>-->
-                <div class="templates-detail-main-herolist-row" v-for="detail in selectDetail" v-model="selectDetail" v-if="tag==true">
-                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: -20px;cursor: pointer;" v-on:click="changePoint(detail,1)">+</a>
-                     <div class="templates-detail-main-herolist-row-portrait"></div>
+                <div class="templates-detail-main-herolist-row" v-for="(detail,baseindex) in selectDetail" v-model="selectDetail" v-if="tag==true">
+                     <!--<div class="templates-detail-main-herolist-row-portrait"></div>-->
                       <div class="templates-detail-main-herolist-row-heroname" >{{detail.name}}</div>
+                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: 0px;cursor: pointer;font-size:x-large;" v-on:click="changePoint(detail,1,baseindex)">+</a>
                        <div class="progress progress-lg" >
-                        <div class="progress-bar p12" role="progressbar">{{detail.score}}</div>
+                        <div class="progress-bar " v-bind:class="colorObject" role="progressbar">{{detail.score}}</div>
                     </div>
-                   <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -20px;cursor: pointer;"  v-on:click="changePoint(detail,-1)">-</a>
+                   <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -10px;cursor: pointer;font-size:x-large;"  v-on:click="changePoint(detail,-1,baseindex)">-</a>
                 </div>
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 23rem;margin-right: -10px;float: left;display: inline-flex;">
                   <img class="portrait"  v-bind:src="beikezhi.pictures" style="width: 32px;height: 32px;">
                   <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;">{{beikezhi.name}}</div>
                     <div class="row-number">
-                      <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
+                      <span class="progress-bar-relation p12 number-handler number-digit" style="width: 7rem;" role="progressbar"  v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
                         <div class="options-radio" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
-                          <input class="inputnum" id="3" type="radio" :value="num" v-model="beikezhi.score" @click="uploadrelation(num);open1()" />
+                          <input class="inputnum" id="3" type="radio" :value="num" v-model="beikezhi.score" @click="uploadrelation(num)" />
                           <label  style="color:#dddd">{{num}}</label>
                       </div>
                     </div>
@@ -82,10 +82,10 @@
                 <div style="display: inline-block;width: 7rem;margin: 0 5px 0 -5px;">
                   <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" style="width: 7rem;display: inline-flex;">
                     <div class="row-number">
-                    <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+                    <span class="progress-bar-relation p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum" style="position: absolute;background: #000;z-index: 10;">
                         <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
-                          <input class="inputnum" id="4" type="radio" :value="num" v-model="kezhi.score" @click="uploadrelation(num);open1()"/>
+                          <input class="inputnum" id="4" type="radio" :value="num" v-model="kezhi.score" @click="uploadrelation(num)"/>
                           <label  style="color:#dddd">{{num}}</label>
                         </div>
                       </div>
@@ -95,10 +95,10 @@
                 <div style="display: inline-block;width: 7rem;">
                   <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" style="width: 7rem;display: inline-flex;">
                     <div class="row-number">
-                      <span class="progress-bar p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
+                      <span class="progress-bar-relation p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum" style="position: absolute;background: #000;z-index: 10;">
                         <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
-                          <input class="inputnum" id="2" type="radio" :value="num" v-model="xiangsheng.score" @click="uploadrelation(num);open1()" />
+                          <input class="inputnum" id="2" type="radio" :value="num" v-model="xiangsheng.score" @click="uploadrelation(num)" />
                           <label  style="color:#dddd">{{num}}</label>
                         </div>
                       </div>
@@ -205,7 +205,29 @@ export default { //会自动生成new vue({})
       nopage:false,
       querylist:[],
       queryData:[],
-     // baselist[{}]
+      colorObj:{
+        p1:false,
+        p2:false,
+        p3:false,
+        p4:false,
+        p5:false,
+        p6:false,
+        p7:false,
+        p8:false,
+        p9:false,
+        p10:false,
+        p11:false,
+        p12:false,
+        p13:false,
+        p14:false,
+        p15:false,
+        p16:false,
+        p17:false,
+        p18:false,
+        p19:false,
+        p20:false,
+      },
+      baseindex:null
 
     }
   },
@@ -244,6 +266,21 @@ export default { //会自动生成new vue({})
     //     this.beginTochange=true;
     //   }
     // }
+    // messagebox:function(newmessage,oldmessage){
+    // }
+    detail:function (newcolor,oldcolor) {
+
+    }
+  },
+  computed:{
+    colorObject:function () {
+      for(var i=0;i<this.base.length;i++){
+        var colorindex='p'+(parseInt(this.base[i].score)+10).toString();
+        this.colorObj[colorindex]="true";
+        return this.colorObj;
+      }
+
+    }
   },
   methods: {
     selectHero: function (item,index) {
@@ -261,7 +298,7 @@ export default { //会自动生成new vue({})
       }
      // this.adviceView();
 },
-    changePoint:function(detail,num){
+    changePoint:function(detail,num,index){
      if(num>0){
        detail.score++;
        if(detail.score>10) {
@@ -275,7 +312,12 @@ export default { //会自动生成new vue({})
 
        }
      }
-
+     this.baseindex=index;
+     console.log(detail)
+      console.log(detail.score);
+      console.log(this.baseindex);
+      // console.log(this.colorArr);
+      // console.log(this.colorArr[5]);
   },
     relation:function (index,num) {
       switch (num){
@@ -412,6 +454,8 @@ export default { //会自动生成new vue({})
           _this.restraint=_this.objectToArr(_this.queryData.restraint);
           console.log("restraint:")
           console.log(_this.restraint);
+          //颜色的绑定
+          console.log(_this.colorObject);
         })
         .catch(function (error) {
           console.log(error);
@@ -553,12 +597,35 @@ export default { //会自动生成new vue({})
                   this.message=_this.HeroName+"克制"+this.onShowScoreTabHero+score+"分";
                   break;
               }
+              console.log("现在上传成功");
+              _this.$notify.info({
+                title: '提交成功',
+                message: this.message,
+                type: 'success'
+              });
             }
           })
           .catch(function (error) {
             _this.messagebox = 0;
+            console.log("上传失败");
+            _this.$notify.error({
+              title: '提交失败',
+              message: '请确认登录信息',
+            });
           });
-
+        // if(this.messagebox==1){
+        //   this.$notify.info({
+        //     title: '提交成功',
+        //     message: this.message,
+        //     type: 'success'
+        //   });
+        // }
+        // if(this.messagebox==0){
+        //   this.$notify.error({
+        //     title: '提交失败',
+        //     message: '请确认登录信息'
+        //   });
+        // }
     },
     MasterClose:function (page) {
       this.page=this.page+page;
@@ -896,22 +963,6 @@ export default { //会自动生成new vue({})
       return arr;
     },
     //element方法消息提示框
-    open1(){
-      console.log(this.message);
-      if(this.messagebox==1){
-        this.$notify.info({
-          title: '提交成功',
-          message: this.message,
-          type: 'success'
-        });
-      }
-    if(this.messagebox==0){
-        this.$notify.error({
-          title: '提交失败',
-          message: '请确认登录信息'
-        });
-      }
-  },
     deleteRow(index,rows){
       rows.splice(index,1);
       // console.log(index);
@@ -1111,7 +1162,7 @@ export default { //会自动生成new vue({})
     font-size: 1.3rem;
   }
   .templates-detail-main-herolist-row-heroname-relation{
-    margin-top: 0.6rem;
+    /*margin-top: 0.6rem;*/
     /* height: 2.5rem; */
     color: #eee;
     width: 15rem;
@@ -1990,6 +2041,20 @@ export default { //会自动生成new vue({})
     transition: width .6s ease;
     align-self: auto;
   }
+  .progress-bar-relation {
+    width: 0;
+    height: 80%;
+    font-size: 16px;
+    line-height: 22px;
+    color: #fff;
+    text-align: center;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    box-shadow: inset 1px -12px 10px 5px rgba(0,0,0,.15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+    align-self: auto;
+  }
   .progress-lg {
      margin-top: 0.5rem;
     margin-left: 0.5rem;
@@ -2055,6 +2120,7 @@ export default { //会自动生成new vue({})
     float: left;
     width: 9.09%;
     background-color:rgba(255, 255, 255, .1);
+    /*background-color: #C90078;*/
   }
   .p13 {
     float: left;
@@ -2188,10 +2254,10 @@ export default { //会自动生成new vue({})
   }
   .masterlist{
     /*display: flex;*/
-    margin-top: 10rem;
+    margin-top: 8.5rem;
     margin-left: 15rem;
     width: 84rem;
-    height: 43rem;
+    height: 45rem;
     background-color: white;
   }
   .portrait{
