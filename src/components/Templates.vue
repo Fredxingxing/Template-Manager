@@ -60,17 +60,17 @@
                 <div class="templates-detail-main-herolist-row" v-for="(detail,baseindex) in selectDetail" v-model="selectDetail" v-if="tag==true">
                      <!--<div class="templates-detail-main-herolist-row-portrait"></div>-->
                       <div class="templates-detail-main-herolist-row-heroname" >{{detail.name}}</div>
-                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: 0px;cursor: pointer;font-size:x-large;" v-on:click="changePoint(detail,1,baseindex)">+</a>
+                  <a style="color: #eeeeee;align-self: center;margin-right: 4px;margin-top: 0px;cursor: pointer;font-size:x-large;" v-on:click="changePoint(detail,-1,baseindex)">-</a>
                        <div class="progress progress-lg" >
-                        <div class="progress-bar " v-bind:class="colorObject" role="progressbar">{{detail.score}}</div>
+                        <div class="progress-bar " v-bind:class="'p'+(detail.score+11)" role="progressbar">{{detail.score}}</div>
                     </div>
-                   <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -10px;cursor: pointer;font-size:x-large;"  v-on:click="changePoint(detail,-1,baseindex)">-</a>
+                   <a style="color: #eeeeee;align-self: center;margin-left: 5px;margin-top: -10px;cursor: pointer;font-size:x-large;"  v-on:click="changePoint(detail,1,baseindex)">+</a>
                 </div>
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 23rem;margin-right: -10px;float: left;display: inline-flex;">
                   <img class="portrait"  v-bind:src="beikezhi.pictures" style="width: 32px;height: 32px;">
                   <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;">{{beikezhi.name}}</div>
                     <div class="row-number">
-                      <span class="progress-bar-relation p12 number-handler number-digit" style="width: 7rem;" role="progressbar"  v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
+                      <span class="progress-bar-relation  number-handler number-digit" v-bind:class="'p'+(beikezhi.score+11)" style="width: 7rem;" role="progressbar"  v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
                         <div class="options-radio" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
                           <input class="inputnum" id="3" type="radio" :value="num" v-model="beikezhi.score" @click="uploadrelation(num)" />
@@ -82,7 +82,7 @@
                 <div style="display: inline-block;width: 7rem;margin: 0 5px 0 -5px;">
                   <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(kezhi,KZnum) in restraint" style="width: 7rem;display: inline-flex;">
                     <div class="row-number">
-                    <span class="progress-bar-relation p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
+                    <span class="progress-bar-relation   number-handler number-digit" v-bind:class="'p'+(kezhi.score+11)" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(KZnum,4)">{{kezhi.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===4 &&onShowScoreTab===KZnum" style="position: absolute;background: #000;z-index: 10;">
                         <div class="options-radio-restraint" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
                           <input class="inputnum" id="4" type="radio" :value="num" v-model="kezhi.score" @click="uploadrelation(num)"/>
@@ -95,7 +95,7 @@
                 <div style="display: inline-block;width: 7rem;">
                   <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(xiangsheng,XSnum) in enhanced" style="width: 7rem;display: inline-flex;">
                     <div class="row-number">
-                      <span class="progress-bar-relation p12 number-handler number-digit" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
+                      <span class="progress-bar-relation  number-handler number-digit" v-bind:class="'p'+(xiangsheng.score+11)" style="width: 7rem;" role="progressbar" v-on:click.stop="showScroller(XSnum,2)">{{xiangsheng.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===2 &&onShowScoreTab===XSnum" style="position: absolute;background: #000;z-index: 10;">
                         <div class="options-radio-enhanced" v-for="num of scale" @click.stop="reset()" style="width: 7rem;">
                           <input class="inputnum" id="2" type="radio" :value="num" v-model="xiangsheng.score" @click="uploadrelation(num)" />
@@ -205,28 +205,29 @@ export default { //会自动生成new vue({})
       nopage:false,
       querylist:[],
       queryData:[],
-      colorObj:{
-        p1:false,
-        p2:false,
-        p3:false,
-        p4:false,
-        p5:false,
-        p6:false,
-        p7:false,
-        p8:false,
-        p9:false,
-        p10:false,
-        p11:false,
-        p12:false,
-        p13:false,
-        p14:false,
-        p15:false,
-        p16:false,
-        p17:false,
-        p18:false,
-        p19:false,
-        p20:false,
-      },
+      // colorObj:{
+      //   p1:false,
+      //   p2:false,
+      //   p3:false,
+      //   p4:false,
+      //   p5:false,
+      //   p6:false,
+      //   p7:false,
+      //   p8:false,
+      //   p9:false,
+      //   p10:false,
+      //   p11:false,
+      //   p12:false,
+      //   p13:false,
+      //   p14:false,
+      //   p15:false,
+      //   p16:false,
+      //   p17:false,
+      //   p18:false,
+      //   p19:false,
+      //   p20:false,
+      //   p21:false,
+      // },
       baseindex:null
 
     }
@@ -272,16 +273,16 @@ export default { //会自动生成new vue({})
 
     }
   },
-  computed:{
-    colorObject:function () {
-      for(var i=0;i<this.base.length;i++){
-        var colorindex='p'+(parseInt(this.base[i].score)+10).toString();
-        this.colorObj[colorindex]="true";
-        return this.colorObj;
-      }
-
-    }
-  },
+  // computed:{
+  //   colorObject:function () {
+  //     for(var i=0;i<this.base.length;i++){
+  //       var colorindex='p'+(parseInt(this.base[i].score)+10).toString();
+  //       this.colorObj[colorindex]="true";
+  //       return this.colorObj;
+  //     }
+  //
+  //   }
+  // },
   methods: {
     selectHero: function (item,index) {
       this.heroId=item.id;
@@ -2044,8 +2045,8 @@ export default { //会自动生成new vue({})
   .progress-bar-relation {
     width: 0;
     height: 80%;
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 30px;
     color: #fff;
     text-align: center;
     -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
@@ -2060,112 +2061,225 @@ export default { //会自动生成new vue({})
     margin-left: 0.5rem;
     height: 22px;
   }
+  /*.p1 {*/
+    /*float: right;*/
+    /*width: 100%;*/
+    /*background-color: #9D00C5;*/
+  /*}*/
+  /*.p2 {*/
+    /*float: right;*/
+    /*width: 90%;*/
+    /*background-color: #A100BE;*/
+  /*}*/
+  /*.p3 {*/
+    /*float: right;*/
+    /*width:80%;*/
+    /*background-color: #A500B7;*/
+  /*}*/
+  /*.p4 {*/
+    /*float: right;*/
+    /*width: 70%;*/
+    /*background-color: #A900B0;*/
+  /*}*/
+  /*.p5 {*/
+    /*float: right;*/
+    /*width: 60%;*/
+    /*background-color: #AD00A9;*/
+  /*}*/
+  /*.p6 {*/
+    /*float: right;*/
+    /*width: 50%;*/
+    /*background-color: #B100A2;*/
+  /*}*/
+  /*.p7 {*/
+    /*float: right;*/
+    /*width: 40%;*/
+    /*background-color: #B5009B;*/
+  /*}*/
+  /*.p8 {*/
+    /*float: right;*/
+    /*width: 30%;*/
+    /*background-color: #B90094;*/
+  /*}*/
+  /*.p9 {*/
+    /*float: right;*/
+    /*width: 20%;*/
+    /*background-color: #BD008D;*/
+  /*}*/
+  /*.p10 {*/
+    /*float: right;*/
+    /*width: 10%;*/
+    /*background-color: #C10086;*/
+  /*}*/
+  /*.p11 {*/
+    /*float: left;*/
+    /*text-align: center;*/
+    /*width: 0;*/
+    /*background-color: #C5007F;*/
+  /*}*/
+  /*.p12 {*/
+    /*float: left;*/
+    /*width: 10%;*/
+    /*!*background-color:rgba(255, 255, 255, .1);*!*/
+    /*background-color: #C90078;*/
+  /*}*/
+  /*.p13 {*/
+    /*float: left;*/
+    /*width: 20%;*/
+    /*background-color: #CD0071;*/
+  /*}*/
+  /*.p14 {*/
+    /*float: left;*/
+    /*width: 30%;*/
+    /*background-color: #D1006A;*/
+  /*}*/
+  /*.p15 {*/
+    /*float: left;*/
+    /*width: 40%;*/
+    /*background-color: #D50063;*/
+  /*}*/
+  /*.p16 {*/
+    /*float: left;*/
+    /*width: 50%;*/
+    /*background-color: #D9005C;*/
+  /*}*/
+  /*.p17 {*/
+    /*float: left;*/
+    /*width: 60%;*/
+    /*background-color: #DD0055;*/
+  /*}*/
+  /*.p18 {*/
+    /*float: left;*/
+    /*width: 70%;*/
+    /*background-color: #E1004E;*/
+  /*}*/
+  /*.p19 {*/
+    /*float: left;*/
+    /*width: 80%;*/
+    /*background-color: #E50047;*/
+  /*}*/
+  /*.p20 {*/
+    /*float: left;*/
+    /*width: 90%;*/
+    /*background-color: #E90040;*/
+  /*}*/
+  /*.p21 {*/
+    /*float: left;*/
+    /*width: 100%;*/
+    /*background-color: #ED0039;*/
+  /*}*/
   .p1 {
     float: right;
-    width: 90.90%;
-    background-color: #9D00C5;
+    width: 100%;
+    background-color: #d18bff;
   }
   .p2 {
     float: right;
-    width: 81.81%;
-    background-color: #A100BE;
+    width: 90%;
+    background-color: #c978ff;
   }
   .p3 {
     float: right;
-    width: 72.72%;
-    background-color: #A500B7;
+    width: 80%;
+    background-color: #c56dff;
   }
   .p4 {
     float: right;
-    width: 63.63%;
-    background-color: #A900B0;
+    width: 70%;
+    background-color: #c163ff;
   }
   .p5 {
     float: right;
-    width: 54.54%;
-    background-color: #AD00A9;
+    width: 60%;
+    background-color: #bc56ff;
   }
   .p6 {
     float: right;
-    width: 45.45%;
-    background-color: #B100A2;
+    width: 50%;
+    background-color: #b94fff;
   }
   .p7 {
     float: right;
-    width: 36.36%;
-    background-color: #B5009B;
+    width: 40%;
+    background-color: #b545ff;
   }
   .p8 {
     float: right;
-    width: 27.27%;
-    background-color: #B90094;
+    width: 30%;
+    background-color: #b13cff;
   }
   .p9 {
     float: right;
     width: 18.18%;
-    background-color: #BD008D;
+    background-color: #ac2fff;
   }
   .p10 {
     float: right;
     width: 9.09%;
-    background-color: #C10086;
+    background-color: #a900ff;
   }
   .p11 {
     float: left;
     text-align: center;
     width: 0;
-    background-color: #C5007F;
+    background-color: #a500ff;
   }
   .p12 {
     float: left;
-    width: 9.09%;
-    background-color:rgba(255, 255, 255, .1);
-    /*background-color: #C90078;*/
+    width: 10%;
+    /*background-color:rgba(255, 255, 255, .1);*/
+    background-color: #a100ff;
   }
   .p13 {
     float: left;
-    width: 18.18%;
-    background-color: #CD0071;
+    width: 20%;
+    background-color: #9c00d7;
   }
   .p14 {
     float: left;
-    width: 27.27%;
-    background-color: #D1006A;
+    width: 30%;
+    background-color: #8900d7;
   }
   .p15 {
     float: left;
-    width: 36.36%;
-    background-color: #D50063;
+    width: 40%;
+    background-color: #8500d7;
   }
   .p16 {
     float: left;
-    width: 45.45%;
-    background-color: #D9005C;
+    width: 50%;
+    background-color: #8100d7;
   }
   .p17 {
     float: left;
-    width: 54.54%;
-    background-color: #DD0055;
+    width: 60%;
+    background-color: #7c00b0;
   }
   .p18 {
     float: left;
-    width: 63.63%;
-    background-color: #E1004E;
+    width: 70%;
+    background-color: #6900B0;
   }
   .p19 {
     float: left;
-    width: 72.72%;
-    background-color: #E50047;
+    width: 80%;
+    background-color: #6500B7;
   }
   .p20 {
     float: left;
-    width: 81.81%;
-    background-color: #E90040;
+    width: 90%;
+    background-color: #610099;
   }
   .p21 {
     float: left;
-    width: 90.90%;
-    background-color: #ED0039;
+    width: 100%;
+    background-color: #5c0099;
+  }
+  .p-relation{
+      float: left;
+      width: 9.09%;
+      background-color:rgba(255, 255, 255, .1);
+      /*background-color: #C90078;*/
   }
   .templates-detail-top-modes-btns {
     margin-top: 2rem;
