@@ -196,7 +196,6 @@ export default { //会自动生成new vue({})
       onShowScoreTab:null,
       showherolist:1,
       templatesPermited:1,//{$templatesPermited}=1,0    window.templatePermited  0普通 1 管理 Null未登录
-      messagebox:null,
       message:"",
       onShowScoreTabHero:null,
       mastershow:false,
@@ -586,47 +585,32 @@ export default { //会自动生成new vue({})
         })
           .then(function (response) {
             if (response.data.result == "Success") {
-              _this.messagebox = 1;
-              switch (this.relationNum){
+              switch (_this.relationNum){
                 case 2:
-                  this.message=this.HeroName+"与"+this.onShowScoreTabHero+"相生配合"+score+"分";
+                  _this.message=_this.HeroName+"与"+_this.onShowScoreTabHero+"相生配合"+score+"分";
                   break;
                 case 3:
-                  this.message=_this.HeroName+"被"+this.onShowScoreTabHero+"克制"+score+"分";
+                  _this.message=_this.HeroName+"被"+_this.onShowScoreTabHero+"克制"+score+"分";
                   break;
                 case 4:
-                  this.message=_this.HeroName+"克制"+this.onShowScoreTabHero+score+"分";
+                  _this.message=_this.HeroName+"克制"+_this.onShowScoreTabHero+score+"分";
                   break;
               }
               console.log("现在上传成功");
               _this.$notify.info({
                 title: '提交成功',
-                message: this.message,
+                message: _this.message,
                 type: 'success'
               });
             }
           })
           .catch(function (error) {
-            _this.messagebox = 0;
             console.log("上传失败");
             _this.$notify.error({
               title: '提交失败',
               message: '请确认登录信息',
             });
           });
-        // if(this.messagebox==1){
-        //   this.$notify.info({
-        //     title: '提交成功',
-        //     message: this.message,
-        //     type: 'success'
-        //   });
-        // }
-        // if(this.messagebox==0){
-        //   this.$notify.error({
-        //     title: '提交失败',
-        //     message: '请确认登录信息'
-        //   });
-        // }
     },
     MasterClose:function (page) {
       this.page=this.page+page;
@@ -965,7 +949,6 @@ export default { //会自动生成new vue({})
     },
     //element方法消息提示框
     deleteRow(index,rows){
-      rows.splice(index,1);
       // console.log(index);
       // console.log(rows);
       // console.log(this.masterData[index].id);
@@ -975,15 +958,23 @@ export default { //会自动生成new vue({})
       })
         .then(function (response) {
           if (response.data.result == "Success") {
+            rows.splice(index,1);
             _this.masterView(_this.page);
+            _this.$notify.info({
+              title: '撤回成功',
+              type: 'success'
+            });
           }
         })
         .catch(function (error) {
           _this.messagebox = false;
+          _this.$notify.error({
+            title: '撤回失败',
+            message: '请检查登录状态',
+          });
         });
     },
     RefuseRow(index,rows){
-      rows.splice(index,1);
       // console.log(index);
       // console.log(rows);
       // console.log(this.masterData[index].id);
@@ -994,18 +985,23 @@ export default { //会自动生成new vue({})
       })
         .then(function (response) {
           if (response.data.result == "Success") {
+            rows.splice(index,1);
             _this.masterView(_this.page);
+            _this.$notify.info({
+              title: '拒绝成功',
+              type: 'success'
+            });
           }
         })
         .catch(function (error) {
           _this.messagebox = false;
+          _this.$notify.error({
+            title: '拒绝失败',
+            message: '请检查登录状态',
+          });
         });
     },
     AgreeRow(index,rows){
-      rows.splice(index,1);
-      // console.log(index);
-      // console.log(rows);
-      // console.log(this.masterData[index].id);
       var _this=this;
       this.$axios.post('http://old.bphots.com/templates/set', {
         offer_id: this.masterData[index].id,
@@ -1013,11 +1009,20 @@ export default { //会自动生成new vue({})
       })
         .then(function (response) {
           if (response.data.result == "Success") {
+            rows.splice(index,1);
             _this.masterView(_this.page);
+            _this.$notify.info({
+              title: '审核提交成功',
+              type: 'success'
+            });
           }
         })
         .catch(function (error) {
           _this.messagebox = false;
+          _this.$notify.error({
+            title: '拒绝失败',
+            message: '请检查登录状态',
+          });
         });
     },
     // formatter(row, column) {
@@ -2233,7 +2238,7 @@ export default { //会自动生成new vue({})
   .p13 {
     float: left;
     width: 20%;
-    background-color: #9c00d7;
+    background-color: #9c08ff;
   }
   .p14 {
     float: left;
@@ -2253,7 +2258,7 @@ export default { //会自动生成new vue({})
   .p17 {
     float: left;
     width: 60%;
-    background-color: #7c00b0;
+    background-color: #7c00ce;
   }
   .p18 {
     float: left;
