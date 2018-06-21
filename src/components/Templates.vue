@@ -33,25 +33,39 @@
             <div class="templates-detail-top" v-if="showherolist==1">
               <div class="templates-detail-top-info templates-bg">
                 <div class="templates-detail-top-info-title">{{HeroName}}</div>
-                <div class="templates-detail-top-info-desc">- 英雄 -</div>
+                <div class="templates-detail-top-info-desc" v-if="showrelation==true">- {{$t('lang.title')}} -</div>
               </div>
               <div class="templates-detail-top-modes templates-bg">
                 <div class="templates-detail-top-modes-row" v-if="showrelation==true">
-                  <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >基础属性</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">被克制关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">英雄关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">克制关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default " v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >相生关系</div>
-                  <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-if="templatesPermited!=null" v-on:click="masterView(1)">审核进度查询审核处理</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >{{$t('lang.base')}}</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">{{$t('lang.BeRestrained')}}</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">{{$t('lang.herorelation')}}</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">{{$t('lang.restraint')}}</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default " v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >{{$t('lang.synergy')}}</div>
+                  <div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-if="templatesPermited!=null" v-on:click="masterView(1)">{{$t('lang.masterView')}}</div>
                 </div>
               </div>
             </div>
+            <!--<div class="templates-detail-top" v-if="showherolist==1&& language==0">-->
+              <!--<div class="templates-detail-top-info templates-bg">-->
+                <!--<div class="templates-detail-top-info-title">{{HeroName}}</div>-->
+                <!--<div class="templates-detail-top-info-desc">- Hero -</div>-->
+              <!--</div>-->
+              <!--<div class="templates-detail-top-modes templates-bg">-->
+                <!--<div class="templates-detail-top-modes-row" v-if="showrelation==true">-->
+                  <!--<div class="templates-detail-top-modes-btn btn btn-default" v-bind:class="{'btn-default-active':relationNum==1}" v-on:click="relation(item.index,1);tag=true;" >base</div>-->
+                  <!--<div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==3}" v-on:click="relation(item.index,3)">BeRestrained</div>-->
+                  <!--<div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==true"  v-on:click="tag=false;relationNum=3;relation(item.index,3)">Hero Relation</div>-->
+                  <!--<div class="templates-detail-top-modes-btn btn btn-default" v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==4}" v-on:click="relation(item.index,4)">Restraint</div>-->
+                  <!--<div class="templates-detail-top-modes-btn btn btn-default " v-if="tag==false" v-bind:class="{'btn-default-active':relationNum==2}" v-on:click="relation(item.index,2)" >enhanced</div>-->
+                  <!--<div class="templates-detail-top-modes-btn btn btn-default" style="position: absolute;top: 0;right: 0;" v-if="templatesPermited!=null" v-on:click="masterView(1)">Audit queries and processing</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
             <div class="templates-detail-main templates-bg">
               <div class="templates-detail-main-herolist" style="position: relative;" :class="{tagFalse: tag === false}">
                 <div v-if="beginTochange" style="color: #eeeeee">
-                 <h3 >风暴英雄模板管理器是旨在协助玩家更好的理解每个英雄的定位、功能、作用、以及跟其他英雄的关系。</h3>
-                  <h3> 相生关系如维拉+奥利尔，被克制关系如狼人被阿尔萨斯克制，克制关系如泰瑞尔克制玛维。</h3>
-                   <h4  >背锅助手团队协力开发，有兴趣请加QQ群：417011860</h4>
+                  <h4>{{$t('lang.introduction')}}</h4>
                 </div>
                       <!--<div v-if="templatesPermited==0" id="loggin"class="loggin" >-->
                       <!--<label style="color: #eeee;margin: 0.75rem;">请选择您战网所在服务器</label>-->
@@ -68,7 +82,8 @@
                 </div>
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 23rem;margin-right: -10px;float: left;display: inline-flex;">
                   <img class="portrait"  v-bind:src="beikezhi.pictures" style="width: 32px;height: 32px;">
-                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;">{{beikezhi.name}}</div>
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;" v-if="language==1">{{beikezhi.name}}</div>
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;" v-if="language==0">{{beikezhi.engname}}</div>
                     <div class="row-number">
                       <span class="progress-bar-relation  number-handler number-digit" v-bind:class="'p'+(beikezhi.score+11)" style="width: 7rem;" role="progressbar"  v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
@@ -105,14 +120,14 @@
                     </div>
                   </div>
                 </div>
-                <el-button type="info"  plain v-on:click="upload(selectDetail)" v-if="!beginTochange &&relationNum==1 ">提交</el-button >
+                <el-button type="info" class="submit" plain v-on:click="upload(selectDetail)" v-if="!beginTochange &&relationNum==1 ">{{$t('lang.submit')}}}</el-button >
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="masterlist" v-if="mastershow">
-        <el-table :data="masterData" style="width: 100% ">
+        <el-table :data="masterData" style="width: 100% " v-if=" this.$i18n.locale==='zh-CN'">
           <el-table-column prop="time" label="日期"  width="180"></el-table-column>
           <el-table-column prop="hero_id" label="模板英雄名" width="180"></el-table-column>
           <el-table-column prop="part" label="提交关系" width="180"></el-table-column>
@@ -127,10 +142,25 @@
               </template>
           </el-table-column>
         </el-table>
+        <el-table :data="masterData" style="width: 100% " v-if=" this.$i18n.locale==='en-US'">
+          <el-table-column prop="time" label="data"  width="180"></el-table-column>
+          <el-table-column prop="hero_id" label="HeroName" width="180"></el-table-column>
+          <el-table-column prop="part" label="submit relation" width="180"></el-table-column>
+          <el-table-column prop="item" label="submit hero" width="180"></el-table-column>
+          <el-table-column prop="point" label="point"  width="180"></el-table-column>
+          <el-table-column prop="progress" label="processing" width="180"></el-table-column>
+          <el-table-column prop="action" label=" action" width="180" >
+            <template slot-scope="scope">
+              <el-button  v-if="templatesPermited==0" @click.native.prevent="deleteRow(scope.$index, masterData)" type="text" size="medium">Recall</el-button>
+              <el-button v-if="templatesPermited==1" @click.native.prevent="AgreeRow(scope.$index, masterData)" type="text" size="medium">Agree</el-button>
+              <el-button v-if="templatesPermited==1" @click.native.prevent="RefuseRow(scope.$index, masterData)" type="text" size="medium">Refuse</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
         <div style="margin-top: 15px">
-          <el-button type="info" round v-if="page>=2"  v-on:click="MasterClose(-1)">上一页</el-button>
-          <el-button type="info" round v-if="!nopage" v-on:click="MasterClose(+1)">下一页</el-button>
-          <el-button  type="info" round style="position: relative;float: right;margin-right: 3rem;" v-on:click="mastershow=false" >退出审核</el-button>
+          <el-button type="info" round v-if="page>=2"  v-on:click="MasterClose(-1)">{{$t('lang.lastPage')}}</el-button>
+          <el-button type="info" round v-if="!nopage" v-on:click="MasterClose(+1)">{{$t('lang.nextPage')}}</el-button>
+          <el-button  type="info" round style="position: relative;float: right;margin-right: 3rem;" v-on:click="mastershow=false" >{{$t('lang.exitMasterView')}}</el-button>
         </div>
       </div>
     </div>
@@ -195,7 +225,6 @@ export default { //会自动生成new vue({})
       onShowHeroId:null,
       onShowScoreTab:null,
       showherolist:1,
-      templatesPermited:1,//{$templatesPermited}=1,0    window.templatePermited  0普通 1 管理 Null未登录
       message:"",
       onShowScoreTabHero:null,
       mastershow:false,
@@ -227,7 +256,10 @@ export default { //会自动生成new vue({})
       //   p20:false,
       //   p21:false,
       // },
-      baseindex:null
+      maplist:[],
+      baseindex:null,
+      language:0,//中文为1、英文为0 {$language}
+      templatesPermited:1,//{$templatesPermited}=1,0，null    window.templatePermited  0普通 1 管理 Null未登录
 
     }
   },
@@ -250,7 +282,7 @@ export default { //会自动生成new vue({})
       // console.log(this.querylist);
     //  this.queryView(1);
      // console.log(this.queryData);
-
+  this.$i18n.locale='en-US';
     })
   },
   watch:{
@@ -287,7 +319,12 @@ export default { //会自动生成new vue({})
       this.heroId=item.id;
       this.queryView(this.heroId);
       this.relationNum=1;
-      this.HeroName=item.name;
+      if(this.language==1){      //中文
+        this.HeroName=item.name;
+      }
+      if(this.language==0){
+        this.HeroName=item.basic;
+      }  //英文
       this.beginTochange=false;
       this.tag=true;
       this.heroId=item.id;
@@ -363,11 +400,14 @@ export default { //会自动生成new vue({})
         _this.heronamelist = response.data;
         console.log(_this.heronamelist);
       });
+      this.$axios.post('https://www.bphots.com/bp_helper/get/maplist/v2').then(function(response){
+       _this.maplist=response.data;
+        console.log(_this.maplist);
+      })
     },
     masterView:function(page){
       this.mastershow=true;
       var _this=this;
-      console.log("审核页面：");
       this.$axios.post('http://old.bphots.com/templates/offer/list', {
         page:page,
         action:"new",
@@ -376,16 +416,9 @@ export default { //会自动生成new vue({})
           _this.masterData=response.data.data;
           console.log("masterData");
           console.log(_this.masterData);
-          // if(_this.masterData.data==null){
-          //   this.page=this.page-2;
-          //   this.nopage=true;
-          // }
-          //  for(let showData of response.data.data)
-          //  {
-          //    console.log(showData.time);
-          // }
            for(var i=0;i<_this.masterData.length;i++){
              _this.masterData[i].time=_this.timestamptotime(_this.masterData[i].time);
+             if(_this.$i18n.locale==='zh-CN'){
              switch(_this.masterData[i].part){
                case 1:
                      _this.masterData[i].item= _this.itemTobasename(_this.masterData[i].item);
@@ -403,7 +436,26 @@ export default { //会自动生成new vue({})
                  _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
                  _this.masterData[i].part="克制";
                  break;
-             }
+             }}
+             if(_this.$i18n.locale==='en-US'){
+               switch(_this.masterData[i].part){
+                 case 1:
+                   _this.masterData[i].item= _this.itemTobasename(_this.masterData[i].item);
+                   _this.masterData[i].part="basic";
+                   break;
+                 case 2:
+                   _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
+                   _this.masterData[i].part="synergy";
+                   break;
+                 case 3:
+                   _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
+                   _this.masterData[i].part="BeRestrained";
+                   break;
+                 case 4:
+                   _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
+                   _this.masterData[i].part="Restraint";
+                   break;
+               }}
              _this.masterData[i].hero_id=_this.heroToheroname(_this.masterData[i].hero_id);
              _this.masterData[i].progress=null;
              if(_this.masterData[i].execute_time!==null){
@@ -433,16 +485,35 @@ export default { //会自动生成new vue({})
           console.log(_this.queryData);
           console.log("base:")
           _this.base=_this.queryData.base;
-          let basearr = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item]}));//json对象转数组
-          let basemap = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item]}));
-          basearr.splice(7,1);
-          for(var a=0;a<basemap.length;a++){
-            basearr.push(basemap[a]);
+          if(_this.language==1){   //中文
+          let basearr_cn = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item]}));//json对象转数组
+          let basemap_cn = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item]}));
+            for(var maplen_cn=0;maplen_cn<basemap_cn.length;maplen_cn++){
+              basemap_cn[maplen_cn].name=_this.maplist[basemap_cn[maplen_cn].name].name['zh-CN'];
+            }
+          basearr_cn.splice(7,1);
+          for(var a=0;a<basemap_cn.length;a++){
+            basearr_cn.push(basemap_cn[a]);
           }
-          for(var b=0;b<basearr.length;b++){
-            basearr[b].name=_this.querybaseTobasename(basearr[b].name);
+          // for(var b=0;b<basearr.length;b++){
+          //   basearr[b].name=_this.querybaseTobasename(basearr[b].name);
+          // }
+            _this.base=basearr_cn;
           }
-          _this.base=basearr;
+          if(_this.language==0){  //英文
+            let basearr_en = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item],uploadname:'base_'+item}));//json对象转数组
+            let basemap_en = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item],uploadname:'map_'+item}));
+            for(var maplen_en=0;maplen_en<basemap_en.length;maplen_en++){
+               basemap_en[maplen_en].name=_this.maplist[basemap_en[maplen_en].name].name['en-US'];
+            }
+            basearr_en.splice(7,1);
+            for(var a=0;a<basemap_en.length;a++){
+              basearr_en.push(basemap_en[a]);
+            }
+            // console.log(basearr_en);
+            // console.log(basemap_en);
+            _this.base=basearr_en;
+          }
           console.log(_this.base);
           _this.selectDetail=_this.base;
           _this.enhanced=_this.objectToArr(_this.queryData.synergy);
@@ -489,46 +560,36 @@ export default { //会自动生成new vue({})
       if(this.templatesPermited==1){
         url='http://old.bphots.com/templates/set';
       }
-        var base = new Map();
-        base.set("末日塔", "map_mrt");
-        base.set("炼狱圣坛", "map_lyst");
-        base.set("永恒战场", "map_yhzc");
-        base.set("末日塔", "map_mrt");
-        base.set("蛛后墓", "map_zhm");
-        base.set("天空殿", "map_tkd");
-        base.set("巨龙镇", "map_jlz");
-        base.set("黑心湾", "map_hxw");
-        base.set("鬼灵矿", "map_glk");
-        base.set("诅咒谷", "map_zzg");
-        base.set("恐魔园", "map_kmy");
-        base.set("花村", "map_hc");
-        base.set("奥特兰克战道", "map_atlzd");
-        base.set("布莱克西斯禁区", "map_blkxsjq");
-        base.set("弹头枢纽站", "map_dtsnz");
-        base.set("沃斯卡娅工业区", "map_wskyzzc");
-        base.set("版本强势", "base_strong");
-        base.set("先选方一楼选择", "base_firstpick");
-        base.set("使用容错率", "base_stability");
-        base.set("清线效率", "base_creep");
-        base.set("上单能力", "base_creep_solo");
-        base.set("全球流能力", "base_creep_global");
-        base.set("清双线能力", "base_creep_double");
+
         console.log(this.relationNum);
         console.log(detail);
         if (this.relationNum === 1) {
           for (let basedetail of detail) {
             // console.log(baseindex)
+            var _this=this;
             this.$axios.post(url, {
               hero_id: this.heroId,
-              item: base.get(basedetail.name),
+              item: basedetail.uploadname,
               part: this.relationNum,
               point: basedetail.score
             })
               .then(function (response) {
-                console.log(response.data.result);
+
               })
               .catch(function (error) {
                 console.log(error);
+                if(_this.language==1){//中文
+                  _this.$notify.error({
+                    title: '提交成功',
+                    message: '请确认登陆信息'
+                  });
+                }
+                if(_this.language==0){//英文
+                  _this.$notify.error({
+                    title: 'Submitted failed',
+                    message: 'Confirm Login Information'
+                  });
+                }
               });
           }
         }
@@ -553,31 +614,26 @@ export default { //会自动生成new vue({})
 
     },
     uploadrelation:function (score) {
-      console.log(score);
-      //管理员提交用set
-      var url1=null;
+      var url=null;
+      var uploadid=null;
       if(this.templatesPermited==0){
-        url1='http://old.bphots.com/templates/offer';
+        url='http://old.bphots.com/templates/offer';//普通用户用offer
       }
       if(this.templatesPermited==1){
-        url1='http://old.bphots.com/templates/set';
+        url='http://old.bphots.com/templates/set';//管理员用set
       }
         var heroitem = "hero";
-        var idname=this.enhanced[this.onShowScoreTab].name;
-        var heroid=null;
-        for(var a=0;a<this.heronamelist.length;a++){
-          if(idname==this.heronamelist[a].name){
-           heroid=this.heronamelist[a].id;
+
+        this.onShowScoreTabHero=this.enhanced[this.onShowScoreTab].engname;
+        console.log(this.onShowScoreTab);
+        for(var index=0;index<this.enhanced.length;index++){
+          if(this.onShowScoreTabHero==this.enhanced[index].engname){
+            uploadid=this.enhanced[index].id;
           }
         }
-        heroitem = heroitem + "_" + (heroid);
-        this.onShowScoreTabHero=this.itemToheroname(heroitem);
+        heroitem = heroitem + "_" + (uploadid);
         var _this = this;
-
-        console.log(_this.HeroName);
-        console.log(_this.onShowScoreTabHero);
-        console.log(score);
-        this.$axios.post(url1, {
+        this.$axios.post(url, {
           hero_id: this.heroId,
           item: heroitem,
           part: this.relationNum,
@@ -585,31 +641,59 @@ export default { //会自动生成new vue({})
         })
           .then(function (response) {
             if (response.data.result == "Success") {
-              switch (_this.relationNum){
-                case 2:
-                  _this.message=_this.HeroName+"与"+_this.onShowScoreTabHero+"相生配合"+score+"分";
-                  break;
-                case 3:
-                  _this.message=_this.HeroName+"被"+_this.onShowScoreTabHero+"克制"+score+"分";
-                  break;
-                case 4:
-                  _this.message=_this.HeroName+"克制"+_this.onShowScoreTabHero+score+"分";
-                  break;
+              if (this.language == 1) {
+                switch (_this.relationNum) {
+                  case 2:
+                    _this.message = _this.HeroName + "与" + _this.onShowScoreTabHero + "相生配合" + score + "分";
+                    break;
+                  case 3:
+                    _this.message = _this.HeroName + "被" + _this.onShowScoreTabHero + "克制" + score + "分";
+                    break;
+                  case 4:
+                    _this.message = _this.HeroName + "克制" + _this.onShowScoreTabHero + score + "分";
+                    break;
+                }
+                console.log("现在上传成功");
+                _this.$notify.info({
+                  title: '提交成功',
+                  message: _this.message,
+                  type: 'success'
+                });
               }
-              console.log("现在上传成功");
-              _this.$notify.info({
-                title: '提交成功',
-                message: _this.message,
-                type: 'success'
-              });
+              if (this.language == 0) {
+                switch (_this.relationNum) {
+                  case 2:
+                    _this.message = _this.HeroName + " work with " + _this.onShowScoreTabHero + "(" + score + "point"+")";
+                    break;
+                  case 3:
+                    _this.message = _this.HeroName + " is restrained by " + _this.onShowScoreTabHero + "(" + score + "point"+")";
+                    break;
+                  case 4:
+                    _this.message = _this.HeroName + " restrained " + _this.onShowScoreTabHero +"("+ score + "point"+")";
+                    break;
+                }
+                console.log("现在上传成功");
+                _this.$notify.info({
+                  title: '提交成功',
+                  message: _this.message,
+                  type: 'success'
+                });
+              }
             }
           })
           .catch(function (error) {
-            console.log("上传失败");
-            _this.$notify.error({
-              title: '提交失败',
-              message: '请确认登录信息',
-            });
+            if(_this.language==1){//中文
+              _this.$notify.error({
+                title: '提交失败',
+                message: '请确认登陆信息'
+              });
+            }
+            if(_this.language==0){//英文
+              _this.$notify.error({
+                title: 'Submitted failed',
+                message: 'Confirm Login Information'
+              });
+            }
           });
     },
     MasterClose:function (page) {
@@ -632,113 +716,44 @@ export default { //会自动生成new vue({})
   },
     //hero_id转名字
     itemToheroname:function (heroid) {
-      var hero=new Map();
-      hero.set("hero_1","泽拉图");
-      hero.set("hero_2","维拉");
-      hero.set("hero_3","乌瑟尔");
-      hero.set("hero_4","泰兰德");
-      hero.set("hero_5","泰瑞尔");
-      hero.set("hero_6","塔萨达尔");
-      hero.set("hero_7","缝合怪");
-      hero.set("hero_8","桑娅");
-      hero.set("hero_9","重锤军士");
-      hero.set("hero_10","雷诺");
-      hero.set("hero_11","诺娃");
-      hero.set("hero_12","纳兹波");
-      hero.set("hero_13","穆拉丁");
-      hero.set("hero_14","玛法里奥");
-      hero.set("hero_15","凯瑞甘");
-      hero.set("hero_16","伊利丹");
-      hero.set("hero_17","加兹鲁维");
-      hero.set("hero_18","弗斯塔德");
-      hero.set("hero_19","精英牛头人酋长");
-      hero.set("hero_20","迪亚波罗");
-      hero.set("hero_21","阿尔萨斯");
-      hero.set("hero_22","阿巴瑟");
-      hero.set("hero_23","泰凯斯");
-      hero.set("hero_24","丽丽");
-      hero.set("hero_25","光明之翼");
-      hero.set("hero_26","奔波尔霸");
-      hero.set("hero_27","扎加拉");
-      hero.set("hero_28","雷加尔");
-      hero.set("hero_29","陈");
-      hero.set("hero_30","阿兹莫丹");
-      hero.set("hero_31","阿努巴拉克",);
-      hero.set("hero_32","吉安娜");
-      hero.set("hero_33","萨尔");
-      hero.set("hero_34","失落的维京人");
-      hero.set("hero_35","希尔瓦娜斯");
-      hero.set("hero_36","凯尔萨斯");
-      hero.set("hero_37","乔汉娜");
-      hero.set("hero_38","屠夫");
-      hero.set("hero_39","李奥瑞克");
-      hero.set("hero_40","卡拉辛姆");
-      hero.set("hero_41","雷克萨");
-      hero.set("hero_42","莫拉莉斯中尉");
-      hero.set("hero_43","阿塔尼斯");
-      hero.set("hero_44","古");
-      hero.set("hero_45","加尔");
-      hero.set("hero_46","露娜拉");
-      hero.set("hero_47","格雷迈恩");
-      hero.set("hero_48","李敏");
-      hero.set("hero_49","祖尔");
-      hero.set("hero_50","德哈卡");
-      hero.set("hero_51","猎空");
-      hero.set("hero_52","克罗米");
-      hero.set("hero_53","麦迪文");
-      hero.set("hero_54","古尔丹");
-      hero.set("hero_55","奥莉尔");
-      hero.set("hero_56","阿拉纳克");
-      hero.set("hero_57","查莉娅");
-      hero.set("hero_58","萨穆罗");
-      hero.set("hero_59","瓦里安");
-      hero.set("hero_60","拉格纳罗斯");
-      hero.set("hero_61","祖尔金");
-      hero.set("hero_62","瓦莉拉");
-      hero.set("hero_63","卢西奥");
-      hero.set("hero_64","普罗比斯");
-      hero.set("hero_65","卡西娅");
-      hero.set("hero_66","源氏");
-      hero.set("hero_67","D.Va");
-      hero.set("hero_68","马萨伊尔");
-      hero.set("hero_69","斯托科夫");
-      hero.set("hero_70","加尔鲁什");
-      hero.set("hero_71","克尔苏加德");
-      hero.set("hero_72","安娜");
-      hero.set("hero_73","狂鼠");
-      hero.set("hero_74","阿莱克丝塔萨");
-      hero.set("hero_75","半藏");
-      hero.set("hero_76","布雷泽");
-      hero.set("hero_77","玛维");
-      hero.set("hero_78","菲尼克斯");
-      hero.set("hero_79","迪卡德");
-      hero.set("hero_80","伊瑞尔");
-     return hero.get(heroid);
+      var heroname=null;
+      var idarr=heroid.split("hero_")//分离字符串
+      console.log(idarr[1]);
+      console.log(this.heronamelist[1].id);
+      if(this.$i18n.locale==='zh-CN'){
+     for(var z=0;z<this.heronamelist.length;z++){
+       if(parseInt(idarr[1])===this.heronamelist[z].id){
+         heroname=this.heronamelist[z].name;
+       }
+     }
+   }
+      if(this.$i18n.locale==='en-US'){
+        for(var e=0;e<this.heronamelist.length;e++){
+          if(parseInt(idarr[1])===this.heronamelist[e].id){
+            heroname=this.heronamelist[e].basic;
+          }
+        }
+      }
+      console.log(heroname);
+     return heroname;
     },
     itemTobasename:function (item) {
-      var base=new Map();
-      base.set("map_mrt","地图强势:末日塔");
-      base.set("map_lyst","地图强势:炼狱圣坛");
-      base.set("map_yhzc","地图强势:永恒战场");
-      base.set("map_mrt","地图强势:末日塔");
-      base.set("map_zhm","地图强势:蛛后墓");
-      base.set("map_tkd","地图强势:天空殿");
-      base.set("map_jlz","地图强势:巨龙镇");
-      base.set("map_hxw","地图强势:黑心湾");
-      base.set("map_glk","地图强势:鬼灵矿");
-      base.set("map_zzg","地图强势:诅咒谷");
-      base.set("map_kmy","地图强势:恐魔园");
-      base.set("map_blkxsjq","地图强势:布莱克西斯禁区");
-      base.set("map_dtsnz","地图强势:弹头枢纽站");
-      base.set("map_wskyzzc","地图强势:沃斯卡娅工业区");
-      base.set("base_strong","版本强势");
-      base.set("base_firstpick","先选方一楼选择");
-      base.set("base_stability","使用容错率");
-      base.set("base_creep","清线效率");
-      base.set("base_creep_solo","上单能力");
-      base.set("base_creep_global","全球流能力");
-      base.set("base_creep_double","清双线能力");
-      return base.get(item);
+       var baseName=null;
+      if(this.$i18n.locale==='zh-CN'){
+        for(var z=0;z<this.heronamelist.length;z++){
+          if(parseInt(idarr[1])===this.heronamelist[z].id){
+            heroname=this.heronamelist[z].name;
+          }
+        }
+      }
+      if(this.$i18n.locale==='en-US'){
+        for(var e=0;e<this.heronamelist.length;e++){
+          if(parseInt(idarr[1])===this.heronamelist[e].id){
+            heroname=this.heronamelist[e].basic;
+          }
+        }
+      }
+      return baseName;
     },
     //bse简写转名字
     querybaseTobasename:function (item) {
@@ -939,11 +954,15 @@ export default { //会自动生成new vue({})
       return hero1.get(heroname);
     },
     objectToArr:function(obj){
-      let arr = Object.keys(obj).map((item, index) => ({name: item, score:obj[item]}));//json对象转数组
+      let arr = Object.keys(obj).map((item, index) => ({id: item, score:obj[item]}));//json对象转数组
       for(var c=0;c<arr.length;c++){
-        arr[c].name=this.heroToheroname(arr[c].name);
-        arr[c].engname=this.heronameToen(arr[c].name)
-        arr[c].pictures="https://www.bphots.com/images/portrait/"+arr[c].engname+".png";
+        for(var d=0;d<this.heronamelist.length;d++){
+          if(parseInt(arr[c].id)===this.heronamelist[d].id){
+            arr[c].name=this.heronamelist[d].name;
+            arr[c].engname=this.heronamelist[d].basic.toLowerCase();
+            arr[c].pictures="https://www.bphots.com/images/portrait/"+arr[c].engname+".png";
+          }
+        }
       }
       return arr;
     },
@@ -1164,8 +1183,9 @@ export default { //会自动生成new vue({})
     text-overflow:ellipsis;
     white-space: nowrap;
     position:relative;
-
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    /* 首字母大写 */
   }
   .templates-detail-main-herolist-row-heroname-relation{
     /*margin-top: 0.6rem;*/
@@ -1179,6 +1199,8 @@ export default { //会自动生成new vue({})
     left:-33px;
     font-size: 1rem;
     font-size: 1.3rem;
+    text-transform: capitalize;
+    /* 首字母大写 */
   }
   .templates-detail-main-herolist-row-progress {
     margin-top: 0.5rem;
@@ -2400,5 +2422,8 @@ export default { //会自动生成new vue({})
     float: right;
     width: 37rem;
     text-align: left;
+  }
+  .submit{
+
   }
 </style>
