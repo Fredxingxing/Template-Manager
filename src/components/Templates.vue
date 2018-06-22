@@ -20,7 +20,8 @@
     <div class="modal show" id="modal-logs">
       <div class="modal-body"v-if="mastershow==false">
         <div class="templates" v-on:click="reset()">
-          <el-alert title="未登录" center type="info" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited==null" show-icon></el-alert>
+          <el-alert title="未登录" center type="info" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited==null&&this.$i18n.locale=='zh-CN'" show-icon></el-alert>
+          <el-alert title="Not login" center type="info" description="Please select the server where your Battle.net site is located to log in." v-if="templatesPermited==null&&this.$i18n.locale=='zh-CN'" show-icon></el-alert>
           <div class="templates-herolist" v-if="showherolist==1">
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist">
               <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
@@ -82,8 +83,8 @@
                 </div>
                 <div v-if="tag==false" class="templates-detail-main-herolist-row-relation" v-for="(beikezhi,BKZnum) of BeRestrained" style="width: 23rem;margin-right: -10px;float: left;display: inline-flex;">
                   <img class="portrait"  v-bind:src="beikezhi.pictures" style="width: 32px;height: 32px;">
-                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;" v-if="language==1">{{beikezhi.name}}</div>
-                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;" v-if="language==0">{{beikezhi.engname}}</div>
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;" v-if=" $i18n.locale==='zh-CN'">{{beikezhi.name}}</div>
+                  <div class="templates-detail-main-herolist-row-heroname-relation" style="width: 12.5rem;left: 0;text-align: center;" v-if=" $i18n.locale==='en-US'">{{beikezhi.engname}}</div>
                     <div class="row-number">
                       <span class="progress-bar-relation  number-handler number-digit" v-bind:class="'p'+(beikezhi.score+11)" style="width: 7rem;" role="progressbar"  v-on:click.stop="showScroller(BKZnum,3)">{{beikezhi.score}}</span>
                       <div class="number-scroller"  v-if=" relationNum===3 && onShowScoreTab===BKZnum" style="position: absolute;background: #000;z-index: 10;">
@@ -127,9 +128,9 @@
         </div>
       </div>
       <div class="masterlist" v-if="mastershow">
-        <el-table :data="masterData" style="width: 100% " v-if=" this.$i18n.locale==='zh-CN'">
+        <el-table :data="masterData" style="width: 100%;font-size:13px;" v-if=" this.$i18n.locale==='zh-CN'">
           <el-table-column prop="time" label="日期"  width="180"></el-table-column>
-          <el-table-column prop="hero_id" label="模板英雄名" width="180"></el-table-column>
+          <el-table-column prop="heroName" label="模板英雄名" width="180"></el-table-column>
           <el-table-column prop="part" label="提交关系" width="180"></el-table-column>
           <el-table-column prop="item" label="提交英雄(基础)" width="180"></el-table-column>
           <el-table-column prop="point" label="分数"  width="180"></el-table-column>
@@ -142,11 +143,11 @@
               </template>
           </el-table-column>
         </el-table>
-        <el-table :data="masterData" style="width: 100% " v-if=" this.$i18n.locale==='en-US'">
+        <el-table :data="masterData" style="width: 100%;font-size:13px;" v-if=" this.$i18n.locale==='en-US'">
           <el-table-column prop="time" label="data"  width="180"></el-table-column>
-          <el-table-column prop="hero_id" label="HeroName" width="180"></el-table-column>
+          <el-table-column prop="heroName" label="HeroName" width="180"></el-table-column>
           <el-table-column prop="part" label="submit relation" width="180"></el-table-column>
-          <el-table-column prop="item" label="submit hero" width="180"></el-table-column>
+          <el-table-column prop="item" label="submit hero/base" width="180" ></el-table-column>
           <el-table-column prop="point" label="point"  width="180"></el-table-column>
           <el-table-column prop="progress" label="processing" width="180"></el-table-column>
           <el-table-column prop="action" label=" action" width="180" >
@@ -233,34 +234,19 @@ export default { //会自动生成new vue({})
       nopage:false,
       querylist:[],
       queryData:[],
-      // colorObj:{
-      //   p1:false,
-      //   p2:false,
-      //   p3:false,
-      //   p4:false,
-      //   p5:false,
-      //   p6:false,
-      //   p7:false,
-      //   p8:false,
-      //   p9:false,
-      //   p10:false,
-      //   p11:false,
-      //   p12:false,
-      //   p13:false,
-      //   p14:false,
-      //   p15:false,
-      //   p16:false,
-      //   p17:false,
-      //   p18:false,
-      //   p19:false,
-      //   p20:false,
-      //   p21:false,
-      // },
+      baseObject:{
+        strong:'版本强势',
+        firstpick:'先手一选',
+        stability:'使用容错率',
+        creep:'清线效率',
+        creep_solo:'上单能力',
+        creep_global:'全球流能力',
+        creep_double:'清双线能力'
+    },
       maplist:[],
       baseindex:null,
-      language:0,//中文为1、英文为0 {$language}
       templatesPermited:1,//{$templatesPermited}=1,0，null    window.templatePermited  0普通 1 管理 Null未登录
-
+      language:null //在显示detail页面赋值this.$i18n.locale  不单独设置好像不成功，好像是异步问题？
     }
   },
   filters:{
@@ -268,6 +254,7 @@ export default { //会自动生成new vue({})
   },
   mounted: function () {
     this.$nextTick(function () {
+      this.$i18n.locale='zh-CN';
       this.templateView();
       if(this.templatesPermited===null) {
         this.beginTochange = true;
@@ -282,7 +269,7 @@ export default { //会自动生成new vue({})
       // console.log(this.querylist);
     //  this.queryView(1);
      // console.log(this.queryData);
-  this.$i18n.locale='en-US';
+
     })
   },
   watch:{
@@ -319,10 +306,10 @@ export default { //会自动生成new vue({})
       this.heroId=item.id;
       this.queryView(this.heroId);
       this.relationNum=1;
-      if(this.language==1){      //中文
+      if(this.$i18n.locale==='zh-CN'){      //中文
         this.HeroName=item.name;
       }
-      if(this.language==0){
+      if(this.$i18n.locale==='en-US'){
         this.HeroName=item.basic;
       }  //英文
       this.beginTochange=false;
@@ -415,7 +402,6 @@ export default { //会自动生成new vue({})
         .then(function (response) {
           _this.masterData=response.data.data;
           console.log("masterData");
-          console.log(_this.masterData);
            for(var i=0;i<_this.masterData.length;i++){
              _this.masterData[i].time=_this.timestamptotime(_this.masterData[i].time);
              if(_this.$i18n.locale==='zh-CN'){
@@ -441,7 +427,7 @@ export default { //会自动生成new vue({})
                switch(_this.masterData[i].part){
                  case 1:
                    _this.masterData[i].item= _this.itemTobasename(_this.masterData[i].item);
-                   _this.masterData[i].part="basic";
+                   _this.masterData[i].part="base";
                    break;
                  case 2:
                    _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
@@ -456,22 +442,47 @@ export default { //会自动生成new vue({})
                    _this.masterData[i].part="Restraint";
                    break;
                }}
-             _this.masterData[i].hero_id=_this.heroToheroname(_this.masterData[i].hero_id);
+             _this.masterData[i].heroName=_this.IdToheroname(_this.masterData[i].hero_id);
              _this.masterData[i].progress=null;
              if(_this.masterData[i].execute_time!==null){
-               _this.masterData[i].progress="已批准";
+               if(_this.$i18n.locale==='zh-CN'){
+                 _this.masterData[i].progress="已批准";
+               }
+               if(_this.$i18n.locale==='en-US'){
+                 _this.masterData[i].progress="Approved";
+               }
              }
              if(_this.masterData[i].abandon_time!==null){
-               _this.masterData[i].progress="已拒绝";
+               if(_this.$i18n.locale==='zh-CN'){
+                 _this.masterData[i].progress="已拒绝";
+               }
+               if(_this.$i18n.locale==='en-US'){
+                 _this.masterData[i].progress="Rejected";
+               }
              }
              if(_this.masterData[i].abandon_time==null&&_this.masterData[i].execute_time==null){
-               _this.masterData[i].progress="未处理";
+               if(_this.$i18n.locale==='zh-CN'){
+                 _this.masterData[i].progress="待处理";
+               }
+               if(_this.$i18n.locale==='en-US'){
+                 _this.masterData[i].progress="Pending";
+               }
              }
           }
           console.log(_this.masterData);
         })
         .catch(function (error) {
           console.log(error);
+          if(this.$i18n.locale==='zh-CN'){
+          _this.$notify.error({
+            title: '审核页面打开失败',
+            message: '请联系背锅助手',
+          });}
+          if(this.$i18n.locale==='en-US'){
+            _this.$notify.error({
+              title: 'Open failed',
+              message: 'Please contact us',
+            });}
         });
     },
     queryView:function(id){
@@ -485,8 +496,11 @@ export default { //会自动生成new vue({})
           console.log(_this.queryData);
           console.log("base:")
           _this.base=_this.queryData.base;
-          if(_this.language==1){   //中文
+          if(_this.$i18n.locale==='zh-CN'){   //中文
           let basearr_cn = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item]}));//json对象转数组
+            for(var z=0;z<basearr_cn.length;z++){
+              basearr_cn[z].name=_this.baseObject[basearr_cn[z].name];
+            }
           let basemap_cn = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item]}));
             for(var maplen_cn=0;maplen_cn<basemap_cn.length;maplen_cn++){
               basemap_cn[maplen_cn].name=_this.maplist[basemap_cn[maplen_cn].name].name['zh-CN'];
@@ -495,12 +509,9 @@ export default { //会自动生成new vue({})
           for(var a=0;a<basemap_cn.length;a++){
             basearr_cn.push(basemap_cn[a]);
           }
-          // for(var b=0;b<basearr.length;b++){
-          //   basearr[b].name=_this.querybaseTobasename(basearr[b].name);
-          // }
             _this.base=basearr_cn;
           }
-          if(_this.language==0){  //英文
+          if(_this.$i18n.locale==='en-US'){  //英文
             let basearr_en = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item],uploadname:'base_'+item}));//json对象转数组
             let basemap_en = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item],uploadname:'map_'+item}));
             for(var maplen_en=0;maplen_en<basemap_en.length;maplen_en++){
@@ -578,13 +589,13 @@ export default { //会自动生成new vue({})
               })
               .catch(function (error) {
                 console.log(error);
-                if(_this.language==1){//中文
+                if(_this.$i18n.locale==='zh-CN'){//中文
                   _this.$notify.error({
                     title: '提交成功',
                     message: '请确认登陆信息'
                   });
                 }
-                if(_this.language==0){//英文
+                if(_this.$i18n.locale==='en-US'){//英文
                   _this.$notify.error({
                     title: 'Submitted failed',
                     message: 'Confirm Login Information'
@@ -641,7 +652,7 @@ export default { //会自动生成new vue({})
         })
           .then(function (response) {
             if (response.data.result == "Success") {
-              if (this.language == 1) {
+              if (_this.$i18n.locale==='zh-CN') {
                 switch (_this.relationNum) {
                   case 2:
                     _this.message = _this.HeroName + "与" + _this.onShowScoreTabHero + "相生配合" + score + "分";
@@ -660,7 +671,7 @@ export default { //会自动生成new vue({})
                   type: 'success'
                 });
               }
-              if (this.language == 0) {
+              if (_this.$i18n.locale==='en-US') {
                 switch (_this.relationNum) {
                   case 2:
                     _this.message = _this.HeroName + " work with " + _this.onShowScoreTabHero + "(" + score + "point"+")";
@@ -682,13 +693,13 @@ export default { //会自动生成new vue({})
             }
           })
           .catch(function (error) {
-            if(_this.language==1){//中文
+            if(_this.$i18n.locale==='zh-CN'){//中文
               _this.$notify.error({
                 title: '提交失败',
                 message: '请确认登陆信息'
               });
             }
-            if(_this.language==0){//英文
+            if(_this.$i18n.locale==='en-US'){//英文
               _this.$notify.error({
                 title: 'Submitted failed',
                 message: 'Confirm Login Information'
@@ -731,6 +742,7 @@ export default { //会自动生成new vue({})
         for(var e=0;e<this.heronamelist.length;e++){
           if(parseInt(idarr[1])===this.heronamelist[e].id){
             heroname=this.heronamelist[e].basic;
+            this.heronamelist[e].lang='en-US';
           }
         }
       }
@@ -738,135 +750,49 @@ export default { //会自动生成new vue({})
      return heroname;
     },
     itemTobasename:function (item) {
-       var baseName=null;
-      if(this.$i18n.locale==='zh-CN'){
-        for(var z=0;z<this.heronamelist.length;z++){
-          if(parseInt(idarr[1])===this.heronamelist[z].id){
-            heroname=this.heronamelist[z].name;
-          }
-        }
-      }
-      if(this.$i18n.locale==='en-US'){
-        for(var e=0;e<this.heronamelist.length;e++){
-          if(parseInt(idarr[1])===this.heronamelist[e].id){
-            heroname=this.heronamelist[e].basic;
-          }
-        }
-      }
-      return baseName;
+       var basearr=item.split('_');
+       console.log(basearr);
+       if(basearr[0]==='base'){
+         if(this.$i18n.locale=='zh-CN'){
+         basearr[1]=this.baseObject[basearr[1]];
+         }
+         console.log(basearr[1])
+       }
+       if(basearr[0]=='map'){
+         basearr[1]=this.maplist[basearr[1]].name[this.$i18n.locale];
+         console.log(basearr[1]);
+       }
+      // if(this.$i18n.locale==='zh-CN'){
+      //   for(var z=0;z<this.heronamelist.length;z++){
+      //     if(parseInt(idarr[1])===this.heronamelist[z].id){
+      //       heroname=this.heronamelist[z].name;
+      //     }
+      //   }
+      // }
+      // if(this.$i18n.locale==='en-US'){
+      //   for(var e=0;e<this.heronamelist.length;e++){
+      //     if(parseInt(idarr[1])===this.heronamelist[e].id){
+      //       heroname=this.heronamelist[e].basic;
+      //     }
+      //   }
+      // }
+      return basearr[1];
     },
     //bse简写转名字
-    querybaseTobasename:function (item) {
-      var base=new Map();
-      base.set("mrt","末日塔");
-      base.set("lyst","炼狱圣坛");
-      base.set("yhzc","永恒战场");
-      base.set("mrt","末日塔");
-      base.set("zhm","蛛后墓");
-      base.set("tkd","天空殿");
-      base.set("jlz","巨龙镇");
-      base.set("hxw","黑心湾");
-      base.set("glk","鬼灵矿");
-      base.set("zzg","诅咒谷");
-      base.set("kmy","恐魔园");
-      base.set("hc","花村");
-      base.set("blkxsjq","布莱克西斯禁区");
-      base.set("dtsnz","弹头枢纽站");
-      base.set("wskyzzc","沃斯卡娅工业区");
-      base.set("strong","版本强势");
-      base.set("firstpick","先选方一楼选择");
-      base.set("stability","使用容错率");
-      base.set("creep","清线效率");
-      base.set("creep_solo","上单能力");
-      base.set("creep_global","全球流能力");
-      base.set("creep_double","清双线能力");
-      base.set("atlkzd","奥特兰克战道");
-      return base.get(item);
-    },
     //id转英雄名
-    heroToheroname:function (heroid1) {
-      var hero1=new Map();
-      hero1.set("1","泽拉图");
-      hero1.set("2","维拉");
-      hero1.set("3","乌瑟尔");
-      hero1.set("4","泰兰德");
-      hero1.set("5","泰瑞尔");
-      hero1.set("6","塔萨达尔");
-      hero1.set("7","缝合怪");
-      hero1.set("8","桑娅");
-      hero1.set("9","重锤军士");
-      hero1.set("10","雷诺");
-      hero1.set("11","诺娃");
-      hero1.set("12","纳兹波");
-      hero1.set("13","穆拉丁");
-      hero1.set("14","玛法里奥");
-      hero1.set("15","凯瑞甘");
-      hero1.set("16","伊利丹");
-      hero1.set("17","加兹鲁维");
-      hero1.set("18","弗斯塔德");
-      hero1.set("19","精英牛头人酋长");
-      hero1.set("20","迪亚波罗");
-      hero1.set("21","阿尔萨斯");
-      hero1.set("22","阿巴瑟");
-      hero1.set("23","泰凯斯");
-      hero1.set("24","丽丽");
-      hero1.set("25","光明之翼");
-      hero1.set("26","奔波尔霸");
-      hero1.set("27","扎加拉");
-      hero1.set("28","雷加尔");
-      hero1.set("29","陈");
-      hero1.set("30","阿兹莫丹");
-      hero1.set("31","阿努巴拉克",);
-      hero1.set("32","吉安娜");
-      hero1.set("33","萨尔");
-      hero1.set("34","失落的维京人");
-      hero1.set("35","希尔瓦娜斯");
-      hero1.set("36","凯尔萨斯");
-      hero1.set("37","乔汉娜");
-      hero1.set("38","屠夫");
-      hero1.set("39","李奥瑞克");
-      hero1.set("40","卡拉辛姆");
-      hero1.set("41","雷克萨");
-      hero1.set("42","莫拉莉斯中尉");
-      hero1.set("43","阿塔尼斯");
-      hero1.set("44","古");
-      hero1.set("45","加尔");
-      hero1.set("46","露娜拉");
-      hero1.set("47","格雷迈恩");
-      hero1.set("48","李敏");
-      hero1.set("49","祖尔");
-      hero1.set("50","德哈卡");
-      hero1.set("51","猎空");
-      hero1.set("52","克罗米");
-      hero1.set("53","麦迪文");
-      hero1.set("54","古尔丹");
-      hero1.set("55","奥莉尔");
-      hero1.set("56","阿拉纳克");
-      hero1.set("57","查莉娅");
-      hero1.set("58","萨穆罗");
-      hero1.set("59","瓦里安");
-      hero1.set("60","拉格纳罗斯");
-      hero1.set("61","祖尔金");
-      hero1.set("62","瓦莉拉");
-      hero1.set("63","卢西奥");
-      hero1.set("64","普罗比斯");
-      hero1.set("65","卡西娅");
-      hero1.set("66","源氏");
-      hero1.set("67","D.Va");
-      hero1.set("68","马萨伊尔");
-      hero1.set("69","斯托科夫");
-      hero1.set("70","加尔鲁什");
-      hero1.set("71","克尔苏加德");
-      hero1.set("72","安娜");
-      hero1.set("73","狂鼠");
-      hero1.set("74","阿莱克丝塔萨");
-      hero1.set("75","半藏");
-      hero1.set("76","布雷泽");
-      hero1.set("77","玛维");
-      hero1.set("78","菲尼克斯");
-      hero1.set("79","迪卡德");
-      hero1.set("80","伊瑞尔");
-      return hero1.get(heroid1.toString());
+    IdToheroname:function (heroid) {
+      var heroname=null
+     for(var a=0;a<this.heronamelist.length;a++){
+       if(parseInt(heroid)===this.heronamelist[a].id){
+         if(this.$i18n.locale==='zh-CN'){
+           heroname=this.heronamelist[a].name;
+         }
+         if(this.$i18n.locale==='en-US'){
+           heroname=this.heronamelist[a].basic;
+         }
+       }
+     }
+      return heroname;
     },
     //英雄名转英
     heronameToen:function (heroname) {
@@ -973,24 +899,38 @@ export default { //会自动生成new vue({})
       // console.log(this.masterData[index].id);
       var _this=this;
       this.$axios.post('http://old.bphots.com/templates/set', {
-       offer_id: this.masterData[index].id,
+       offer_id: _this.masterData[index].id,
       })
         .then(function (response) {
           if (response.data.result == "Success") {
-            rows.splice(index,1);
+            rows.splice(index, 1);
             _this.masterView(_this.page);
-            _this.$notify.info({
-              title: '撤回成功',
-              type: 'success'
-            });
+            if (this.$i18n.locale === 'zh-CN') {
+              _this.$notify.info({
+                title: '撤回成功',
+                type: 'success'
+              });
+            }
+            if (this.$i18n.locale === 'en-US') {
+              _this.$notify.info({
+                title: 'Recall successfully',
+                type: 'success'
+              });
+            }
           }
         })
         .catch(function (error) {
           _this.messagebox = false;
+          if(this.$i18n.locale==='zh-CN'){
           _this.$notify.error({
             title: '撤回失败',
             message: '请检查登录状态',
-          });
+          });}
+          if(this.$i18n.locale==='en-US'){
+            _this.$notify.error({
+              title: 'Recall failed',
+              message: 'Please confirm the login status\n ',
+            });}
         });
     },
     RefuseRow(index,rows){
@@ -999,49 +939,77 @@ export default { //会自动生成new vue({})
       // console.log(this.masterData[index].id);
       var _this=this;
       this.$axios.post('http://old.bphots.com/templates/set', {
-        offer_id: this.masterData[index].id,
+        offer_id: _this.masterData[index].id,
         execute:0,
       })
         .then(function (response) {
           if (response.data.result == "Success") {
             rows.splice(index,1);
             _this.masterView(_this.page);
-            _this.$notify.info({
-              title: '拒绝成功',
-              type: 'success'
-            });
+            if (_this.$i18n.locale === 'zh-CN') {
+              _this.$notify.info({
+                title: '拒绝成功',
+                type: 'success'
+              });
+            }
+            if (_this.$i18n.locale === 'en-US') {
+              _this.$notify.info({
+                title: 'Refuse successfully',
+                type: 'success'
+              });
+            }
           }
         })
         .catch(function (error) {
           _this.messagebox = false;
-          _this.$notify.error({
-            title: '拒绝失败',
-            message: '请检查登录状态',
-          });
+          if(_this.$i18n.locale==='zh-CN'){
+            _this.$notify.error({
+              title: '拒绝失败',
+              message: '请检查登录状态',
+            });}
+          if(_this.$i18n.locale==='en-US'){
+            _this.$notify.error({
+              title: 'Refuse failed',
+              message: 'Please confirm the login status\n ',
+            });}
         });
     },
     AgreeRow(index,rows){
       var _this=this;
       this.$axios.post('http://old.bphots.com/templates/set', {
-        offer_id: this.masterData[index].id,
+        offer_id: _this.masterData[index].id,
         execute:1,
       })
         .then(function (response) {
           if (response.data.result == "Success") {
             rows.splice(index,1);
             _this.masterView(_this.page);
-            _this.$notify.info({
-              title: '审核提交成功',
-              type: 'success'
-            });
+            if (_this.$i18n.locale === 'zh-CN') {
+              _this.$notify.info({
+                title: '同意成功',
+                type: 'success'
+              });
+            }
+            if (_this.$i18n.locale === 'en-US') {
+              _this.$notify.info({
+                title: 'Agree successfully',
+                type: 'success'
+              });
+            }
           }
         })
         .catch(function (error) {
           _this.messagebox = false;
-          _this.$notify.error({
-            title: '拒绝失败',
-            message: '请检查登录状态',
-          });
+          if(_this.$i18n.locale==='zh-CN'){
+            _this.$notify.error({
+              title: '同意失败',
+              message: '请检查登录状态',
+            });}
+          if(_this.$i18n.locale==='en-US'){
+            _this.$notify.error({
+              title: 'Agree failed',
+              message: 'Please confirm the login status\n ',
+            });}
         });
     },
     // formatter(row, column) {
