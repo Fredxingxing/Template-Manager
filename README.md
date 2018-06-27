@@ -1,6 +1,6 @@
-# my-first-vue-project
+# Template-Manager
 
-> this_is_my_first_vue_project
+
 
 ## Build Setup
 
