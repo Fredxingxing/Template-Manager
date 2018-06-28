@@ -20,12 +20,17 @@
     <div class="modal show" id="modal-logs">
       <div class="modal-body"v-if="mastershow==false">
         <div class="templates" v-on:click="reset()">
-          <el-alert title="未登录" center type="info" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited==null&&this.$i18n.locale=='zh-CN'" show-icon></el-alert>
-          <el-alert title="Not login" center type="info" description="Please select the server where your Battle.net site is located to log in." v-if="templatesPermited==null&&this.$i18n.locale=='zh-CN'" show-icon></el-alert>
+          <!--<el-alert title="未登录" center type="error" description="请选择您战网所在服务器以登录战网" v-if="templatesPermited===null && this.$i18n.locale==='zh-CN'" show-icon></el-alert>-->
+          <el-alert center type="info" d v-if="templatesPermited===null" show-icon>
+            <span class="el-alert__title">{{$t('lang.notloggin')}}</span>
+           <slot>
+             <p class="el-alert__description">{{$t('lang.description')}}</p>
+           </slot>
+          </el-alert>
           <div class="templates-herolist" v-if="showherolist==1">
             <div class="templates-herolist-row templates-bg" v-for="(item,index) in heronamelist">
               <div v-on:click="selectHero(item,index);showrelation=true;"  class=" btn-herolist  btn-herolist-default">
-                <div  class="templates-herolist-row-heroname">{{item.basic}}</div>
+                <!--<div  class="templates-herolist-row-heroname">{{item.basic}}</div>-->
                 <img class="images"  v-bind:src="item.pictures" >
               </div>
             </div>
@@ -121,7 +126,7 @@
                     </div>
                   </div>
                 </div>
-                <el-button type="info" class="submit" plain v-on:click="upload(selectDetail)" v-if="!beginTochange &&relationNum==1 ">{{$t('lang.submit')}}}</el-button >
+                <el-button type="info" class="submit" plain v-on:click="upload(selectDetail)" v-if="!beginTochange &&relationNum==1 ">{{$t('lang.submit')}}</el-button >
               </div>
             </div>
           </div>
@@ -245,7 +250,7 @@ export default { //会自动生成new vue({})
     },
       maplist:[],
       baseindex:null,
-      templatesPermited:1,//{$templatesPermited}=1,0，null    window.templatePermited  0普通 1 管理 Null未登录
+      templatesPermited:null,//{$templatesPermited}=1,0，null    window.templatePermited  0普通 1 管理 Null未登录
       language:null //在显示detail页面赋值this.$i18n.locale  不单独设置好像不成功，好像是异步问题？
     }
   },
@@ -254,7 +259,7 @@ export default { //会自动生成new vue({})
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.$i18n.locale='zh-CN';
+     // this.$i18n.locale='zh-CN';
       this.templateView();
       if(this.templatesPermited===null) {
         this.beginTochange = true;
@@ -585,13 +590,24 @@ export default { //会自动生成new vue({})
               point: basedetail.score
             })
               .then(function (response) {
-
+                if(_this.$i18n.locale==='zh-CN'){//中文
+                  _this.$notify.info({
+                    title: '提交成功',
+                    type: 'success',
+                  });
+                }
+                if(_this.$i18n.locale==='en-US'){//英文
+                  _this.$notify.info({
+                    title: 'Submitted successfully',
+                    type: 'success'
+                  });
+                }
               })
               .catch(function (error) {
                 console.log(error);
                 if(_this.$i18n.locale==='zh-CN'){//中文
                   _this.$notify.error({
-                    title: '提交成功',
+                    title: '提交失败',
                     message: '请确认登陆信息'
                   });
                 }
@@ -685,7 +701,7 @@ export default { //会自动生成new vue({})
                 }
                 console.log("现在上传成功");
                 _this.$notify.info({
-                  title: '提交成功',
+                  title: 'submit successfully',
                   message: _this.message,
                   type: 'success'
                 });
@@ -1256,8 +1272,8 @@ export default { //会自动生成new vue({})
   }
   .images{
     position:relative;
-    left: 0px;
-    top: -52px;
+    /*left: 0px;*/
+    /*top: -52px;*/
 
   }
   .table {
@@ -2392,6 +2408,6 @@ export default { //会自动生成new vue({})
     text-align: left;
   }
   .submit{
-
+  margin-left: -269px;
   }
 </style>

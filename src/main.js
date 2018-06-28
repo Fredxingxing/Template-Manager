@@ -6,6 +6,8 @@ import router from './router'
 import axios from 'axios'
 import 'element-ui/lib/theme-chalk/index.css'
 import  ElementUI from 'element-ui'
+import enLocale from'element-ui/lib/locale/lang/en'
+import zhlocale from'element-ui/lib/locale/lang/zh-CN'
 import lodash from 'lodash'
 import VueI18n from 'vue-i18n'
 //Object.defineProperty(Vue.prototype,'$lodash',{value:lodash});
@@ -14,13 +16,18 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype.$lodash=lodash
 Vue.use(VueI18n)
+Vue.use(ElementUI,{
+  i18n:(key,value)=>i18n.t(key,value)
+})
+
 const i18n=new VueI18n({
-  locale:'zh-CN',//this.$i18n.locale来切换语言
+  locale:'en-US',//this.$i18n.locale
   messages:{
     'zh-CN': require('./data/zh-CN'),
     'en-US': require('./data/en-US')
   }
 })
+new Vue({ i18n }).$mount('#app')
 new Vue({
   el: '#app',
   render:h=>h(App),
