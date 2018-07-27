@@ -143,8 +143,8 @@
           <el-table-column prop="action" label="管理员审批" width="180" >
               <template slot-scope="scope">
                 <el-button  v-if="templatesPermited==0" @click.native.prevent="deleteRow(scope.$index, masterData)" type="text" size="medium">撤回</el-button>
-                <el-button v-if="templatesPermited==1" @click.native.prevent="AgreeRow(scope.$index, masterData)" type="text" size="medium">同意</el-button>
-                <el-button v-if="templatesPermited==1" @click.native.prevent="RefuseRow(scope.$index, masterData)" type="text" size="medium">拒绝</el-button>
+                <el-button  v-if="templatesPermited==1" @click.native.prevent="AgreeRow(scope.$index, masterData)" type="text" size="medium">同意</el-button>
+                <el-button  v-if="templatesPermited==1" @click.native.prevent="RefuseRow(scope.$index, masterData)" type="text" size="medium">拒绝</el-button>
               </template>
           </el-table-column>
         </el-table>
@@ -261,10 +261,10 @@ export default { //会自动生成new vue({})
     this.$nextTick(function () {
      // this.$i18n.locale='zh-CN';
       this.templateView();
-      if(this.templatesPermited===null) {
+      if(this.templatesPermited === null) {
         this.beginTochange = true;
       }
-      var resArr=new Array();
+      var resArr = new Array();
       // for(var id=1;id<=79;id++){
       //   var heroitem = "hero";
       //   heroitem = heroitem + "_" + id;
@@ -308,22 +308,22 @@ export default { //会自动生成new vue({})
   // },
   methods: {
     selectHero: function (item,index) {
-      this.heroId=item.id;
+      this.heroId = item.id;
       this.queryView(this.heroId);
-      this.relationNum=1;
-      if(this.$i18n.locale==='zh-CN'){      //中文
+      this.relationNum = 1;
+      if(this.$i18n.locale ==='zh-CN'){      //中文
         this.HeroName=item.name;
       }
       if(this.$i18n.locale==='en-US'){
-        this.HeroName=item.basic;
+        this.HeroName = item.basic;
       }  //英文
-      this.beginTochange=false;
-      this.tag=true;
-      this.heroId=item.id;
+      this.beginTochange = false;
+      this.tag = true;
+      this.heroId = item.id;
       //base属性的转换
-     if(index==(item.id-1))
+     if(index == (item.id-1))
       {
-        console.log("您选中了"+item.name);
+        console.log("您选中了 " + item.name);
       }
      // this.adviceView();
 },
@@ -331,17 +331,17 @@ export default { //会自动生成new vue({})
      if(num>0){
        detail.score++;
        if(detail.score>10) {
-         detail.score=10;
+         detail.score = 10;
        }
      }
      else{
        detail.score--;
        if(detail.score<-10){
-         detail.score=-10;
+         detail.score = -10;
 
        }
      }
-     this.baseindex=index;
+     this.baseindex = index;
      console.log(detail)
       console.log(detail.score);
       console.log(this.baseindex);
@@ -393,84 +393,84 @@ export default { //会自动生成new vue({})
         console.log(_this.heronamelist);
       });
       this.$axios.post('https://www.bphots.com/bp_helper/get/maplist/v2').then(function(response){
-       _this.maplist=response.data;
+       _this.maplist = response.data;
         console.log(_this.maplist);
       })
     },
     masterView:function(page){
-      this.mastershow=true;
-      var _this=this;
+      this.mastershow = true;
+      var _this = this;
       this.$axios.post('http://old.bphots.com/templates/offer/list', {
         page:page,
         action:"new",
       })
         .then(function (response) {
-          _this.masterData=response.data.data;
+          _this.masterData = response.data.data;
           console.log("masterData");
            for(var i=0;i<_this.masterData.length;i++){
-             _this.masterData[i].time=_this.timestamptotime(_this.masterData[i].time);
-             if(_this.$i18n.locale==='zh-CN'){
+             _this.masterData[i].time = _this.timestamptotime(_this.masterData[i].time);
+             if(_this.$i18n.locale === 'zh-CN'){
              switch(_this.masterData[i].part){
                case 1:
-                     _this.masterData[i].item= _this.itemTobasename(_this.masterData[i].item);
-                     _this.masterData[i].part="基础数据";
+                     _this.masterData[i].item = _this.itemTobasename(_this.masterData[i].item);
+                     _this.masterData[i].part = "基础数据";
                     break;
                case 2:
-                    _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
-                    _this.masterData[i].part="配合相生";
+                    _this.masterData[i].item =  _this.itemToheroname(_this.masterData[i].item);
+                    _this.masterData[i].part = "配合相生";
                     break;
                case 3:
-                 _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
-                 _this.masterData[i].part="被克制";
+                 _this.masterData[i].item = _this.itemToheroname(_this.masterData[i].item);
+                 _this.masterData[i].part = "被克制";
                  break;
                case 4:
-                 _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
-                 _this.masterData[i].part="克制";
+                 _this.masterData[i].item = _this.itemToheroname(_this.masterData[i].item);
+                 _this.masterData[i].part = "克制";
                  break;
              }}
-             if(_this.$i18n.locale==='en-US'){
+             if(_this.$i18n.locale === 'en-US'){
                switch(_this.masterData[i].part){
                  case 1:
-                   _this.masterData[i].item= _this.itemTobasename(_this.masterData[i].item);
-                   _this.masterData[i].part="base";
+                   _this.masterData[i].item = _this.itemTobasename(_this.masterData[i].item);
+                   _this.masterData[i].part = "base";
                    break;
                  case 2:
-                   _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
-                   _this.masterData[i].part="synergy";
+                   _this.masterData[i].item = _this.itemToheroname(_this.masterData[i].item);
+                   _this.masterData[i].part = "synergy";
                    break;
                  case 3:
-                   _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
-                   _this.masterData[i].part="BeRestrained";
+                   _this.masterData[i].item = _this.itemToheroname(_this.masterData[i].item);
+                   _this.masterData[i].part = "BeRestrained";
                    break;
                  case 4:
-                   _this.masterData[i].item= _this.itemToheroname(_this.masterData[i].item);
-                   _this.masterData[i].part="Restraint";
+                   _this.masterData[i].item = _this.itemToheroname(_this.masterData[i].item);
+                   _this.masterData[i].part = "Restraint";
                    break;
                }}
-             _this.masterData[i].heroName=_this.IdToheroname(_this.masterData[i].hero_id);
-             _this.masterData[i].progress=null;
-             if(_this.masterData[i].execute_time!==null){
-               if(_this.$i18n.locale==='zh-CN'){
-                 _this.masterData[i].progress="已批准";
+             _this.masterData[i].heroName = _this.IdToheroname(_this.masterData[i].hero_id);
+             _this.masterData[i].progress = null;
+             if(_this.masterData[i].execute_time !== null){
+               if(_this.$i18n.locale === 'zh-CN'){
+                 _this.masterData[i].progress = "已批准";
                }
-               if(_this.$i18n.locale==='en-US'){
-                 _this.masterData[i].progress="Approved";
-               }
-             }
-             if(_this.masterData[i].abandon_time!==null){
-               if(_this.$i18n.locale==='zh-CN'){
-                 _this.masterData[i].progress="已拒绝";
-               }
-               if(_this.$i18n.locale==='en-US'){
-                 _this.masterData[i].progress="Rejected";
+               if(_this.$i18n.locale === 'en-US'){
+                 _this.masterData[i].progress = "Approved";
                }
              }
-             if(_this.masterData[i].abandon_time==null&&_this.masterData[i].execute_time==null){
-               if(_this.$i18n.locale==='zh-CN'){
-                 _this.masterData[i].progress="待处理";
+             if(_this.masterData[i].abandon_time !== null){
+               if(_this.$i18n.locale === 'zh-CN'){
+                 _this.masterData[i].progress = "已拒绝";
                }
-               if(_this.$i18n.locale==='en-US'){
-                 _this.masterData[i].progress="Pending";
+               if(_this.$i18n.locale === 'en-US'){
+                 _this.masterData[i].progress = "Rejected";
+               }
+             }
+             if(_this.masterData[i].abandon_time == null&&_this.masterData[i].execute_time == null){
+               if(_this.$i18n.locale === 'zh-CN'){
+                 _this.masterData[i].progress = "待处理";
+               }
+               if(_this.$i18n.locale === 'en-US'){
+                 _this.masterData[i].progress = "Pending";
                }
              }
           }
@@ -478,12 +478,12 @@ export default { //会自动生成new vue({})
         })
         .catch(function (error) {
           console.log(error);
-          if(this.$i18n.locale==='zh-CN'){
+          if(this.$i18n.locale === 'zh-CN'){
           _this.$notify.error({
             title: '审核页面打开失败',
             message: '请联系背锅助手',
           });}
-          if(this.$i18n.locale==='en-US'){
+          if(this.$i18n.locale === 'en-US'){
             _this.$notify.error({
               title: 'Open failed',
               message: 'Please contact us',
@@ -492,53 +492,53 @@ export default { //会自动生成new vue({})
     },
     queryView:function(id){
       console.log("query：");
-      var _this=this;
+      var _this = this;
       this.$axios.post('http://old.bphots.com/templates/query', {
         hero_id:id,
       })
         .then(function (response) {
-           _this.queryData=response.data.data;
+           _this.queryData = response.data.data;
           console.log(_this.queryData);
           console.log("base:")
-          _this.base=_this.queryData.base;
-          if(_this.$i18n.locale==='zh-CN'){   //中文
+          _this.base = _this.queryData.base;
+          if(_this.$i18n.locale === 'zh-CN'){   //中文
           let basearr_cn = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item]}));//json对象转数组
-            for(var z=0;z<basearr_cn.length;z++){
-              basearr_cn[z].name=_this.baseObject[basearr_cn[z].name];
+            for(var z = 0;z < basearr_cn.length;z++){
+              basearr_cn[z].name = _this.baseObject[basearr_cn[z].name];
             }
           let basemap_cn = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item]}));
-            for(var maplen_cn=0;maplen_cn<basemap_cn.length;maplen_cn++){
-              basemap_cn[maplen_cn].name=_this.maplist[basemap_cn[maplen_cn].name].name['zh-CN'];
+            for(var maplen_cn = 0;maplen_cn < basemap_cn.length;maplen_cn++){
+              basemap_cn[maplen_cn].name = _this.maplist[basemap_cn[maplen_cn].name].name['zh-CN'];
             }
           basearr_cn.splice(7,1);
-          for(var a=0;a<basemap_cn.length;a++){
+          for(var a = 0;a < basemap_cn.length;a++){
             basearr_cn.push(basemap_cn[a]);
           }
-            _this.base=basearr_cn;
+            _this.base = basearr_cn;
           }
-          if(_this.$i18n.locale==='en-US'){  //英文
+          if(_this.$i18n.locale === 'en-US'){  //英文
             let basearr_en = Object.keys(_this.base).map((item, index) => ({name: item, score:_this.base[item],uploadname:'base_'+item}));//json对象转数组
             let basemap_en = Object.keys(_this.base.map).map((item, index) => ({name: item, score:_this.base.map[item],uploadname:'map_'+item}));
-            for(var maplen_en=0;maplen_en<basemap_en.length;maplen_en++){
-               basemap_en[maplen_en].name=_this.maplist[basemap_en[maplen_en].name].name['en-US'];
+            for(var maplen_en = 0;maplen_en < basemap_en.length;maplen_en++){
+               basemap_en[maplen_en].name = _this.maplist[basemap_en[maplen_en].name].name['en-US'];
             }
             basearr_en.splice(7,1);
-            for(var a=0;a<basemap_en.length;a++){
+            for(var a = 0;a < basemap_en.length;a++){
               basearr_en.push(basemap_en[a]);
             }
             // console.log(basearr_en);
             // console.log(basemap_en);
-            _this.base=basearr_en;
+            _this.base = basearr_en;
           }
           console.log(_this.base);
-          _this.selectDetail=_this.base;
-          _this.enhanced=_this.objectToArr(_this.queryData.synergy);
+          _this.selectDetail = _this.base;
+          _this.enhanced = _this.objectToArr(_this.queryData.synergy);
           console.log("synergy:")
           console.log(_this.enhanced);
-          _this.BeRestrained=_this.objectToArr(_this.queryData.beRestricted);
+          _this.BeRestrained = _this.objectToArr(_this.queryData.beRestricted);
           console.log("beRestricted:")
           console.log(_this.BeRestrained);
-          _this.restraint=_this.objectToArr(_this.queryData.restraint);
+          _this.restraint = _this.objectToArr(_this.queryData.restraint);
           console.log("restraint:")
           console.log(_this.restraint);
           //颜色的绑定
@@ -550,7 +550,7 @@ export default { //会自动生成new vue({})
 
     },
     adviceView:function(){
-      var _this=this;
+      var _this = this;
       var heroitem = "hero";
       heroitem = heroitem + "_" + (++this.onShowScoreTab);
       this.onShowScoreTabHero=this.itemToheroname(heroitem);
@@ -569,11 +569,11 @@ export default { //会自动生成new vue({})
     },
     //上传的方法
     upload:function (detail) {
-      var url=null;
-        if(this.templatesPermited==0){
+      var url = null;
+        if(this.templatesPermited == 0){
         url='http://old.bphots.com/templates/offer';
       }
-      if(this.templatesPermited==1){
+      if(this.templatesPermited == 1){
         url='http://old.bphots.com/templates/set';
       }
 
@@ -582,7 +582,7 @@ export default { //会自动生成new vue({})
         if (this.relationNum === 1) {
           for (let basedetail of detail) {
             // console.log(baseindex)
-            var _this=this;
+            var _this = this;
             this.$axios.post(url, {
               hero_id: this.heroId,
               item: basedetail.uploadname,
@@ -627,7 +627,7 @@ export default { //会自动生成new vue({})
     //  this.currentTab = BKZnum;
       this.onShowHeroId = this.heroId;
       this.onShowScoreTab = num;
-      this.relationNum=Relnum;
+      this.relationNum = Relnum;
       //this.Score=this.detail[num].score;
       console.log("relation:"+this.relationNum);
       console.log("onShowHeroId:"+this.onShowHeroId);
@@ -641,19 +641,19 @@ export default { //会自动生成new vue({})
 
     },
     uploadrelation:function (score) {
-      var url=null;
-      var uploadid=null;
+      var url = null;
+      var uploadid = null;
       if(this.templatesPermited==0){
-        url='http://old.bphots.com/templates/offer';//普通用户用offer
+        url = 'http://old.bphots.com/templates/offer';//普通用户用offer
       }
       if(this.templatesPermited==1){
-        url='http://old.bphots.com/templates/set';//管理员用set
+        url = 'http://old.bphots.com/templates/set';//管理员用set
       }
         var heroitem = "hero";
 
-        this.onShowScoreTabHero=this.enhanced[this.onShowScoreTab].engname;
+        this.onShowScoreTabHero = this.enhanced[this.onShowScoreTab].engname;
         console.log(this.onShowScoreTab);
-        for(var index=0;index<this.enhanced.length;index++){
+        for(var index = 0;index < this.enhanced.length;index++){
           if(this.onShowScoreTabHero==this.enhanced[index].engname){
             uploadid=this.enhanced[index].id;
           }
@@ -724,9 +724,9 @@ export default { //会自动生成new vue({})
           });
     },
     MasterClose:function (page) {
-      this.page=this.page+page;
-      if(this.page<1){
-        this.page=1;
+      this.page = this.page+page;
+      if(this.page < 1){
+        this.page = 1;
       }
       this.masterView(this.page);
     },
@@ -743,21 +743,21 @@ export default { //会自动生成new vue({})
   },
     //hero_id转名字
     itemToheroname:function (heroid) {
-      var heroname=null;
-      var idarr=heroid.split("hero_")//分离字符串
+      var heroname = null;
+      var idarr = heroid.split("hero_")//分离字符串
       console.log(idarr[1]);
       console.log(this.heronamelist[1].id);
       if(this.$i18n.locale==='zh-CN'){
-     for(var z=0;z<this.heronamelist.length;z++){
+     for(var z = 0;z<this.heronamelist.length;z++){
        if(parseInt(idarr[1])===this.heronamelist[z].id){
-         heroname=this.heronamelist[z].name;
+         heroname = this.heronamelist[z].name;
        }
      }
    }
       if(this.$i18n.locale==='en-US'){
-        for(var e=0;e<this.heronamelist.length;e++){
+        for(var e = 0;e<this.heronamelist.length;e++){
           if(parseInt(idarr[1])===this.heronamelist[e].id){
-            heroname=this.heronamelist[e].basic;
+            heroname = this.heronamelist[e].basic;
             this.heronamelist[e].lang='en-US';
           }
         }
@@ -766,16 +766,16 @@ export default { //会自动生成new vue({})
      return heroname;
     },
     itemTobasename:function (item) {
-       var basearr=item.split('_');
+       var basearr = item.split('_');
        console.log(basearr);
        if(basearr[0]==='base'){
          if(this.$i18n.locale=='zh-CN'){
-         basearr[1]=this.baseObject[basearr[1]];
+         basearr[1] = this.baseObject[basearr[1]];
          }
          console.log(basearr[1])
        }
-       if(basearr[0]=='map'){
-         basearr[1]=this.maplist[basearr[1]].name[this.$i18n.locale];
+       if(basearr[0] == 'map'){
+         basearr[1] = this.maplist[basearr[1]].name[this.$i18n.locale];
          console.log(basearr[1]);
        }
       // if(this.$i18n.locale==='zh-CN'){
@@ -810,99 +810,14 @@ export default { //会自动生成new vue({})
      }
       return heroname;
     },
-    //英雄名转英
-    heronameToen:function (heroname) {
-      var hero1=new Map();
-      hero1.set("泽拉图","zeratul");
-      hero1.set("维拉","valla");
-      hero1.set("乌瑟尔","uther");
-      hero1.set("泰兰德","tyrande");
-      hero1.set("泰瑞尔","tyreal");
-      hero1.set("塔萨达尔","tassadar");
-      hero1.set("缝合怪","stitches");
-      hero1.set("桑娅","sonya");
-      hero1.set("重锤军士","sgthammer");
-      hero1.set("雷诺","raynor");
-      hero1.set("诺娃","nova");
-      hero1.set("纳兹波","nazeebo");
-      hero1.set("穆拉丁","muradin");
-      hero1.set("玛法里奥","malfurion");
-      hero1.set("凯瑞甘","kerrigan");
-      hero1.set("伊利丹","illidan");
-      hero1.set("加兹鲁维","gazlowe");
-      hero1.set("弗斯塔德","falstad");
-      hero1.set("精英牛头人酋长","etc");
-      hero1.set("迪亚波罗","diablo");
-      hero1.set("阿尔萨斯","arthas");
-      hero1.set("阿巴瑟","abathur");
-      hero1.set("泰凯斯","tychus");
-      hero1.set("丽丽","lili");
-      hero1.set("光明之翼","brightwing");
-      hero1.set("奔波尔霸","murky");
-      hero1.set("扎加拉","zagara");
-      hero1.set("雷加尔","rehgar");
-      hero1.set("陈","chen");
-      hero1.set("阿兹莫丹","azmodan");
-      hero1.set("阿努巴拉克","anubarak");
-      hero1.set("吉安娜","jaina");
-      hero1.set("萨尔","thrall");
-      hero1.set("失落的维京人","lostvikings");
-      hero1.set("希尔瓦娜斯","sylvanas");
-      hero1.set("凯尔萨斯","kaelthas");
-      hero1.set("乔汉娜","johanna");
-      hero1.set("屠夫","butcher");
-      hero1.set("李奥瑞克","leoric");
-      hero1.set("卡拉辛姆","kharazim");
-      hero1.set("雷克萨","rexxar");
-      hero1.set("莫拉莉斯中尉","ltmorales");
-      hero1.set("阿塔尼斯","artanis");
-      hero1.set("古","cho");
-      hero1.set("加尔","gall");
-      hero1.set("露娜拉","lunara");
-      hero1.set("格雷迈恩","greymane");
-      hero1.set("李敏","liming");
-      hero1.set("祖尔","xul");
-      hero1.set("德哈卡","dehaka");
-      hero1.set("猎空","tracer");
-      hero1.set("克罗米","chromie");
-      hero1.set("麦迪文","medivh");
-      hero1.set("古尔丹","guldan");
-      hero1.set("奥莉尔","auriel");
-      hero1.set("阿拉纳克","alarak");
-      hero1.set("查莉娅","zarya");
-      hero1.set("萨穆罗","samuro");
-      hero1.set("瓦里安","varian");
-      hero1.set("拉格纳罗斯","ragnaros");
-      hero1.set("祖尔金","zuljin");
-      hero1.set("瓦莉拉","valeera");
-      hero1.set("卢西奥","lucio");
-      hero1.set("普罗比斯","probius");
-      hero1.set("卡西娅","cassia");
-      hero1.set("源氏","genji");
-      hero1.set("D.Va","dva");
-      hero1.set("马萨伊尔","malthael");
-      hero1.set("斯托科夫","stukov");
-      hero1.set("加尔鲁什","garrosh");
-      hero1.set("克尔苏加德","kelthuzad");
-      hero1.set("安娜","ana");
-      hero1.set("狂鼠","junkrat");
-      hero1.set("阿莱克丝塔萨","alexstrasa");
-      hero1.set("半藏","hanzo");
-      hero1.set("布雷泽","blaze");
-      hero1.set("玛维","maiev");
-      hero1.set("菲尼克斯","fenix");
-      hero1.set("迪卡德","deckard");
-      hero1.set("伊瑞尔","yrel");
-      return hero1.get(heroname);
-    },
     objectToArr:function(obj){
       let arr = Object.keys(obj).map((item, index) => ({id: item, score:obj[item]}));//json对象转数组
       for(var c=0;c<arr.length;c++){
         for(var d=0;d<this.heronamelist.length;d++){
           if(parseInt(arr[c].id)===this.heronamelist[d].id){
-            arr[c].name=this.heronamelist[d].name;
-            arr[c].engname=this.heronamelist[d].basic.toLowerCase();
-            arr[c].pictures="https://www.bphots.com/images/portrait/"+arr[c].engname+".png";
+            arr[c].name = this.heronamelist[d].name;
+            arr[c].engname = this.heronamelist[d].basic.toLowerCase();
+            arr[c].pictures = "https://www.bphots.com/images/portrait/"+arr[c].engname+".png";
           }
         }
       }
@@ -1028,9 +943,6 @@ export default { //会自动生成new vue({})
             });}
         });
     },
-    // formatter(row, column) {
-    //   return row.address;
-    // },
   }
 }
 

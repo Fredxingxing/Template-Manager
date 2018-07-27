@@ -7,7 +7,7 @@
 
 <script>
 
-export default {    //= module.export={   }   <router-view/>     <img src="./assets/logo.png">
+  export default {    //= module.export={   }   <router-view/>     <img src="./assets/logo.png">
   name: 'App',
 
 }
